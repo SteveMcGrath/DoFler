@@ -1,7 +1,10 @@
 from dofler import monitor
+import dofler.api.client
 from dofler.config import config
 
 def start():
+    dofler.api.client.login()
+
     if config.getboolean('Ettercap', 'run'):
         print 'Starting Ettercap Monitor...'
         ettercap = monitor.ettercap.Parser()
@@ -16,11 +19,11 @@ def start():
                    conifg.getint('TShark-http', 'timer'),
                    config.getboolean('TShark-http', 'promisc'))
 
-    if config.getboolean('Driftnet', 'run'):
+    if config.getboolean('TCPXtract', 'run'):
         print 'Starting Driftnet monitor...'
-        driftnet = monitor.driftnet.Parser()
-        driftnet.run(config.get('Driftnet', 'interface'),
-                     conifg.getint('Driftnet', 'timer'),
-                     config.getboolean('Driftnet', 'promisc'))
+        tcpxtract = monitor.tcpxtract.Parser()
+        tcpxtract.run(config.get('TCPXtract', 'interface'),
+                      conifg.getint('TCPXtract', 'timer'),
+                      config.getboolean('TCPXtract', 'promisc'))
 
     print 'Running.'
