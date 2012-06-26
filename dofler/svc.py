@@ -1,8 +1,9 @@
 from dofler import monitor
 import dofler.api.client
+import dofler.api.server
 from dofler.config import config
 
-def start():
+def client():
     dofler.api.client.login()
 
     if config.getboolean('Ettercap', 'run'):
@@ -27,3 +28,7 @@ def start():
                       config.getboolean('TCPXtract', 'promisc'))
 
     print 'Running.'
+
+
+def server():
+    dofler.api.server.serve()
