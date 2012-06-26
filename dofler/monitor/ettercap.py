@@ -1,16 +1,19 @@
 from base import BaseParser
 import re
-#from dofler.client import API
+import dofler.api.client
 
 class Parser(BaseParser):
-	ruser = re.compile(r'USER: (.*?)  ')
-	rpass = re.compile(r'PASS: (.*?)  ')
-	rinfo = re.compile(r'INFO: (.*?)$')
-	cmd = 'ettercap -Tzuqpi {INTERFACE}'
+	'''The Ettercap password parser.'''
+	ruser = re.compile(r'USER: (.*?)  ')	# USER Regex: Pulls out USER field.
+	rpass = re.compile(r'PASS: (.*?)  ')	# PASS Regex: Pulls out PASS field.
+	rinfo = re.compile(r'INFO: (.*?)$')		# INFO Regex: Pulls out INFO field.
+	promisc = {True: '', False: '-p'}		# Promiscuous flags.
+	cmd = 'ettercap {PROMISC} -Tzuqi {INTERFACE}'	# Command to run.
 
 	def parse(self, line):
-		print line
+		'''Ettercap line output parser.'''
 		if 'USER' in line:
+
 			usernames = self.ruser.findall(line)
 			passwords = self.rpass.findall(line)
 			infos = self.rinfo.findall(line)
@@ -19,5 +22,5 @@ class Parser(BaseParser):
 				username = usernames[0]
 				password = passwords[0]
 				info = infos[0]
-				print 'ettercap', username, password, info
-		
+				dofler.api.client.account(username, passowrd, 
+										  info, proto, 'ettercap')		
