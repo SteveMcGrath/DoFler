@@ -1,12 +1,13 @@
 from base import BaseParser
 from BeautifulSoup import BeautifulSoup as soup
-#from dofler.api.client import account
+import dofler.api.client
 import cgi
 
 class Parser(BaseParser):
     packet = ''
     builder = True
-    cmd = 'tshark -T pdml -i {INTERFACE} -R\'http.request.method == "POST"\''
+    promisc = {True: '', False: '-p'}
+    cmd = 'tshark -T pdml {PROMISC} -i {INTERFACE} -R\'http.request.method == "POST"\''
 
     def parse(self, line):
         # First thing we need to do is check to see if we are running
@@ -30,31 +31,47 @@ class Parser(BaseParser):
 
 
     def parse_packet(self):
-        packet = soup(self.packet)
-        username = None
-        password = None
-        host = None
+        '''This function will parse the needed data from the packet XML
+        definition and send the data to the API.
+        '''
+        packet = soup(self.packet)  # The BeautifulSoup parser object of the XML
+        username = None             # Preload of username
+        password = None             # Preload of password
+        host = None                 # Preload of host
+
+        # Here we are attempting to parse out the data from the packet XML
+        # definition.  If we run into any problems, then just return an empty
+        # data tuple so that the rest of the code runs through properly and
+        # ignores the data.
         try:
             host = packet.find('field', attrs={'name': 'http.host'}).get('show')
-            print packet.find('proto', attrs={'name': 'data-text-lines'})
             post = packet.find('proto', attrs={'name': 'data-text-lines'})\
                          .findNext('field').get('show')
             data = cgi.parse_qsl(post)
-        except AttributeError:
+        except:
             data = ()
 
+        # Here is where we will start trying to parse out the username and
+        # password if we see them.  We will be using some simple "if x in y"
+        # logic to allow us to check for subsets of data.
         for item in data:
             if len(item) == 2:
                 opt, val = item
 
+                # This is the username definitions.  As app developers use a
+                # lot of different notations for a username, we have to check
+                # for several of them.
                 for sel in ['log', 'nick' ,'user', 'username', 'uid', 'email']:
                     if sel in opt.lower() and username == None:
                         username = val
 
+                # And the password definitions.  As you can see, this is a lot
+                # easier to parse ;)
                 for sel in ['pass', 'pw', 'word']:
                     if sel in opt.lower() and password == None:
                         password = val
 
-        if username is not None and password is not None:
-            print username, password, host, 'tshark-http'
-            #account(username, password, host, parser='tshark-http')
+        # If we have all the data, then lets send it on to the API.
+        if username is not None and password is not None and host is not None:
+            dofler.api.client.account(username, passowrd, 
+                                      info, proto, 'tshark-http')  
