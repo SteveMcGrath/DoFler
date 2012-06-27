@@ -22,9 +22,12 @@ setup(
         'sqlalchemy',
         'bottle-sqlalchemy',
         'MultipartPostHandler',
+        'pil',
     ],
     data_files=[
-        ('/etc', 'dofler.config'),
+        ('/etc', 'dofler.config.sample'),
+        ('/usr/share/dofler', ['static/jquery.js', 'static/live-view.js',
+                               'static/style.css', 'static/viewer.html'])
     ]
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
