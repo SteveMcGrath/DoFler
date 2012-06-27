@@ -1,4 +1,4 @@
-from bottle import request, response, Bottle, debug, run
+from bottle import request, response, Bottle, debug, run, static_file, redirect
 from sqlalchemy import (Table, Column, Integer, ForeignKey, PickleType, Text,
                         Sequence, String, DateTime, LargeBinary, and_, desc, 
                         create_engine)
@@ -56,9 +56,11 @@ class Image(Base):
     md5 = Column(String, primary_key=True)
     timestamp = Column(DateTime)
     data = Column(LargeBinary)
+    filetype = Column(String)
 
-    def __init__(self, data):
+    def __init__(self, data, filetype):
         self.md5 = md5hash(data)
+        self.filetype = filetype
         self.timestamp = datetime.datetime.now()
         self.data = data
 
@@ -70,7 +72,7 @@ class Image(Base):
     def json(self):
         return {
             'hash': self.md5,
-            'timestamp': time.mktime(self.timestamp.timetuple()),
+            'timestamp': int(time.mktime(self.timestamp.timetuple())),
         }
 
 
@@ -97,6 +99,22 @@ def serve():
         host=config.get('Settings', 'address'),
         server=config.get('Settings', 'server'),
         reloader=config.getboolean('Settings', 'debug'))
+
+
+@app.hook('before_request')
+def set_json_header():
+    response.set_header('Content-Type', 'application/json')
+    response.set_header('Access-Control-Allow-Origin', '*')
+
+
+@app.get('/static/<path:path>')
+def static_files(path, db):
+    return static_file(path, root='/usr/share/dofler')
+
+
+@app.get('/')
+def home_path(db):
+    redirect('/static/viewer.html')
 
 
 @app.post('/login')
@@ -133,6 +151,7 @@ def recent_images(num, db):
 @app.route('/api/image/<id>')
 def get_image(id, db):
     image = db.query(Image).filter_by(md5=id).first()
+    response.set_header('Content-Type', 'image/%s' % image.filetype)
     return image.data
 
 
@@ -159,14 +178,15 @@ def submit_account(db):
 @app.post('/api/post/image')
 def submit_image(db):
     if auth(request):
+        filetype = request.forms.get('filetype')
         data = request.files.file
         if data.file:
             raw = data.file.read()
             md5sum = md5hash(raw)
-            print len(raw), md5sum
+            #print len(raw), md5sum
             try:
                 image = db.query(Image).filter_by(md5=md5sum).first()
                 image.timestamp = datetime.datetime.now()
                 db.merge(image)
             except:
-                db.add(Image(raw))
+                db.add(Image(raw, filetype))
