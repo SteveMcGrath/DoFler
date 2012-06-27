@@ -7,6 +7,7 @@ class Parser(BaseParser):
     packet = ''
     builder = True
     promisc = {True: '', False: '-p'}
+    stanza = 'TShark-http'
     cmd = 'tshark -T pdml {PROMISC} -i {INTERFACE} -R\'http.request.method == "POST"\''
 
     def parse(self, line):
@@ -73,5 +74,5 @@ class Parser(BaseParser):
 
         # If we have all the data, then lets send it on to the API.
         if username is not None and password is not None and host is not None:
-            dofler.api.client.account(username, passowrd, 
-                                      info, proto, 'tshark-http')  
+            dofler.api.client.account(username, password, 
+                                      host, 'HTTP', 'tshark-http')  
