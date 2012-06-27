@@ -7,9 +7,10 @@ from cookielib import CookieJar
 from dofler.config import config
 
 cj = CookieJar()
-opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-uploader = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
-                                MultipartPostHandler.MultipartPostHandler())
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
+                              MultipartPostHandler.MultipartPostHandler())
+#uploader = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
+#                                MultipartPostHandler.MultipartPostHandler())
 
 def login():
     '''Login api.  Sends the appropriate information to get the signed cookie
@@ -18,7 +19,7 @@ def login():
 
     # Lets start off and pre-populate the information we know we need.
     data = {
-        'salt': time.time(),
+        'salt': str(time.time()),
         'sensor': config.get('Settings', 'sensor_name'),
     }
 
@@ -28,13 +29,16 @@ def login():
     # Now we will hash everything together into one nice happy hex digest and
     # then add it to the post data :)
     md5sum = md5()
-    md5sum.update(data['sensor'], data['salt'], secret)
+    md5sum.update(data['sensor'])
+    md5sum.update(data['salt'])
+    md5sum.update(secret)
     data['auth'] = md5sum.hexdigest()
 
     # Then lets send everything along to the API so that we can get the cookie
     # we need.
     response = opener.open('%s/login' % config.get('Settings', 'dofler_address'), 
                            urlencode(data))
+    print response.read()
 
 
 def account(username, password, info, proto, parser):
@@ -46,7 +50,7 @@ def account(username, password, info, proto, parser):
     # we will obfuscate it.  We don't want to be completely brutal to the people
     # we just pwned ;)
     if len(password) >= 3:
-        password = '%s%s' % (password[:3], '*' * len(password) - 3)
+        password = '%s%s' % (password[:3], '*' * (len(password) - 3))
 
     # Building the post data
     data = {
@@ -56,6 +60,7 @@ def account(username, password, info, proto, parser):
         'proto': proto,
         'parser': parser,
     }
+    print data
 
     # And submitting the data to the dofler server.
     opener.open('%s/api/post/account' % config.get('Settings', 'dofler_address'),
@@ -66,5 +71,5 @@ def image(filename):
     '''image api call.  sends the image filename to the dofler server to be
     parsed and added to the database.
     '''
-    uploader.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
-                  {'file': open(filename)})
+    opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
+                {'file': open(filename)})
