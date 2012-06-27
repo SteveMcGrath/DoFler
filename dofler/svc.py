@@ -1,6 +1,7 @@
 from dofler import monitor
 import dofler.api.client
 import dofler.api.server
+import os
 from dofler.config import config
 
 def client():
@@ -16,13 +17,15 @@ def client():
         tshark = monitor.tshark.Parser()
         tshark.start()
 
-    if config.getboolean('TCPXtract', 'run'):
+    if config.getboolean('Driftnet', 'run'):
         print 'Starting Driftnet monitor...'
-        tcpxtract = monitor.tcpxtract.Parser()
+        tcpxtract = monitor.driftnet.Parser()
         tcpxtract.start()
 
     print 'Running.'
 
 
 def server():
+    if not os.path.exists('/var/cache/dofler'):
+        os.mkdir('/var/cache/dofler')
     dofler.api.server.serve()
