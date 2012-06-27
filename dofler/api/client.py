@@ -1,5 +1,6 @@
 import urllib2
 import time
+import Image
 import MultipartPostHandler
 from urllib import urlencode
 from hashlib import md5
@@ -38,7 +39,7 @@ def login():
     # we need.
     response = opener.open('%s/login' % config.get('Settings', 'dofler_address'), 
                            urlencode(data))
-    print response.read()
+    #print response.read()
 
 
 def account(username, password, info, proto, parser):
@@ -60,7 +61,7 @@ def account(username, password, info, proto, parser):
         'proto': proto,
         'parser': parser,
     }
-    print data
+    #print data
 
     # And submitting the data to the dofler server.
     opener.open('%s/api/post/account' % config.get('Settings', 'dofler_address'),
@@ -71,5 +72,9 @@ def image(filename):
     '''image api call.  sends the image filename to the dofler server to be
     parsed and added to the database.
     '''
-    opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
-                {'file': open(filename)})
+    try:
+        image = Image.open(filename)
+        opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
+                    {'file': open(filename), 'filetype': filename.split('.')[-1]})
+    except:
+        pass
