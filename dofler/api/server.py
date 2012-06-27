@@ -1,4 +1,4 @@
-from bottle import request, response, Bottle
+from bottle import request, response, Bottle, debug, run
 from sqlalchemy import (Table, Column, Integer, ForeignKey, PickleType, Text,
                         Sequence, String, DateTime, LargeBinary, and_, desc, 
                         create_engine)
@@ -7,6 +7,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from bottle.ext import sqlalchemy
 import datetime
 import json
+import time
+from hashlib import md5
 from dofler.config import config
 
 Base = declarative_base()
@@ -90,25 +92,30 @@ def md5hash(data):
 
 def serve():
     debug(config.getboolean('Settings', 'debug'))
-    app.run(app=app,
-            port=config.get('Settings', 'port'),
-            host=config.get('Settings', 'address'),
-            server=config.get('Settings', 'server'),
-            reloader=config.getboolean('Settings', 'debug'))
+    run(app=app,
+        port=config.get('Settings', 'port'),
+        host=config.get('Settings', 'address'),
+        server=config.get('Settings', 'server'),
+        reloader=config.getboolean('Settings', 'debug'))
 
 
-@app.route('/api/login')
+@app.post('/login')
 def login(db):
     sensor = request.forms.get('sensor')
     auth = request.forms.get('auth')
     salt = request.forms.get('salt')
     secret = config.get('Sensors', sensor)
     md5sum = md5()
-    md5sum.update(sensor, salt, secret)
+    md5sum.update(sensor)
+    md5sum.update(salt)
+    md5sum.update(secret)
     if md5sum.hexdigest() == auth:
         response.set_cookie('account', sensor, 
                             secret=config.get('Settings', 'key'),
                             httponly=True)
+        return 'Successfully Logged In'
+    else:
+        return 'Login Failed'
 
 
 @app.route('/api/accounts/<num:int>')
@@ -129,7 +136,7 @@ def get_image(id, db):
     return image.data
 
 
-@app.post('/api/post/account'):
+@app.post('/api/post/account')
 def submit_account(db):
     if auth(request):
         username = request.forms.get('username')
@@ -149,14 +156,17 @@ def submit_account(db):
             db.add(Account(username, password, info, proto, parser))
 
 
-@app.post('/api/post/image'):
+@app.post('/api/post/image')
 def submit_image(db):
     if auth(request):
-        data = request.files.data
-        md5sum = md5hash(data)
-        try:
-            image = db.query(Image).filter_by(md5=md5sum).first()
-            image.timestamp = datetime.datetime.now()
-            db.marge(image)
-        except:
-            db.add(Image(data))
+        data = request.files.file
+        if data.file:
+            raw = data.file.read()
+            md5sum = md5hash(raw)
+            print len(raw), md5sum
+            try:
+                image = db.query(Image).filter_by(md5=md5sum).first()
+                image.timestamp = datetime.datetime.now()
+                db.merge(image)
+            except:
+                db.add(Image(raw))
