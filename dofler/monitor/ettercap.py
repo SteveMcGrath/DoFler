@@ -1,5 +1,6 @@
 from base import BaseParser
 import re
+from dofler.log import log
 import dofler.api.client
 
 class Parser(BaseParser):
@@ -28,5 +29,7 @@ class Parser(BaseParser):
                 proto = protos[0]
                 print '[%s]' % proto
                 if str(proto) != 'HTTP':
+                    og.debug('%s is sending Account <%s>' % (self.stanza, 
+                                                             username))
                     dofler.api.client.account(username, password, 
                                               info, proto, 'ettercap')

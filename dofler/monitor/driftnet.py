@@ -1,4 +1,5 @@
 from base import BaseParser
+from dofler.log import log
 import re
 import os
 import dofler.api.client
@@ -10,5 +11,6 @@ class Parser(BaseParser):
 
     def parse(self, line):
         filename = line.strip('\r\n')
+        log.debug('%s sending image: %s' % (self.stanza, filename))
         dofler.api.client.image(filename)
         os.remove(filename)

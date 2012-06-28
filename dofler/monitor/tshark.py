@@ -1,5 +1,6 @@
 from base import BaseParser
 from BeautifulSoup import BeautifulSoup as soup
+from dofler.log import log
 import dofler.api.client
 import cgi
 
@@ -74,5 +75,6 @@ class Parser(BaseParser):
 
         # If we have all the data, then lets send it on to the API.
         if username is not None and password is not None and host is not None:
+            log.debug('%s is sending Account <%s>' % (self.stanza, username))
             dofler.api.client.account(username, password, 
                                       host, 'HTTP', 'tshark-http')  

@@ -5,6 +5,7 @@ import sys
 import time
 import pexpect
 from dofler.config import config
+from dofler.log import log
 
 class BaseParser(multiprocessing.Process):
     '''This is the base class that all parsers inherit.  All of the process
@@ -23,7 +24,11 @@ class BaseParser(multiprocessing.Process):
     def run(self):
         '''Required function for threading.
         '''
-        self.svc()
+        if config.getboolean(self.stanza, 'run'):
+            log.info('Starting %s' % self.stanza)
+            self.svc()
+        else:
+            log.info('%s Parser Disabled' % self.stanza)
 
 
     def svc(self):
