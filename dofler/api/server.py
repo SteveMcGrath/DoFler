@@ -54,14 +54,14 @@ class Account(Base):
 class Image(Base):
     __tablename__ = 'image'
     md5 = Column(String, primary_key=True)
-    timestamp = Column(DateTime)
+    lastupload = Column(Integer)
     data = Column(LargeBinary)
     filetype = Column(String)
 
     def __init__(self, data, filetype):
         self.md5 = md5hash(data)
         self.filetype = filetype
-        self.timestamp = datetime.datetime.now()
+        self.lastupload = int(time.time())
         self.data = data
 
 
@@ -72,7 +72,7 @@ class Image(Base):
     def json(self):
         return {
             'hash': self.md5,
-            'timestamp': int(time.mktime(self.timestamp.timetuple())),
+            'timestamp': int(self.lastupload),
         }
 
 
@@ -138,13 +138,15 @@ def login(db):
 
 @app.route('/api/accounts/<num:int>')
 def recent_accounts(num, db):
-    accounts = db.query(Account).order_by(desc(Account.id)).limit(num).all()
+    accounts = db.query(Account).filter(Account.id>=num)\
+                                .order_by(Account.id).all()
     return jsonify([a.json() for a in accounts])
 
 
 @app.route('/api/images/<num:int>')
 def recent_images(num, db):
-    images = db.query(Image).order_by(desc(Image.timestamp)).limit(num).all()
+    images = db.query(Image).filter(Image.lastupload>=num)\
+                            .order_by(Image.lastupload).all()
     return jsonify([a.json() for a in images])
 
 

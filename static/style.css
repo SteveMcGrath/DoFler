@@ -1,11 +1,11 @@
 html{ 
   width: 100%; 
-  height: 100%; 
+  height: 100%;
+  overflow: hidden;
   font-family: "Verdana"; 
   font-size: 15;
-  margin-left: 50px; 
-  pt; 
-  margin: none;}
+  margin: none;
+}
 
 h2{ 
   font-size: 30pt
@@ -21,20 +21,19 @@ body{
   margin: 0 auto;
 }
 
-#images{ 
+/* #images{ 
   float: left; 
   height: 100%; 
   width: 100%; 
-  /* margin-right: 1%; */
-}
+  margin-right: 1%;
+} */
 
 #accounts{ 
   position: absolute;
-  top: 100px;
-  right: 0;
-  float: left; 
+  top: 3em;
+  right: 30em;
   height: 100%; 
-  width: 45%; 
+  width: 13em; 
 }
 
 #accounts-table-title {
@@ -74,7 +73,8 @@ table thead td {
 }
 
 table {
-  background-color: #000000; 
+  background-color: #000000;
+  width: 512px;
   color: #ffffff;
   padding: 5px;
   -moz-border-radius: 15px;
@@ -87,3 +87,4 @@ table {
     width: 200px;
     height: auto;
 }*/
+tes**************
