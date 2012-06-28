@@ -26,6 +26,7 @@ class Parser(BaseParser):
                 password = passwords[0]
                 info = infos[0]
                 proto = protos[0]
-                if proto is not 'HTTP':
+                print '[%s]' % proto
+                if str(proto) != 'HTTP':
                     dofler.api.client.account(username, password, 
                                               info, proto, 'ettercap')
