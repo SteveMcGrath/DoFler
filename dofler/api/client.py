@@ -78,3 +78,17 @@ def image(filename):
                     {'file': open(filename), 'filetype': filename.split('.')[-1]})
     except:
         pass
+
+
+def stat(jdata):
+    '''statistical api call.  sends the json dictionary to the api for
+    processing on the other end.
+    '''
+    # Building the post data
+    data = {
+        'jdata': jdata,
+    }
+
+    # And submitting the data to the dofler server.
+    opener.open('%s/api/post/stats' % config.get('Settings', 'dofler_address'),
+                urlencode(data))

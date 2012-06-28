@@ -9,6 +9,7 @@ import datetime
 import json
 import time
 from hashlib import md5
+from dofler.log import log
 from dofler.config import config
 
 Base = declarative_base()
@@ -37,7 +38,7 @@ class Account(Base):
 
 
     def __repr__(self):
-        return '<Account (%s, %s, %s)>' % (self.id, self.username, self.password)
+        return '<Account(%s, %s, %s)>' % (self.id, self.username, self.password)
 
 
     def json(self):
@@ -48,6 +49,29 @@ class Account(Base):
             'info': self.info,
             'proto': self.proto,
             'parser': self.parser,
+        }
+
+
+class Stat(Base):
+    __tablename__ = 'stat'
+    id = Column(Integer, Sequence('id_seq'), primary_key=True)
+    protocol = Column(String)
+    count = Column(Integer)
+
+    def __init__(self, protocol, count):
+        self.protocol = protocol
+        self.count = count
+
+
+    def __repr__(self):
+        return '<Stat(%s, %s)>' % (self.protocol, self.count)
+
+
+    def json(self):
+        return {
+            'id': self.id,
+            'protocol': self.protocol,
+            'count': self.count,
         }
 
 
@@ -157,6 +181,20 @@ def get_image(id, db):
     return image.data
 
 
+@app.route('/api/stats')
+def get_stats(id, db):
+    pass
+
+
+@app.post('/api/post/stats')
+def submit_stats(db):
+    if auth(request):
+        jdata = json.loads(request.forms.get('jdata'))
+        for item in jdata:
+            db.add(Stat(item, jdata[item]))
+            log.debug('SERVER: Adding stat: %s:%s' % (item, jdata[item]))
+
+
 @app.post('/api/post/account')
 def submit_account(db):
     if auth(request):
@@ -175,6 +213,7 @@ def submit_account(db):
             account = None
         if account == None:
             db.add(Account(username, password, info, proto, parser))
+            log.debug('SERVER: Added account %s:%s' % (proto, username))
 
 
 @app.post('/api/post/image')
@@ -190,5 +229,7 @@ def submit_image(db):
                 image = db.query(Image).filter_by(md5=md5sum).first()
                 image.timestamp = datetime.datetime.now()
                 db.merge(image)
+                log.debug('SERVER: Updated %s' % image.md5)
             except:
                 db.add(Image(raw, filetype))
+                log.debug('SERVER: Added %s' % image.md5)
