@@ -3,7 +3,7 @@ import sys
 
 setup(
     name='DoFler',
-    version='0.0.2a',
+    version='0.0.3a',
     description='Dashboard of Fail - A distibuted Wall of Sheep',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
