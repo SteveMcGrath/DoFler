@@ -9,7 +9,7 @@ var urlhost = '';
 var image_delay = 5;		// This is set in seconds.
 var id_delay = 5;			// Also set in seconds.
 
-var max_images = 500;		// We need to set some sort
+var max_images = 200;		// We need to set some sort
 							// of a sane number so that
 							// we dont kill the browser.
 
@@ -33,7 +33,7 @@ function images(){
 			$("#content").prepend('<img id="dofler-image" class="resize" src="' + urlhost + '/api/image/' + val.hash + '" />');
 			imgcount++;
 			if(imgcount > max_images){
-				$('.resize:first').remove();
+				$('.resize:last').remove();
 				imgcount--;
 			}
         });
