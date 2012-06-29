@@ -231,5 +231,6 @@ def submit_image(db):
                 db.merge(image)
                 log.debug('SERVER: Updated %s' % image.md5)
             except:
-                db.add(Image(raw, filetype))
+                image = Image(raw, filetype)
+                db.add(image)
                 log.debug('SERVER: Added %s' % image.md5)
