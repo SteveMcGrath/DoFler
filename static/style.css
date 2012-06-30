@@ -72,6 +72,17 @@ table thead td {
   /* border-style: solid; */
 }
 
+table tfoot td {
+  background-color: #333333; 
+  color: #ffffff;
+  text-align: right;
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border-width: thin;
+  /* border-style: solid; */
+}
+
 table {
   background-color: #000000;
   width: 512px;

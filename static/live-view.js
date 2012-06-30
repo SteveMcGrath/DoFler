@@ -57,6 +57,9 @@ function accounts(){
 		    }
 		});
 	});
+	$.get(urlhost + '/api/account_total', function(data) {
+		$("#accounts-total").empty().append('<i><b>Total : </b>' + data + '</i>');
+	});
 };
 
 });

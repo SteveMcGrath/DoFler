@@ -167,6 +167,11 @@ def recent_accounts(num, db):
     return jsonify([a.json() for a in accounts])
 
 
+@app.route('/api/account_total')
+def account_total(db):
+    return jsonify(db.query(Account).count())
+
+
 @app.route('/api/images/<num:int>')
 def recent_images(num, db):
     images = db.query(Image).filter(Image.lastupload>=num)\
