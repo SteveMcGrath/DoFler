@@ -28,6 +28,9 @@ var hashes = [];
 function images(){
 	ts = Math.round((new Date()).getTime() / 1000) - image_delay;
 	imgcount = $('.resize').length;
+	if(imgcount == 0) {
+		ts = ts - 60
+	}
 	$.getJSON(urlhost + '/api/images/' + ts, function(data) {
 		$.each(data, function(key, val) {
 			$("#content").prepend('<img id="dofler-image" class="resize" src="' + urlhost + '/api/image/' + val.hash + '" />');
