@@ -10,8 +10,6 @@ from dofler.config import config
 cj = CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
                               MultipartPostHandler.MultipartPostHandler())
-#uploader = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
-#                                MultipartPostHandler.MultipartPostHandler())
 
 def login():
     '''Login api.  Sends the appropriate information to get the signed cookie
@@ -72,12 +70,13 @@ def image(filename):
     '''image api call.  sends the image filename to the dofler server to be
     parsed and added to the database.
     '''
-    try:
-        image = Image.open(filename)
-        opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
-                    {'file': open(filename), 'filetype': filename.split('.')[-1]})
-    except:
-        pass
+    if config.getboolean('Settings', 'client_validate'):
+        try:
+            image = Image.open(filename)
+        except:
+            return
+    opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
+                {'file': open(filename), 'filetype': filename.split('.')[-1]})
 
 
 def stat(jdata):
