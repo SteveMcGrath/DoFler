@@ -23,11 +23,11 @@ app.install(sqlalchemy.Plugin(engine, Base.metadata, create=True))
 class Account(Base):
     __tablename__ = 'account'
     id = Column(Integer, Sequence('id_seq'), primary_key=True)
-    username = Column(String)
-    password = Column(String)
-    info = Column(String)
-    proto = Column(String)
-    parser = Column(String)
+    username = Column(String(128))
+    password = Column(String(128))
+    info = Column(String(128))
+    proto = Column(String(32))
+    parser = Column(String(32))
 
     def __init__(self, username, password, info, proto, parser):
         self.username = username
@@ -55,7 +55,7 @@ class Account(Base):
 class Stat(Base):
     __tablename__ = 'stat'
     id = Column(Integer, Sequence('id_seq'), primary_key=True)
-    protocol = Column(String)
+    protocol = Column(String(32))
     count = Column(Integer)
 
     def __init__(self, protocol, count):
@@ -80,7 +80,7 @@ class Image(Base):
     md5 = Column(String, primary_key=True)
     lastupload = Column(Integer)
     data = Column(LargeBinary)
-    filetype = Column(String)
+    filetype = Column(String(10))
 
     def __init__(self, data, filetype):
         self.md5 = md5hash(data)

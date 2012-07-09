@@ -3,7 +3,7 @@ import sys
 
 setup(
     name='DoFler',
-    version='0.0.3a',
+    version='0.1.1',
     description='Dashboard of Fail - A distibuted Wall of Sheep',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -32,7 +32,7 @@ setup(
                                'static/style.css', 'static/viewer.html'])
     ],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
         'Natural Language :: English',
