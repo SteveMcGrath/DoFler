@@ -77,7 +77,7 @@ class Stat(Base):
 
 class Image(Base):
     __tablename__ = 'image'
-    md5 = Column(String, primary_key=True)
+    md5 = Column(String(32), primary_key=True)
     lastupload = Column(Integer)
     data = Column(LargeBinary)
     filetype = Column(String(10))
