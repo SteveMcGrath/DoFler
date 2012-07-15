@@ -6,6 +6,7 @@ from urllib import urlencode
 from hashlib import md5
 from cookielib import CookieJar
 from dofler.config import config
+from dofler.log import log
 
 cj = CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
@@ -75,8 +76,15 @@ def image(filename):
             image = Image.open(filename)
         except:
             return
-    opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
-                {'file': open(filename), 'filetype': filename.split('.')[-1]})
+    try:
+        opener.open('%s/api/post/image' % config.get('Settings', 'dofler_address'),
+                    {'file': open(filename), 'filetype': filename.split('.')[-1]})
+    except:
+        try:
+            log.warn('Image %s upload failed.  Size: %s kb' %\
+                     (filename, os.path.getsize(filename) / 1024))
+        except:
+            log.warn('Image %s doesnt exist.  Cannot upload.')
 
 
 def stat(jdata):
