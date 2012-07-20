@@ -1,5 +1,5 @@
 # What is it?
-DoFler (Dashboard of Fail + DOPPLER) is a fully automated Wall of Sheep
+DoFler (Dashboard of Fail + DOPPLER) is a fully automated dashboard
 setup that can be easily distributed as needed.  A central dofler server
 acts as the aggregation point and also serves up the HTML page that people 
 can then view.
