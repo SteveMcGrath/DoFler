@@ -8,7 +8,7 @@ The HTML page is simple page that uses Javascript and CSS to format the
 output so that it looks pleasing, and can auto-update.  The Javascript
 pulls the most recent data from the JSON api in the backend.
 
-![screenshot](https://github.com/SteveMcGrath/dofler/raw/master/doc-data/dofler-screen1.png)
+![screenshot](http://f.cl.ly/items/290W2535373y3h0C222D/Screen%20Shot%202012-12-20%20at%2010.27.18%20AM.png)
 
 # How do I use it?
 Run code, drink, and be marry ;)
@@ -35,6 +35,17 @@ __Client Only__
 * Adjust the config file at /etc/dofler.config as needed.
 * Start up the approprate services (_dofler-server_ and _dofler-client_)
 
+## Installation Guides
+
+* [fedora_guide][Fedora Installation Guide]
+* [debian_guide][Debian Installation Guide]
+* [osx_guide][Max OSX Installation Guide]
+* [wintel_guide][Windows Installation Guide (Server-only)]
+
+[fedora_guide]: https://github.com/stevemcgrath/dofler/doc-data/fedora-install-guide.md
+[debian_guide]: https://github.com/stevemcgrath/dofler/doc-data/debian-install-guide.md
+[osx_guide]: https://github.com/stevemcgrath/dofler/doc-data/osx-install-guide.md
+[wintel_guide]: https://github.com/stevemcgrath/dofler/doc-data/wintel-install-guide.md
 
 # API Documentation
 
