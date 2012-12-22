@@ -85,7 +85,7 @@ class Image(Base):
     def __init__(self, data, filetype):
         self.md5 = md5hash(data)
         self.filetype = filetype
-        self.lastupload = int(time.time())
+        self.lastupload = int(time.mktime(time.gmtime()))
         self.data = data
 
 
@@ -232,7 +232,7 @@ def submit_image(db):
             #print len(raw), md5sum
             try:
                 image = db.query(Image).filter_by(md5=md5sum).first()
-                image.timestamp = datetime.datetime.now()
+                image.timestamp = int(time.mktime(time.gmtime()))
                 db.merge(image)
                 log.debug('SERVER: Updated %s' % image.md5)
             except:
