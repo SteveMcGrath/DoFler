@@ -26,7 +26,9 @@ window.setInterval(accounts, (id_delay * 1000));
 
 var hashes = [];
 function images(){
-	ts = Math.round((new Date()).getTime() / 1000) - image_delay;
+	var now = new Date(); 
+	var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+	ts = Math.round((now_utc.getTime()) / 1000) - image_delay;
 	imgcount = $('.resize').length;
 	if(imgcount == 0) {
 		ts = ts - 60
