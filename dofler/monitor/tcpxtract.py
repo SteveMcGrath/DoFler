@@ -13,4 +13,4 @@ class Parser(BaseParser):
         if len(files) > 0:
             filename = files[0]
             dofler.api.client.image(filename.strip('\r'))
-            #os.remove(filename)
+            os.remove(filename)
