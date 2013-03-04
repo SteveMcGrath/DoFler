@@ -37,8 +37,9 @@ class Parser(tshark.Parser):
             self.protos[proto] = 0
         self.protos[proto] += 1
         if (int(time.time()) - self.wait_timer) >= self.interval:
-            dofler.api.stat(json.dumps(self.protos))
-            log.debug('%s Stats: %s' % (self.stanza, self.protos))
+            for proto in protos:
+                dofler.api.stat(proto, self.protos[proto])
+                log.debug('%s Stats: %s: %s' % (self.stanza, proto, self.protos[proto]))
             self.wait_timer = int(time.time())
             self.protos = {}
 
