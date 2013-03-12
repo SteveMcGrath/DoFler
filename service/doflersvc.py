@@ -81,12 +81,8 @@ def login():
         timestamp = bleach.clean(request.forms.get('timestamp'))
         username = bleach.clean(request.forms.get('username'))
         newhash = md5hash(username, timestamp, config.get(username, 'secret'))
-        if md5hash == newhash:
+        if mhash == newhash:
             response.set_cookie('account', secret=config.get('Settings', 'key'))
-        else:
-            error(405)
-    else:
-        error(405)
 
 
 @app.get('/logout')
@@ -109,9 +105,6 @@ def new_account():
         print data
         if db.accounts.find_one(data) == None:
             db.accounts.save(data)
-    else:
-        print 'Not Logged In!'
-        error(405)
 
 
 @app.post('/post/image')
@@ -130,9 +123,6 @@ def upload_image():
         data['timestamp'] = int(time.time())
         print data
         db.images.save(data)
-    else:
-        print 'Not Logged In!'
-        error(405)
 
 
 @app.post('/post/stats')
@@ -155,9 +145,6 @@ def update_stats():
                 del(data['trend'][0])
         print data
         db.stats.save(data)
-    else:
-        print 'Not Logged In!'
-        error(405)
 
 
 @app.post('/post/reset/<ftype>')
@@ -167,8 +154,7 @@ def reset(ftype):
             'collection': ftype,
             'timestamp': int(time.time())
         })
-    else:
-        error(405)
+        return jsonify({'status': 'success', 'collection': ftype})
 
 
 @app.get('/resets')
