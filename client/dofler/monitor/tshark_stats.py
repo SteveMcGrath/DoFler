@@ -37,7 +37,7 @@ class Parser(tshark.Parser):
             self.protos[proto] = 0
         self.protos[proto] += 1
         if (int(time.time()) - self.wait_timer) >= self.interval:
-            for proto in protos:
+            for proto in self.protos:
                 dofler.api.stat(proto, self.protos[proto])
                 log.debug('%s Stats: %s: %s' % (self.stanza, proto, self.protos[proto]))
             self.wait_timer = int(time.time())
