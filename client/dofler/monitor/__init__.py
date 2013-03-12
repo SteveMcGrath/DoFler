@@ -5,10 +5,12 @@ import driftnet
 import tshark_stats
 
 def get_parsers():
-    parsers = []
-    parsers.append(ettercap.Parser())
-    parsers.append(driftnet.Parser())
-    parsers.append(tcpxtract.Parser())
-    parsers.append(tshark.Parser())
-    parsers.append(tshark_stats.Parser())
+    parsers = {
+        'driftnet': driftnet.Parser,
+        'ettercap': ettercap.Parser,
+        'tcpxtract': tcpextract.Parser,
+        'driftnet': driftnet.Parser,
+        'tshark': tshark.Parser,
+        'tshark-stats': tshark-stats.Parser,
+    }
     return parsers
