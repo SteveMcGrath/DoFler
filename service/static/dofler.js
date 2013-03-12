@@ -44,7 +44,7 @@ $(document).ready(function(){
                 image_ts = val.timestamp;
                 if(!reset_images){
                     $("#images").prepend('<img class="dofler-img" src="' 
-                                         + urlhost + '/image/' + val.hash + '" />');
+                                         + urlhost + '/image/' + val.md5 + '" />');
                     if($('.dofler-img').length > max_images){
                         $('.dofler-img:last').remove();
                     };
