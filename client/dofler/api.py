@@ -12,6 +12,18 @@ cj = CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
                               MultipartPostHandler.MultipartPostHandler())
 
+def md5hash(*items):
+    '''md5hash list, of, items
+    A simple convenience function to return a hex md5hash of all of the
+    items given.
+    '''
+    m = md5()
+    for item in items:
+        m.update(item)
+    print items, m.hexdigest()
+    return m.hexdigest()
+
+
 def login():
     '''Login api.  Sends the appropriate information to get the signed cookie
     we need to be able to post to the API.
@@ -32,8 +44,8 @@ def login():
     md5sum.update(data['username'])
     md5sum.update(data['timestamp'])
     md5sum.update(secret)
-    data['md5hash'] = md5sum.hexdigest()
-    print data['username'], data['timestamp'], secret, data['md5hash']
+    data['md5hash'] = md5hash(data['username'], data['timestamp'], 
+                              config.get('Settings', 'sensor_secret'))
 
     # Then lets send everything along to the API so that we can get the cookie
     # we need.
