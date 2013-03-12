@@ -11,6 +11,6 @@ def get_parsers():
         'tcpxtract': tcpxtract.Parser,
         'driftnet': driftnet.Parser,
         'tshark': tshark.Parser,
-        'tshark-stats': tshark-stats.Parser,
+        'tshark-stats': tshark_stats.Parser,
     }
     return parsers
