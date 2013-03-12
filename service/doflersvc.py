@@ -124,7 +124,6 @@ def upload_image():
                 'filetype': bleach.clean(request.forms.get('filetype')), 
                 'data': Binary(filedata),
                 'md5': md5sum,
-                'timestamp': int(time.time())
             }
         data['timestamp'] = int(time.time())
         db.images.save(data)
@@ -179,6 +178,16 @@ def recent_images(timestamp):
     return jsonify(list(db.images\
                           .find({'timestamp': {'$gt': timestamp}}, {'_id': 0})\
                           .sort('timestamp', -1).limit(200)))
+
+
+@app.get('/image/<md5sum>')
+def get_image(md5sum):
+    '''
+    Returns the image from the database.
+    '''
+    image = db.images.find_one({'md5': md5sum})
+    response.set_header('Content-Type', 'image/%s' % image['filetype'])
+    return image['data']
 
 
 @app.get('/accounts/<oid>')
