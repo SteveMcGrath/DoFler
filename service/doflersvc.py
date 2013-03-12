@@ -127,6 +127,8 @@ def upload_image():
             }
         data['timestamp'] = int(time.time())
         db.images.save(data)
+    else:
+        error(405)
 
 
 @app.post('/post/stats')
@@ -150,6 +152,26 @@ def update_stats():
         db.stats.save(data)
     else:
         error(405)
+
+
+@app.post('/post/reset/<ftype>')
+def reset(ftype):
+    if auth(request):
+        db.resets.save({
+            'collection': ftype,
+            'timestamp': int(time.time())
+        })
+    else:
+        error(405)
+
+
+@app.get('/resets')
+def ui_reset():
+    resets = db.resets.find({'$gt': {'timestamp': int(time.time() - 30)}})
+    data = {}
+    for item in resets:
+        data[item['collection']] = True
+    return jsonify(data)
 
 
 @app.get('/images/<timestamp>')
