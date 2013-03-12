@@ -3,16 +3,15 @@ import sys
 
 setup(
     name='DoFler',
-    version='0.1.2',
+    version='0.2.99',
     description='Dashboard of Fail - A distibuted Wall of Sheep',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
     url='https://github.com/SteveMcGrath/DoFler',
-    packages=['dofler', 'dofler.monitor', 'dofler.api'],
+    packages=['dofler', 'dofler.monitor',],
     entry_points={
         'console_scripts': [
-            'dofler-client = dofler.svc:client',
-            'dofler-server = dofler.svc:server',
+            'dofler = dofler:start',
             ]
     },
     install_requires=[
@@ -21,14 +20,10 @@ setup(
         'MultipartPostHandler',
     ],
     data_files=[
-        ('/etc', ['dofler.config']),
-        ('/etc/init', ['init-scripts/dofler-client.conf', 
-                       'init-scripts/dofler-client.conf']),
-        ('/usr/share/dofler', ['static/jquery.js', 'static/live-view.js',
-                               'static/style.css', 'static/viewer.html'])
+        ('/etc/dofler', ['dofler.config']),
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
         'Natural Language :: English',

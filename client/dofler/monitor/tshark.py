@@ -8,7 +8,7 @@ class Parser(BaseParser):
     packet = ''
     builder = True
     promisc = {True: '', False: '-p'}
-    stanza = 'TShark-http'
+    stanza = 'tshark'
     cmd = 'tshark -T pdml -i {INTERFACE} {PROMISC} -R\'http.request.method == "POST"\' -S'
 
     def parse(self, line):

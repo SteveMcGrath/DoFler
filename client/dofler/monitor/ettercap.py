@@ -11,7 +11,7 @@ class Parser(BaseParser):
     rproto = re.compile(r'^(\w*) : ')       # PROTO Regex: Pulls the protocal.
     promisc = {True: '', False: '-p'}       # Promiscuous flags.
     cmd = 'ettercap {PROMISC} -Tzuqi {INTERFACE}'   # Command to run.
-    stanza = 'Ettercap'
+    stanza = 'ettercap'
 
     def parse(self, line):
         '''Ettercap line output parser.'''

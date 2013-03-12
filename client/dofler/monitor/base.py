@@ -27,9 +27,9 @@ class BaseParser(multiprocessing.Process):
         process is actually being spawned and maintained.
         '''
         start = time.time()     # Set the start timer
-        interface = config.get(self.stanza, 'interface')
-        timer = config.getint(self.stanza, 'timer')
-        promisc = config.getboolean(self.stanza, 'promisc')
+        interface = config.get('Parser: %s' % self.stanza, 'interface')
+        timer = config.getint('Parser: %s' % self.stanza, 'timer')
+        promisc = config.getboolean('Parser: %s' % self.stanza, 'promisc')
 
         # Replace the options in the command with the interface and promiscuous
         # settings as needed.

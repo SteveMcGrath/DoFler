@@ -6,7 +6,7 @@ import dofler.api
 class Parser(BaseParser):
     rimage = re.compile(r'exporting to (.*?)[\r]{0,1}$')
     cmd = 'tcpxtract -d {INTERFACE} -o /tmp'
-    stanza = 'TCPXtract'
+    stanza = 'tcpxtract'
 
     def parse(self, line):
         files = self.rimage.findall(line)

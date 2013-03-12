@@ -3,7 +3,7 @@ import config
 import log
 import monitor
 
-def startup():
+def start():
     pids = []
     c = config.config
     parsers = monitor.get_parsers()
@@ -13,4 +13,4 @@ def startup():
             pid = parsers[parser]()
             pid.start()
             pids.append(pid)
-    
+

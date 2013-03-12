@@ -10,7 +10,7 @@ class Parser(tshark.Parser):
     traffic we see on the interface.  It will then report that information back
     up to the API once every 60 seconds.
     '''
-    stanza = 'TShark-stats' # The configuration stanza.
+    stanza = 'tshark-stats' # The configuration stanza.
     protos = {}             # The protocol dictionary.
     wait_timer = 0          # This is the timer we will be using to check when
                             # to upload to the API and flush out the protos
