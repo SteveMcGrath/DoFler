@@ -106,6 +106,7 @@ def new_account():
             'proto': bleach.clean(request.forms.get('proto')),
             'parser': bleach.clean(request.forms.get('parser')),
         }
+        print data
         if db.accounts.find_one(data) == None:
             db.accounts.save(data)
             return {'imported': True}
@@ -127,6 +128,7 @@ def upload_image():
                 'timestamp': int(time.time())
             }
         data['timestamp'] = int(time.time())
+        print data
         db.images.save(data)
         return {'imported': True}
     else:
@@ -151,6 +153,7 @@ def update_stats():
             data['count'] += count
             if len(data['trend']) > config.getint('Settings', 'stat_trends'):
                 del(data['trend'][0])
+        print data
         db.stats.save(data)
         return {'imported': True}
     else:
