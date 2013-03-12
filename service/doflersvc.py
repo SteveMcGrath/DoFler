@@ -79,9 +79,9 @@ def login():
     '''Login function'''
     loggedin = False
     if not auth(request):
-        mhash = bleach.clean(request.forms.get('md5hash'))
-        timestamp = bleach.clean(request.forms.get('timestamp'))
-        username = bleach.clean(request.forms.get('username'))
+        mhash = request.forms.get('md5hash')
+        timestamp = request.forms.get('timestamp')
+        username = request.forms.get('username')
         newhash = md5hash(username, timestamp, config.get(username, 'secret'))
         if mhash == newhash:
             loggedin = True
