@@ -19,7 +19,7 @@ def md5hash(*items):
     '''
     m = md5()
     for item in items:
-        m.update(item)
+        m.update(str(item))
     print items, m.hexdigest()
     return m.hexdigest()
 
@@ -40,8 +40,8 @@ def login():
 
     # Now we will hash everything together into one nice happy hex digest and
     # then add it to the post data :)
-    data['md5hash'] = md5hash(unicode(data['username']), 
-                              unicode(data['timestamp']), 
+    data['md5hash'] = md5hash(data['username'], 
+                              data['timestamp'], 
                               config.get('Settings', 'sensor_secret'))
 
     # Then lets send everything along to the API so that we can get the cookie
