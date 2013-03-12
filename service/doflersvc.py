@@ -108,7 +108,6 @@ def new_account():
             'proto': bleach.clean(request.forms.get('proto')),
             'parser': bleach.clean(request.forms.get('parser')),
         }
-        print data
         if db.accounts.find_one(data) == None:
             db.accounts.save(data)
 
@@ -149,7 +148,6 @@ def update_stats():
             data['count'] += count
             if len(data['trend']) > config.getint('Settings', 'stat_trends'):
                 del(data['trend'][0])
-        print data
         db.stats.save(data)
 
 
