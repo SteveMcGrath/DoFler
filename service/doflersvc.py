@@ -193,7 +193,7 @@ def accounts(oid):
     if oid is not '0':
         items = list(db.accounts.find({'_id': {'$gt': ObjectId(oid)}})))
     else:
-        items = list(db.accounts.find()))
+        items = list(db.accounts.find())
     ilist = []
     for item in items:
         item['id'] = str(item['_id'])
