@@ -169,14 +169,14 @@ def ui_reset():
     return jsonify(data)
 
 
-@app.get('/images/<timestamp:int>')
-def recent_images(timestamp):
+@app.get('/images/<ts:int>')
+def recent_images(ts):
     '''
     Returns up to the last 200 images that were captured since the timestamp
     referenced.
     '''
     return jsonify(list(db.images\
-                          .find({'timestamp': {'$gt': timestamp}}, {'_id': 0})\
+                          .find({'timestamp': {'$gt': int(ts)}}, {'_id': 0})\
                           .sort('timestamp', -1).limit(200)))
 
 
