@@ -19,8 +19,8 @@ def login():
 
     # Lets start off and pre-populate the information we know we need.
     data = {
-        'salt': str(time.time()),
-        'sensor': config.get('Settings', 'sensor_name'),
+        'timestamp': str(time.time()),
+        'username': config.get('Settings', 'sensor_name'),
     }
 
     # Also lets pull the information we need from the config file.
@@ -29,10 +29,10 @@ def login():
     # Now we will hash everything together into one nice happy hex digest and
     # then add it to the post data :)
     md5sum = md5()
-    md5sum.update(data['sensor'])
-    md5sum.update(data['salt'])
+    md5sum.update(data['username'])
+    md5sum.update(data['timestamp'])
     md5sum.update(secret)
-    data['auth'] = md5sum.hexdigest()
+    data['md5hash'] = md5sum.hexdigest()
 
     # Then lets send everything along to the API so that we can get the cookie
     # we need.
