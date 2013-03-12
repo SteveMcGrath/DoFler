@@ -2,14 +2,14 @@ $(document).ready(function(){
 
     // Initiate all of the configuration variables that we will be using.
     urlhost = '';
-    reset_accounts = false;
-    reset_images = false;
-    reset_stats = false;
-    max_images = 0;
-    max_accounts = 0;
-    max_stats = 0;
-    account_id = 0;
-    image_ts = 0;
+    var reset_accounts = false;
+    var reset_images = false;
+    var reset_stats = false;
+    var max_images = 200;
+    var max_accounts = 25;
+    var max_stats = 10;
+    var account_id = 0;
+    var image_ts = 0;
 
 
     function reset_content(){
