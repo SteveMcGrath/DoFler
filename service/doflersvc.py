@@ -109,8 +109,8 @@ def new_account():
         print data
         if db.accounts.find_one(data) == None:
             db.accounts.save(data)
-            return {'imported': True}
     else:
+        print 'Not Logged In!'
         error(405)
 
 
@@ -130,8 +130,8 @@ def upload_image():
         data['timestamp'] = int(time.time())
         print data
         db.images.save(data)
-        return {'imported': True}
     else:
+        print 'Not Logged In!'
         error(405)
 
 
@@ -155,8 +155,8 @@ def update_stats():
                 del(data['trend'][0])
         print data
         db.stats.save(data)
-        return {'imported': True}
     else:
+        print 'Not Logged In!'
         error(405)
 
 
