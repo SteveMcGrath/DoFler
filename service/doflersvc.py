@@ -221,7 +221,7 @@ def protocol_stats():
     '''
     Returns a list of stats sorted from most prolific to least.
     '''
-    return jsonify(list(db.stats.find({}, {'_id': 0}).sort({'count': -1})))
+    return jsonify(list(db.stats.find({}, {'_id': 0}).sort('count', -1)))
 
 
 @app.get('/config')
