@@ -12,7 +12,7 @@ app = Bottle()
 conn = MongoClient()
 db = conn.dofler
 config = ConfigParser()
-config.load('/etc/dofler/service.conf')
+config.read('/etc/dofler/service.conf')
 
 
 def ignore_exception(IgnoreException=Exception,DefaultVal=None):
