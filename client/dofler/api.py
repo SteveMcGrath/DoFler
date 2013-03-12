@@ -84,7 +84,7 @@ def image(filename):
             log.warn('Image %s upload failed.  Size: %s kb' %\
                      (filename, os.path.getsize(filename) / 1024))
         except:
-            log.warn('Image %s doesnt exist.  Cannot upload.')
+            log.warn('Image %s doesnt exist.  Cannot upload.' % filename)
 
 
 def stat(proto, count):
