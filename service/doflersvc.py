@@ -231,7 +231,7 @@ def getconfig():
     })
 
 
-def startup():
+def start():
     '''Starts up the service'''
     debug(config.getboolean('Settings', 'debug'))
     run(app=app,
