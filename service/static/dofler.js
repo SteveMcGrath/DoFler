@@ -80,7 +80,7 @@ $(document).ready(function(){
         });
     };
 
-    window.setInterval(reset_content, 1000);
+    window.setInterval(reset_content, 5000);
     $.getJSON(urlhost + '/config', function(data){
         if(data.accounts){
             document.getElementById('accounts').style.display = 'block';

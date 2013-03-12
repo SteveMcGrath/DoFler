@@ -108,6 +108,7 @@ def new_account():
         }
         if db.accounts.find_one(data) == None:
             db.accounts.save(data)
+            return {'imported': True}
     else:
         error(405)
 
@@ -127,6 +128,7 @@ def upload_image():
             }
         data['timestamp'] = int(time.time())
         db.images.save(data)
+        return {'imported': True}
     else:
         error(405)
 
@@ -150,6 +152,7 @@ def update_stats():
             if len(data['trend']) > config.getint('Settings', 'stat_trends'):
                 del(data['trend'][0])
         db.stats.save(data)
+        return {'imported': True}
     else:
         error(405)
 
