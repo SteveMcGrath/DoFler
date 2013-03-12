@@ -5,7 +5,7 @@ import driftnet
 import tshark_stats
 
 def get_parsers():
-    return = {
+    return {
         'driftnet': driftnet.Parser,
         'ettercap': ettercap.Parser,
         'tcpxtract': tcpxtract.Parser,
