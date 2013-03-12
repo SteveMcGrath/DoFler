@@ -191,9 +191,9 @@ def accounts(oid):
     Returns any accounts that are newer than the oid specified.
     '''
     if oid is not '0':
-        items = list(db.accounts.find({'_id': {'$gt': ObjectId(oid)}})))
+        items = list(db.accounts.find({'_id': {'$gt': ObjectId(oid)}}))
     else:
-        items = list(db.accounts.find()))
+        items = list(db.accounts.find())
     ilist = []
     for item in items:
         item['id'] = str(item['_id'])
