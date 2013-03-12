@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='DoFler Service',
+    name='doflersvc',
     version='0.2.99',
     description='Dashboard of Fail - A distibuted Wall of Sheep',
     author='Steven McGrath',

@@ -181,7 +181,7 @@ def recent_images(timestamp):
     referenced.
     '''
     return jsonify(list(db.images\
-                          .find({'timestamp': {'$gt': timestamp}, {'_id': 0})\
+                          .find({'timestamp': {'$gt': timestamp}}, {'_id': 0})\
                           .sort({'timestamp': -1}).limit(200)))
 
 
