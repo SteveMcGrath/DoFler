@@ -41,6 +41,7 @@ def md5hash(*items):
     m = md5()
     for item in items:
         m.update(item)
+    print items, m.hexdigest()
     return m.hexdigest()
 
 

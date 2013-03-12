@@ -33,6 +33,7 @@ def login():
     md5sum.update(data['timestamp'])
     md5sum.update(secret)
     data['md5hash'] = md5sum.hexdigest()
+    print data['username'], data['timestamp'], secret, data['md5hash']
 
     # Then lets send everything along to the API so that we can get the cookie
     # we need.
