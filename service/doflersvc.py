@@ -187,7 +187,7 @@ def get_image(md5sum):
     '''
     image = db.images.find_one({'md5': md5sum})
     response.set_header('Content-Type', 'image/%s' % image['filetype'])
-    return image['data']
+    return str(image['data'])
 
 
 @app.get('/accounts/<oid>')
