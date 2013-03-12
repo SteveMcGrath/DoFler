@@ -18,6 +18,7 @@ setup(
         'beautifulsoup',
         'pexpect',
         'MultipartPostHandler',
+        'pil',
     ],
     data_files=[
         ('/etc/dofler', ['dofler.conf']),
