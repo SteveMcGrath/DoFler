@@ -38,7 +38,6 @@ def login():
     # we need.
     response = opener.open('%s/login' % config.get('Settings', 'dofler_address'), 
                            urlencode(data))
-    #print response.read()
 
 
 def account(username, password, info, proto, parser):
@@ -60,7 +59,6 @@ def account(username, password, info, proto, parser):
         'proto': proto,
         'parser': parser,
     }
-    print data
 
     # And submitting the data to the dofler server.
     opener.open('%s/post/account' % config.get('Settings', 'dofler_address'),
@@ -79,7 +77,6 @@ def image(filename):
     try:
         opener.open('%s/post/image' % config.get('Settings', 'dofler_address'),
                     {'file': open(filename), 'filetype': filename.split('.')[-1]})
-        print {'file': filename, 'filetype': filename.split('.')[-1]}
     except:
         try:
             log.warn('Image %s upload failed.  Size: %s kb' %\
