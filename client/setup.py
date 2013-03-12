@@ -20,7 +20,7 @@ setup(
         'MultipartPostHandler',
     ],
     data_files=[
-        ('/etc/dofler', ['dofler.config']),
+        ('/etc/dofler', ['dofler.conf']),
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
