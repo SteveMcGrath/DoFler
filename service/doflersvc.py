@@ -64,12 +64,12 @@ def set_json_header():
 
 
 @app.get('/static/<path:path>')
-def static_files(path, db):
+def static_files(path):
     return static_file(path, root='/usr/share/dofler')
 
 
 @app.get('/')
-def home_path(db):
+def home_path():
     redirect('/static/viewer.html')
 
 
