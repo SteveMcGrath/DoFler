@@ -134,7 +134,7 @@ def update_stats():
     '''Updates the stats database with the information posted.'''
     if auth(request):
         proto = bleach.clean(request.forms.get('proto'))
-        count = bleach.clean(sint(request.forms.get('count')))
+        count = sint(bleach.clean(request.forms.get('count')))
         data = db.stats.find_one({'proto': proto})
         if data == None:
             data = {
