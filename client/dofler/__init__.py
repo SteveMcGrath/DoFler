@@ -4,6 +4,7 @@ import log
 import monitor
 
 def start():
+    api.login()
     pids = []
     c = config.config
     parsers = monitor.get_parsers()

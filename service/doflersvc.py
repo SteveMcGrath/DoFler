@@ -190,14 +190,16 @@ def accounts(oid):
     '''
     Returns any accounts that are newer than the oid specified.
     '''
-    items = jsonify(\
-            list(db.accounts.find({'_id': {'$gt': ObjectId(oid)}})))
+    if oid is not '0':
+        items = list(db.accounts.find({'_id': {'$gt': ObjectId(oid)}})))
+    else:
+        items = list(db.accounts.find()))
     ilist = []
     for item in items:
         item['id'] = str(item['_id'])
         del(item['_id'])
         ilist.append(item)
-    return ilist
+    return jsonify(ilist)
 
 
 @app.get('/account_total')
