@@ -3,6 +3,7 @@ import time
 import json
 import bleach
 from bson.objectid import ObjectId
+from bson.binary import Binary
 from ConfigParser import ConfigParser
 from hashlib import md5
 from bottle import (Bottle, request, response, redirect, debug, run, 
@@ -41,7 +42,6 @@ def md5hash(*items):
     m = md5()
     for item in items:
         m.update(str(item))
-    print items, m.hexdigest()
     return m.hexdigest()
 
 
@@ -117,12 +117,12 @@ def new_account():
 def upload_image():
     '''Updates and/or creates a image object into the database.'''
     if auth(request):
-        md5sum = md5hash(bleach.clean(request.files.file.file.read()))
+        md5sum = md5hash(request.files.file.file.read())
         data = db.images.find_one({'md5': md5sum})
         if data == None:
             data = {
                 'filetype': bleach.clean(request.forms.get('filetype')), 
-                'data': request.files.file.file.read(),
+                'data': Binary(request.files.file.file.read()),
                 'md5': md5sum,
                 'timestamp': int(time.time())
             }
