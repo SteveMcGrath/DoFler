@@ -117,17 +117,17 @@ def new_account():
 def upload_image():
     '''Updates and/or creates a image object into the database.'''
     if auth(request):
-        md5sum = md5hash(request.files.file.file.read())
+        filedata = request.files.file.file.read()
+        md5sum = md5hash(filedata)
         data = db.images.find_one({'md5': md5sum})
         if data == None:
             data = {
                 'filetype': bleach.clean(request.forms.get('filetype')), 
-                'data': Binary(request.files.file.file.read()),
+                'data': Binary(filedata),
                 'md5': md5sum,
                 'timestamp': int(time.time())
             }
         data['timestamp'] = int(time.time())
-        print data
         db.images.save(data)
 
 
