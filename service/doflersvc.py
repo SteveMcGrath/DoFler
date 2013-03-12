@@ -85,7 +85,8 @@ def login():
         newhash = md5hash(username, timestamp, config.get(username, 'secret'))
         if mhash == newhash:
             loggedin = True
-            response.set_cookie('account', secret=config.get('Settings', 'key'))
+            response.set_cookie('account', username,
+                                secret=config.get('Settings', 'key'))
     if not loggedin:
         response.set_header('Login Status', 'FAILED')
 
