@@ -8,7 +8,7 @@ def get_parsers():
     parsers = {
         'driftnet': driftnet.Parser,
         'ettercap': ettercap.Parser,
-        'tcpxtract': tcpextract.Parser,
+        'tcpxtract': tcpxtract.Parser,
         'driftnet': driftnet.Parser,
         'tshark': tshark.Parser,
         'tshark-stats': tshark-stats.Parser,
