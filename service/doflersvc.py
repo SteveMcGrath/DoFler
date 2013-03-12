@@ -169,7 +169,7 @@ def ui_reset():
     return jsonify(data)
 
 
-@app.get('/images/<timestamp>')
+@app.get('/images/<timestamp:int>')
 def recent_images(timestamp):
     '''
     Returns up to the last 200 images that were captured since the timestamp
