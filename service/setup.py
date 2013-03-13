@@ -19,9 +19,7 @@ setup(
         'bleach',
         'paste',
         'pygal',
-        'CairoSVG',
-        'tinycss',
-        'cssselect',
+        'scipy',
     ],
     data_files=[
         ('/etc/dofler', ['service.conf']),
