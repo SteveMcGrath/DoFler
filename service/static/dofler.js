@@ -55,8 +55,28 @@ $(document).ready(function(){
 
 
     function stats(){
-        //Nothing Here Yet
+        $.getJSON('/stats/gline/5', function(jsondata){
+            var gtable = google.visualization.arrayToDataTable(jsondata);
+            new google.visualization.LineChart(document.getElementById('vis-hits-per-day')).draw(gtable, {
+                curveType: "function", 
+                width: 800, 
+                height: 200,
+                hAxis: {
+                    textPosition: 'none',
+                },
+                vAxis: {
+                    textPosition: 'in',
+                    viewWindowMode: 'maximized',
+                    title: 'Packets'
+                },
+                legend: {
+                    position: 'in',
+
+                }
+            });
+        });
     };
+
 
     function accounts(){
         $.getJSON(urlhost + '/accounts/' + account_id, function(data){
