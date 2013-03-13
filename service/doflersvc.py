@@ -232,18 +232,17 @@ def protocol_chart(num):
     linechart = []
 
     # First lets populate the linechart list with 100 empty sub-lists...
-    for row in range(20): linechart.append([row])
+    for row in range(100): linechart.append([row])
 
     # Next we need to populate it out.
     for item in db.stats.find().sort('count', -1).limit(num):
-        counter = 0
         linechart[counter].append(item['proto'])
-        for elem in reversed(item['trend']):
-            counter += 1
-            if counter >= 20:
-                break
+        for c in reversed(range(100)):
+            if len(item['trend']) >= c:
+                elem = item['trend'][c]
             else:
-                linechart[counter].append(elem)
+                elem = None
+            linechart[(100 - c) - 1].append(elem)
     return jsonify(linechart)
 
 
