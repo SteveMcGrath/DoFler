@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import time
 import json
 import bleach
+import pygal
 from bson.objectid import ObjectId
 from bson.binary import Binary
 from ConfigParser import ConfigParser
@@ -224,26 +225,23 @@ def protocol_stats():
     return jsonify(list(db.stats.find({}, {'_id': 0}).sort('count', -1)))
 
 
-@app.get('/stats/gline/<num:int>')
+@app.get('/stats/<num:int>/line.svg')
 def protocol_chart(num):
     '''
-    Returns the top N protocols with trending in a google linechart format.
+    Returns the top N protocols with trending in a pycal svg chart.
     '''
-    linechart = []
+    lchart = pygal.Line(interpolate='cubic',
+                        height=200,
+                        width=800,
+                        show_dots=False,
+                        no_data_text='No Packet Summaries Yet'
 
-    # First lets populate the linechart list with 100 empty sub-lists...
-    for row in range(61): linechart.append([row])
+    )
 
     # Next we need to populate it out.
     for item in db.stats.find().sort('count', -1).limit(num):
-        linechart[0].append(item['proto'])
-        for counter in range(60):
-            if len(item['trend']) > counter:
-                elem = item['trend'][counter]
-            else:
-                elem = 0
-            linechart[counter + 1].append(elem)
-    return jsonify(linechart)
+        lchart.add(item['proto'], item['trend'])
+    return lchart.render()
 
 
 @app.get('/config')

@@ -18,6 +18,10 @@ setup(
         'pymongo',
         'bleach',
         'paste',
+        'pygal',
+        'CairoSVG',
+        'tinycss',
+        'cssselect',
     ],
     data_files=[
         ('/etc/dofler', ['service.conf']),

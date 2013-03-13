@@ -1,125 +1,102 @@
-$(document).ready(function(){
-
-    // Initiate all of the configuration variables that we will be using.
-    urlhost = '';
-    var reset_accounts = false;
-    var reset_images = false;
-    var reset_stats = false;
-    var max_images = 200;
-    var max_accounts = 25;
-    var max_stats = 10;
-    var account_id = 0;
-    var image_ts = 0;
+// Initiate all of the configuration variables that we will be using.
+urlhost = '';
+var reset_accounts = false;
+var reset_images = false;
+var reset_stats = false;
+var max_images = 200;
+var max_accounts = 25;
+var max_stats = 10;
+var account_id = 0;
+var image_ts = 0;
 
 
-    function reset_content(){
-        $.getJSON(urlhost + '/resets', function(data){
-            if(data.hasOwnProperty('images')){
-                reset_images = true;
-                $('.dofler-img').remove();
-            } else {
-                reset_images = false;
-            };
-
-            if(data.hasOwnProperty('stats')){
-                reset_stats = true;
-                $('.dofler-stat').remove();
-            } else {
-                reset_stats = false;
-            };
-
-            if(data.hasOwnProperty('accounts')){
-                reset_accounts = true;
-                $('.dofler-account').remove();
-            } else {
-                reset_accounts = false;
-            };
-        });
-    };
-
-
-    function images(){
-        $.getJSON(urlhost + '/images/' + image_ts, function(data){
-            $.each(data, function(key, val){
-                image_ts = val.timestamp;
-                if(!reset_images && $('img[src="/image/' + val.md5 + '"]').length < 1){
-                    $("#images").prepend('<img class="dofler-img" src="' 
-                                         + urlhost + '/image/' + val.md5 + '" />');
-                    if($('.dofler-img').length > max_images){
-                        $('.dofler-img:last').remove();
-                    };
-                };
-            });
-        });
-    };
-
-
-    function stats(){
-        function stats_gline(){
-            $.getJSON('/stats/gline/5', function(jsondata){
-                var gtable = google.visualization.arrayToDataTable(jsondata);
-                new google.visualization.LineChart(document.getElementById('vis-hits-per-day')).draw(gtable, {
-                    curveType: "function", 
-                    width: 800, 
-                    height: 200,
-                    hAxis: {
-                        textPosition: 'none',
-                    },
-                    vAxis: {
-                        textPosition: 'in',
-                        viewWindowMode: 'maximized',
-                        title: 'Packets'
-                    },
-                    legend: {
-                        position: 'in',
-
-                    }
-                });
-            });
+function reset_content(){
+    $.getJSON(urlhost + '/resets', function(data){
+        if(data.hasOwnProperty('images')){
+            reset_images = true;
+            $('.dofler-img').remove();
+        } else {
+            reset_images = false;
         };
-        google.setOnLoadCallback(stats_gline);
-    };
+
+        if(data.hasOwnProperty('stats')){
+            reset_stats = true;
+            $('.dofler-stat').remove();
+        } else {
+            reset_stats = false;
+        };
+
+        if(data.hasOwnProperty('accounts')){
+            reset_accounts = true;
+            $('.dofler-account').remove();
+        } else {
+            reset_accounts = false;
+        };
+    });
+};
 
 
-    function accounts(){
-        $.getJSON(urlhost + '/accounts/' + account_id, function(data){
-            $.each(data, function(key, val){
-                account_id = val.id;
-                if(!reset_accounts){
-                    $("#accounts-table tbody").prepend('<tr class="dofler-account">' +
-                        '<td>' + val.info.substr(0,28) + '</td>' +
-                        '<td>' + val.proto + '</td>' +
-                        '<td>' + val.username + '</td>' +
-                        '<td>' + val.password.substr(0,15) + '</td></tr>'
-                    );
-                    if($('.dofler-account').length > max_accounts){
-                        $('.dofler-account:last').remove();
-                    };
+function images(){
+    $.getJSON(urlhost + '/images/' + image_ts, function(data){
+        $.each(data, function(key, val){
+            image_ts = val.timestamp;
+            if(!reset_images && $('img[src="/image/' + val.md5 + '"]').length < 1){
+                $("#images").prepend('<img class="dofler-img" src="' 
+                                     + urlhost + '/image/' + val.md5 + '" />');
+                if($('.dofler-img').length > max_images){
+                    $('.dofler-img:last').remove();
                 };
-            });
+            };
         });
-        $.get(urlhost + '/account_total', function(data){
-            $("#accounts-total").empty().append('<i><b>Total : </b>' + data + '</i>');
-        });
-    };
+    });
+};
 
 
+function stats(){
+    document.getElementById('stats').reload();
+};
+
+
+function accounts(){
+    $.getJSON(urlhost + '/accounts/' + account_id, function(data){
+        $.each(data, function(key, val){
+            account_id = val.id;
+            if(!reset_accounts){
+                $("#accounts-table tbody").prepend('<tr class="dofler-account">' +
+                    '<td>' + val.info.substr(0,28) + '</td>' +
+                    '<td>' + val.proto + '</td>' +
+                    '<td>' + val.username + '</td>' +
+                    '<td>' + val.password.substr(0,15) + '</td></tr>'
+                );
+                if($('.dofler-account').length > max_accounts){
+                    $('.dofler-account:last').remove();
+                };
+            };
+        });
+    });
+    $.get(urlhost + '/account_total', function(data){
+        $("#accounts-total").empty().append('<i><b>Total : </b>' + data + '</i>');
+    });
+};
+
+
+$(document).ready(function(){
     window.setInterval(reset_content, 5000);
     $.getJSON(urlhost + '/config', function(data){
         if(data.accounts){
-            accounts()
+            accounts();
             document.getElementById('accounts').style.display = 'block';
             window.setInterval(accounts, (data.account_delay * 1000));
         };
-        if(data.stats){
-            stats()
-            document.getElementById('stats').style.display = 'block';
-            window.setInterval(stats, (data.stats_delay * 1000));
-        };
         if(data.images){
-            images()
+            images();
             document.getElementById('images').style.display = 'block';
             window.setInterval(images, (data.image_delay * 1000));
+        };
+        if(data.stats){
+            stats();
+            document.getElementById('stats').style.display = 'block';
+            window.setInterval(stats, (data.stats_delay * 1000));
         };
     });
 });
