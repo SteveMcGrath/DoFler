@@ -143,10 +143,10 @@ def update_stats():
                 'trend': [],
             }
         if count != None:
-            data['trend'].append(count)
+            data['trend'].insert(0, count)
             data['count'] += count
             if len(data['trend']) > config.getint('Settings', 'stat_trends'):
-                del(data['trend'][0])
+                del(data['trend'][-1])
         db.stats.save(data)
 
 
@@ -232,17 +232,17 @@ def protocol_chart(num):
     linechart = []
 
     # First lets populate the linechart list with 100 empty sub-lists...
-    for row in range(100): linechart.append([row])
+    for row in range(61): linechart.append([row])
 
     # Next we need to populate it out.
     for item in db.stats.find().sort('count', -1).limit(num):
         linechart[0].append(item['proto'])
-        for c in reversed(range(100)):
-            if len(item['trend']) > c:
-                elem = item['trend'][c]
-            else:
-                elem = None
-            linechart[(100 - c) - 1].append(elem)
+        while len(item['trend']) > 60:
+            item.append(0)
+        counter = 0
+        for elem in item['trend']:
+            counter += 1
+            linechart[counter].append(elem)
     return jsonify(linechart)
 
 
