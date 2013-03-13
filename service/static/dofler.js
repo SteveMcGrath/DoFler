@@ -10,6 +10,13 @@ var account_id = 0;
 var image_ts = 0;
 
 
+
+function objectRefresh(obj){
+    var tmp = obj.cloneNode(true);
+    obj.parentNode.replaceChild(tmp, obj);
+}
+
+
 function reset_content(){
     $.getJSON(urlhost + '/resets', function(data){
         if(data.hasOwnProperty('images')){
@@ -53,7 +60,7 @@ function images(){
 
 
 function stats(){
-    document.getElementById('stats').reload();
+    objectRefresh(document.getElementById('stats_line'));
 };
 
 
@@ -94,7 +101,6 @@ $(document).ready(function(){
             window.setInterval(images, (data.image_delay * 1000));
         };
         if(data.stats){
-            stats();
             document.getElementById('stats').style.display = 'block';
             window.setInterval(stats, (data.stats_delay * 1000));
         };

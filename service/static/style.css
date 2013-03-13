@@ -43,12 +43,18 @@ body{
 #stats {
   display: none;
   position: fixed;
+  width: 800px;
   bottom: 0px;
   left: 0px;
   padding: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border-width: thin;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 5px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  border-width: medium;
+  border-style: solid;
+  border-color: gray;
 }
 
 #accounts-table-title {
@@ -101,4 +107,5 @@ table {
   border-radius: 15px;
   border-width: medium;
   border-style: solid;
+  border-color: gray;
 }
