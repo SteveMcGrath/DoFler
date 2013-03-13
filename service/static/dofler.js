@@ -55,26 +55,29 @@ $(document).ready(function(){
 
 
     function stats(){
-        $.getJSON('/stats/gline/5', function(jsondata){
-            var gtable = google.visualization.arrayToDataTable(jsondata);
-            new google.visualization.LineChart(document.getElementById('vis-hits-per-day')).draw(gtable, {
-                curveType: "function", 
-                width: 800, 
-                height: 200,
-                hAxis: {
-                    textPosition: 'none',
-                },
-                vAxis: {
-                    textPosition: 'in',
-                    viewWindowMode: 'maximized',
-                    title: 'Packets'
-                },
-                legend: {
-                    position: 'in',
+        function stats_gline(){
+            $.getJSON('/stats/gline/5', function(jsondata){
+                var gtable = google.visualization.arrayToDataTable(jsondata);
+                new google.visualization.LineChart(document.getElementById('vis-hits-per-day')).draw(gtable, {
+                    curveType: "function", 
+                    width: 800, 
+                    height: 200,
+                    hAxis: {
+                        textPosition: 'none',
+                    },
+                    vAxis: {
+                        textPosition: 'in',
+                        viewWindowMode: 'maximized',
+                        title: 'Packets'
+                    },
+                    legend: {
+                        position: 'in',
 
-                }
+                    }
+                });
             });
-        });
+        };
+        google.setOnLoadCallback(stats_gline);
     };
 
 
@@ -99,6 +102,7 @@ $(document).ready(function(){
             $("#accounts-total").empty().append('<i><b>Total : </b>' + data + '</i>');
         });
     };
+
 
     window.setInterval(reset_content, 5000);
     $.getJSON(urlhost + '/config', function(data){
