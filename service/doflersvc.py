@@ -126,7 +126,8 @@ def upload_image():
                 'data': Binary(filedata),
                 'md5': md5sum,
             }
-        data['timestamp'] = int(time.time())
+        if 'timestamp' not in data or (time.time() - data['timestamp']) > 60:
+            data['timestamp'] = int(time.time())
         db.images.save(data)
 
 
