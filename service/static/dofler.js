@@ -103,14 +103,17 @@ $(document).ready(function(){
     window.setInterval(reset_content, 5000);
     $.getJSON(urlhost + '/config', function(data){
         if(data.accounts){
+            accounts()
             document.getElementById('accounts').style.display = 'block';
             window.setInterval(accounts, (data.account_delay * 1000));
         };
         if(data.stats){
+            stats()
             document.getElementById('stats').style.display = 'block';
             window.setInterval(stats, (data.stats_delay * 1000));
         };
         if(data.images){
+            images()
             document.getElementById('images').style.display = 'block';
             window.setInterval(images, (data.image_delay * 1000));
         };
