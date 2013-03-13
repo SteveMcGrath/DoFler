@@ -164,7 +164,7 @@ def reset(ftype):
 
 @app.get('/resets')
 def ui_reset():
-    resets = db.resets.find({'$gt': {'timestamp': int(time.time() - 30)}})
+    resets = db.resets.find({'timestamp': {'$gte': int(time.time() - 30)}})
     data = {}
     for item in resets:
         data[item['collection']] = True
