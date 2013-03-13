@@ -238,7 +238,7 @@ def protocol_chart(num):
     for item in db.stats.find().sort('count', -1).limit(num):
         linechart[0].append(item['proto'])
         for c in reversed(range(100)):
-            if len(item['trend']) >= c:
+            if len(item['trend']) > c:
                 elem = item['trend'][c]
             else:
                 elem = None
