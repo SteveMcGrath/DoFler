@@ -224,6 +224,26 @@ def protocol_stats():
     return jsonify(list(db.stats.find({}, {'_id': 0}).sort('count', -1)))
 
 
+@app.get('/stats/gline/<num:int>')
+def protocol_chart(num):
+    '''
+    Returns the top N protocols with trending in a google linechart format.
+    '''
+    linechart = []
+
+    # First lets populate the linechart list with 100 empty sub-lists...
+    for row in range(100): linechart.append([row])
+
+    # Next we need to populate it out.
+    for item in db.stats.find().sort('count', -1).limit(num):
+        counter = 0
+        linechart[counter].append(item['proto'])
+        for elem in reversed(item['trend']):
+            counter += 1
+            linechart[counter].append(elem)
+    return jsonify(linechart)
+
+
 @app.get('/config')
 def getconfig():
     '''
