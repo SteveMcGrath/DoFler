@@ -240,7 +240,7 @@ def protocol_chart(num):
         linechart[counter].append(item['proto'])
         for elem in reversed(item['trend']):
             counter += 1
-            if counter <= 20:
+            if counter >= 20:
                 break
             else:
                 linechart[counter].append(elem)
