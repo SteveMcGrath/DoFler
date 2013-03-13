@@ -136,13 +136,13 @@ def update_stats():
         proto = bleach.clean(request.forms.get('proto'))
         count = sint(bleach.clean(request.forms.get('count')))
         data = db.stats.find_one({'proto': proto})
-        if data == None and count > 1:
+        if data == None:
             data = {
                 'proto': proto,
                 'count': 0,
                 'trend': [],
             }
-        if count != None:
+        if count != None and count > 1:
             data['trend'].insert(0, count)
             data['count'] += count
             if len(data['trend']) > config.getint('Settings', 'stat_trends'):

@@ -42,6 +42,13 @@ body{
 
 #stats {
   display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border-width: thin;
 }
 
 #accounts-table-title {
