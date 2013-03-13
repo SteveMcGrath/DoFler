@@ -237,12 +237,12 @@ def protocol_chart(num):
     # Next we need to populate it out.
     for item in db.stats.find().sort('count', -1).limit(num):
         linechart[0].append(item['proto'])
-        while len(item['trend']) > 60:
-            item['trend'].append(0)
-        counter = 0
-        for elem in item['trend']:
-            counter += 1
-            linechart[counter].append(elem)
+        for counter in range(60):
+            if len(item['trend']) > counter:
+                elem = item['trend'][counter]
+            else:
+                elem = 0
+            linechart[counter + 1].append(elem)
     return jsonify(linechart)
 
 
