@@ -241,6 +241,7 @@ def protocol_chart(num):
     # Next we need to populate it out.
     for item in db.stats.find().sort('count', -1).limit(num):
         lchart.add(item['proto'], item['trend'])
+    response.set_header('Content-Type', 'image/svg+xml')
     return lchart.render()
 
 
