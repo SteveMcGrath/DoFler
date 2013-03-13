@@ -107,3 +107,13 @@ def stat(proto, count):
     # And submitting the data to the dofler server.
     opener.open('%s/post/stats' % config.get('Settings', 'dofler_address'),
                 urlencode(data))
+
+
+def reset(ctype):
+    '''
+    Sends a reset request for the image type for the GUI.
+    '''
+    opener.open('%s/post/reset/%s' % (
+        config.get('Settings', 'dofler_address'), 
+        ctype), 
+    {})
