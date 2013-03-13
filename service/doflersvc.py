@@ -238,7 +238,7 @@ def protocol_chart(num):
     for item in db.stats.find().sort('count', -1).limit(num):
         linechart[0].append(item['proto'])
         while len(item['trend']) > 60:
-            item.append(0)
+            item['trend'].append(0)
         counter = 0
         for elem in item['trend']:
             counter += 1
