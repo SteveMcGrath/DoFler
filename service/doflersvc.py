@@ -136,7 +136,7 @@ def update_stats():
         proto = bleach.clean(request.forms.get('proto'))
         count = sint(bleach.clean(request.forms.get('count')))
         data = db.stats.find_one({'proto': proto})
-        if data == None:
+        if data == None and count > 1:
             data = {
                 'proto': proto,
                 'count': 0,
