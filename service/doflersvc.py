@@ -17,6 +17,10 @@ config = ConfigParser()
 config.read('/etc/dofler/service.conf')
 
 
+def initialize():
+    db.images.ensure_index('timestamp')
+
+
 def ignore_exception(IgnoreException=Exception,DefaultVal=None):
     ''' Decorator for ignoring exception from a function
     e.g.   @ignore_exception(DivideByZero)
@@ -268,6 +272,7 @@ def getconfig():
 
 def start():
     '''Starts up the service'''
+    initialize()
     debug(config.getboolean('Settings', 'debug'))
     run(app=app,
         port=config.getint('Settings', 'port'),

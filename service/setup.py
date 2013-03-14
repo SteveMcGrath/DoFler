@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='doflersvc',
-    version='0.2.99',
+    version='0.3.0',
     description='Dashboard of Fail - A distibuted Wall of Sheep',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
