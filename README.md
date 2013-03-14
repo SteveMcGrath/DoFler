@@ -8,7 +8,7 @@ The HTML page is simple page that uses Javascript and CSS to format the
 output so that it looks pleasing, and can auto-update.  The Javascript
 pulls the most recent data from the JSON api in the backend.
 
-![screenshot](http://f.cl.ly/items/290W2535373y3h0C222D/Screen%20Shot%202012-12-20%20at%2010.27.18%20AM.png)
+![screenshot](http://bit.ly/Zrgv6c)
 
 # How do I use it?
 Run code, drink, and be marry ;)
@@ -31,9 +31,9 @@ __Client Only__
 
 ## Installation
 
-* Install using pip or easy_install `pip install dofler`
-* Adjust the config file at /etc/dofler.config as needed.
-* Start up the approprate services (_dofler-server_ and _dofler-client_)
+* Install using pip or easy_install `pip install dofler doflersvc`
+* Adjust the config file at /etc/dofler/dofler.conf & /etc/dofler/service.conf as needed.
+* Start up the approprate services (_dofler-server_ and _dofler_)
 
 ## Installation Guides
 
@@ -46,6 +46,23 @@ __Client Only__
 [debian_guide]: https://github.com/stevemcgrath/dofler/doc-data/debian-install-guide.md
 [osx_guide]: https://github.com/stevemcgrath/dofler/doc-data/osx-install-guide.md
 [wintel_guide]: https://github.com/stevemcgrath/dofler/doc-data/wintel-install-guide.md
+
+
+# ChangeLog
+
+* 0.3.0
+	* Complete Rewrite
+	* Now uses MongoDB as the backend instead of MySQL/SQLAlchemy
+	* Can now enable/disable certain views (images, stats, accounts) in WebUI
+	* WebUI now has a "porn reset" function as part of the API
+	* Dofler is now split into 2 packages, dofler and doflersvc
+	* Removed any client-side time dependencies
+* 0.2.0
+	* Updated WebUI so that it uses UTC Time instead of Local Time.
+	* Minor bugfixes
+* 0.1.0
+	* Initial Release
+
 
 # API Documentation
 
@@ -77,7 +94,7 @@ If the hashes match, it will return an authentication cookie.
   isnt always the same.
 
 
-## /api/post/account
+## /post/account
 
 __Required Inputs:__ username, password, info, proto, parser
 __HTTP Methods:__ POST
@@ -105,7 +122,7 @@ account, then it will be added.
   not displayed, it may be useful for further analysis.
 
 
-## /api/post/stats
+## /post/stats
 
 __Required Inputs:__ jdata
 __HTTP Methods:__ POST
@@ -121,7 +138,7 @@ dictionary containing everything it's seen since last checkin.
 * __jdict:__ [JSON]: {'PROTO1': COUNT, 'PROTO2': COUNT}
 
 
-## /api/post/image
+## /post/image
 
 __Required Inputs:__ filetype, file
 __HTTP Methods:__ POST
@@ -141,7 +158,7 @@ database.
 * __file:__ [file]: The image file.
 
 
-## /api/account_total
+## /account_total
 
 __Required Inputs:__ NONE
 __HTTP Methods:__ GET
@@ -152,7 +169,7 @@ Returns the total number of accounts in the system.  This is intended to be disp
 in the footer of the account listing.
 
 
-## /api/accounts/NUM
+## /accounts/NUM
 
 __Required Inputs:__ NUM
 __HTTP Methods:__ GET
@@ -168,7 +185,7 @@ call the api with '/api/accounts/0' to get all IDs greater than or equal to 0.
 * __NUM:__ [integer]: The ID of the next account to get.
 
 
-## /api/images/TIMESTAMP
+## /images/TIMESTAMP
 
 __Required Inputs:__ TIMESTAMP
 __HTTP Methods:__ GET
@@ -184,7 +201,7 @@ the timestamp sent.  The timestamp is basic UNIX time.
   pull images from.  Any images with a timestamp newer than this will be returned.
 
 
-## /api/image/HASH
+## /image/HASH
 
 __Required Inputs:__ HASH
 __HTTP Methods:__ GET
@@ -198,7 +215,7 @@ Returns the Image file based on the Hash provided.
 * __HASH:__ [string:md5 hash]: The MD5 hash fo the image.
 
 
-## /api/stats
+## /stats
 
 __Required Inputs:__ NONE
 __HTTP Methods:__ GET
