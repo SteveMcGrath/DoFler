@@ -180,7 +180,7 @@ def recent_images(ts):
     return jsonify(list(db.images\
                           .find({'timestamp': {'$gt': int(ts)}}, 
                                 {'_id': 0, 'data': 0})\
-                          .sort('timestamp', -1).limit(200)))
+                          .sort('timestamp').limit(200)))
 
 
 @app.get('/image/<md5sum>')
