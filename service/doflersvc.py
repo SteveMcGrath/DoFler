@@ -177,9 +177,14 @@ def recent_images(ts):
     Returns up to the last 200 images that were captured since the timestamp
     referenced.
     '''
+    if ts == 0:
+        skippr = db.images.count() - 200
+    else:
+        skippr = 0
     return jsonify(list(db.images\
                           .find({'timestamp': {'$gt': int(ts)}}, 
                                 {'_id': 0, 'data': 0})\
+                          .skip(skippr)\
                           .sort('timestamp').limit(200)))
 
 
