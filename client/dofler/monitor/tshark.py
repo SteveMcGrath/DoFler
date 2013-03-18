@@ -9,7 +9,7 @@ class Parser(BaseParser):
     builder = True
     promisc = {True: '', False: '-p'}
     stanza = 'tshark'
-    cmd = 'tshark -T pdml -i {INTERFACE} {PROMISC} -R\'http.request.method == "POST"\' -S'
+    cmd = 'tshark -T pdml -i {INTERFACE} {PROMISC} -b filesize:1000 -b files:3 -R\'http.request.method == "POST"\' -S'
 
     def parse(self, line):
         # First thing we need to do is check to see if we are running
