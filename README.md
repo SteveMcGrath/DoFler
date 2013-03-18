@@ -8,7 +8,7 @@ The HTML page is simple page that uses Javascript and CSS to format the
 output so that it looks pleasing, and can auto-update.  The Javascript
 pulls the most recent data from the JSON api in the backend.
 
-![screenshot](http://bit.ly/Zrgv6c)
+![screenshot](http://f.cl.ly/items/071X1p3I1O0N1423073Z/Screen%20Shot%202013-03-14%20at%202.27.14%20PM.png)
 
 # How do I use it?
 Run code, drink, and be marry ;)
