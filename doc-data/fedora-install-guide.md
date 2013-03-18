@@ -18,8 +18,8 @@ All of these commands assume that you are running as root.
 9. Install Driftnet: `cp driftnet /usr/local/bin;cp driftnet.1 /usr/local/share/man/man1`
 10. Install Distribute (needed for pip): `curl http://python-distribute.org/distribute_setup.py | python`
 11. Install Pip: `curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python`
-12: Install dofler and dependencies: `pip install dofler`
-13: Adjust configuration settings as needed: `vi /etc/dofler/dofler.conf`
+12. Install dofler and dependencies: `pip install dofler`
+13. Adjust configuration settings as needed: `vi /etc/dofler/dofler.conf`
 
 ## Service/WebUI Installation
 
@@ -31,5 +31,6 @@ All of these commands assume that you are running as root.
 6. Startup Mongo: `service mongod start`
 7. Install Distribute (needed for pip): `curl http://python-distribute.org/distribute_setup.py | python`
 8. Install Pip: `curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python`
-9: Install dofler and dependencies: `pip install dofler numpy scipy`
-10: Adjust configuration settings as needed: `vi /etc/dofler/service.conf`
+9. Install numpy: `pip install numpy`
+9. Install dofler and dependencies: `pip install dofler scipy`
+10. Adjust configuration settings as needed: `vi /etc/dofler/service.conf`
