@@ -16,7 +16,7 @@ class Parser(tshark.Parser):
                             # to upload to the API and flush out the protos
                             # dictionary.
     interval = 60           # Number of seconds to wait to push to API.
-    cmd = 'tshark -T psml -i {INTERFACE} {PROMISC} -S -b filesize:10000 -b files:3 -w /tmp/tshark-stats.pcap'
+    cmd = 'tshark -T psml -i {INTERFACE} {PROMISC} -S -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap'
     # Example PSML Packet for reference.
     # <packet>
     # <section>216027</section>
