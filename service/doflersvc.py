@@ -183,6 +183,8 @@ def recent_images(ts):
     '''
     if ts == 0:
         skippr = db.images.count() - 200
+        if skipper < 0:
+            skipper = 0
     else:
         skippr = 0
     return jsonify(list(db.images\
