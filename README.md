@@ -42,10 +42,10 @@ __Client Only__
 * [osx_guide][Max OSX Installation Guide]
 * [wintel_guide][Windows Installation Guide (Server-only)]
 
-[fedora_guide]: https://github.com/stevemcgrath/dofler/doc-data/fedora-install-guide.md
-[debian_guide]: https://github.com/stevemcgrath/dofler/doc-data/debian-install-guide.md
-[osx_guide]: https://github.com/stevemcgrath/dofler/doc-data/osx-install-guide.md
-[wintel_guide]: https://github.com/stevemcgrath/dofler/doc-data/wintel-install-guide.md
+[fedora_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/fedora-install-guide.md
+[debian_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/debian-install-guide.md
+[osx_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/osx-install-guide.md
+[wintel_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/wintel-install-guide.md
 
 
 # ChangeLog
