@@ -40,7 +40,7 @@ function images(){
     $.getJSON(urlhost + '/images/' + image_ts, function(data){
         $.each(data, function(key, val){
             image_ts = val.timestamp;
-            if(!reset_images && $('img[src="/image/' + val.md5 + '"]').length  1){
+            if(!reset_images && $('img[src="/image/' + val.md5 + '"]').length < 1){
                 $("#images").prepend('<img class="dofler-img" src="' 
                                      + urlhost + '/image/' + val.md5 + '" />');
                 if($('.dofler-img').length > max_images){
