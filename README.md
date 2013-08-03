@@ -1,12 +1,5 @@
 # What is it?
-DoFler (Dashboard of Fail + DOPPLER) is a fully automated dashboard
-setup that can be easily distributed as needed.  A central dofler server
-acts as the aggregation point and also serves up the HTML page that people 
-can then view.
-
-The HTML page is simple page that uses Javascript and CSS to format the
-output so that it looks pleasing, and can auto-update.  The Javascript
-pulls the most recent data from the JSON api in the backend.
+DoflerLite is a stripped down version of the DoFler codebase and is designed to work with embedded systems, tablets, phones, etc.  The Stats engine was pulled out and the code optimized for SQLite.  This code is considered alpha quality at the moment and all bugfixes should be directed to the issue ticketing system here on github.
 
 ![screenshot](http://f.cl.ly/items/071X1p3I1O0N1423073Z/Screen%20Shot%202013-03-14%20at%202.27.14%20PM.png)
 
@@ -14,10 +7,7 @@ pulls the most recent data from the JSON api in the backend.
 Run code, drink, and be marry ;)
 
 # How do I install it?
-Installation can depend on how you would like to deploy dofler.  All
-early testing was done using both the client and server on the same
-host, however it was designed to split the two and have multiple
-clients running.
+pip install doflerlite
 
 ## Requirements
 
@@ -50,16 +40,6 @@ __Client Only__
 
 # ChangeLog
 
-* 0.3.0
-	* Complete Rewrite
-	* Now uses MongoDB as the backend instead of MySQL/SQLAlchemy
-	* Can now enable/disable certain views (images, stats, accounts) in WebUI
-	* WebUI now has a "porn reset" function as part of the API
-	* Dofler is now split into 2 packages, dofler and doflersvc
-	* Removed any client-side time dependencies
-* 0.2.0
-	* Updated WebUI so that it uses UTC Time instead of Local Time.
-	* Minor bugfixes
 * 0.1.0
 	* Initial Release
 
