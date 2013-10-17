@@ -33,12 +33,20 @@ def main_page(db):
     )
 
 
+@app.get('/static/<path:path>')
+def static_files(path):
+    return static_file(path, root='/usr/share/dofler/static')
+
+
 @app.get('/login')
 def login_page(db):
     '''
     Authentication Screen
     '''
-    return env.get_template('login.html').render()
+    return env.get_template('login.html').render(
+        auth=auth, 
+        status=monitor.status()
+    )
 
 
 @app.post('/login')
@@ -49,7 +57,11 @@ def login_post(db):
     if auth_login(request, db):
         redirect('/')
     else:
-        env.get_template('login.html').render(error='Authentication Failed')
+        env.get_template('login.html').render(
+            error='Authentication Failed',
+            auth=auth, 
+            status=monitor.status()
+        )
 
 
 @app.get('/settings')
@@ -57,7 +69,10 @@ def settings_page(db):
     '''
     Settings Page
     '''
-    return env.get_template('settings.html').render()
+    return env.get_template('settings.html').render(
+        auth=auth, 
+        status=monitor.status()
+    )
 
 
 @app.post('/settings')
@@ -73,7 +88,10 @@ def settings_post(db):
         return env.get_template('settings.html').render(note='Settings Updated')
     else:
         return env.get_template('settings.html').render(
-                            error='Must be Authenticated to Change Settings')
+            error='Must be Authenticated to Change Settings',
+            auth=auth, 
+            status=monitor.status()
+        )
 
 
 @app.get('/status')
@@ -82,7 +100,10 @@ def status_page(db):
     Parser Status Page. 
     '''
     return env.get_template('status.html').render(
-                            parsers=monitor.parser_status())
+        parsers=monitor.parser_status(),
+        auth=auth, 
+        status=monitor.status()
+    )
 
 
 @app.post('/stop')
@@ -93,11 +114,17 @@ def stop_parser(db):
     if auth(request, db):
         monitor.stop(request.forms.get('parser'))
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status())
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
     else:
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status(),
-                            error='Must be Authenticated to Stop Parsers')
+            error='Must be Authenticated to Stop Parsers',
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
 
 
 @app.post('/start')
@@ -108,11 +135,17 @@ def start_parser(db):
     if auth(request, db):
         monitor.start(request.forms.get('parser'))
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status())
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
     else:
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status(),
-                            error='Must be Authenticated to Start Parsers')
+            error='Must be Authenticated to Start Parsers'
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
 
 
 @app.post('/restart')
@@ -124,8 +157,14 @@ def restart_parser(db):
         monitor.stop(request.forms.get('parser'))
         monitor.start(request.forms.get('parser'))
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status())
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
     else:
         return env.get_template('status.html').render(
-                            parsers=monitor.parser_status(),
-                            error='Must be Authenticated to Restart Parsers')
+            error='Must be Authenticated to Restart Parsers',
+            parsers=monitor.parser_status(),
+            auth=auth, 
+            status=monitor.status()
+        )
