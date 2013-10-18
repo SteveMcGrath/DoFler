@@ -85,8 +85,8 @@ class Protocol(Base):
             if len(history) > minutes:
                 break
             if cache - item.timestamp > 60:
+                history.append([cache, count])
                 cache = item.timestamp
-                history.append(cache)
                 count = 0
             else:
                 count += item.count
@@ -119,3 +119,38 @@ class User(Base):
 
     def check(self, password):
         return self.password == md5hash(password):
+
+
+class Setting(Base):
+    __tablename__ = 'settings'
+    name = Column(Text, primary_key=True)
+    value = Column(Text)
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    @hybrid_property
+    def intvalue(self):
+        try:
+            return int(self.value)
+        except:
+            return self.value
+
+    @hybrid_property
+    def boolvalue(self):
+        try:
+            return bool(self.value)
+        except:
+            return self.value
+
+    @hybrid_property
+    def autovalue(self):
+        try:
+            return bool(self.value)
+        except:
+            try:
+                return int(self.value)
+            except:
+                return self.value
+    
