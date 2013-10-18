@@ -1,20 +1,20 @@
 from distutils.core import setup
 
 setup(
-    name='doflerlite',
-    version='0.1.0',
-    description='Dashboard of Fail - Lite Version',
+    name='dofler',
+    version='0.4',
+    description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
     url='https://github.com/SteveMcGrath/DoFler',
     packages=[
-        'doflerlite', 
-        'doflerlite.client', 
-        'doflerlite.client.monitor',
+        'dofler', 
+        'dofler.api', 
+        'dofler.parsers',
     ],
     entry_points={
         'console_scripts': [
-            'dofler-server = doflerlite.doflersvc:start',
+            'dofler = dofler.svc:startup',
             ]
     },
     install_requires=[
@@ -26,15 +26,26 @@ setup(
         'beautifulsoup',
         'pexpect',
         'MultipartPostHandler',
-        'pil',
     ],
     data_files=[
-        ('/etc/dofler', ['dofler-lite.conf',]),
-        ('/usr/share/dofler', ['static/jquery.js', 'static/dofler.js',
-                               'static/style.css', 'static/viewer.html'])
+        ('/usr/share/dofler/static', [
+            'static/jquery.min.js',
+            'static/jquery.flot.min.js',
+            'static/jquery.flot.time.min.js',
+            'static/style.css',
+        ]),
+        ('/usr/share/dofler/templates', [
+            'templates/base.html',
+            'templates/login.html',
+            'templates/main.html',
+            'templates/notifications.html',
+            'templates/settings.html',
+            'templates/status.html',
+            'templates/newuser.html',
+        ])
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
         'Natural Language :: English',
