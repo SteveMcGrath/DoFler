@@ -2,6 +2,8 @@ import multiprocessing
 import time
 import pexpect
 from dofler.log import log
+from dofler.db import Session
+from dofler.api.client import DoflerClient
 
 class BaseParser(multiprocessing.Process):
     '''
@@ -9,12 +11,20 @@ class BaseParser(multiprocessing.Process):
     are setting up some of the basic process management here so that we don't
     need to keep repeating it in all of the parser classes.
     '''
+    name = 'base'
     stop = False
 
-    def __init__(self, cmd, interface, api):
-        self.command = cmd.replace('{IF}', interface)
-        self.api = api
-
+    def __init__(self):
+        s = Session()
+        self.command = setting('%s_command' % self.name, s).value\
+                        .replace('{IF}', setting('listen_interface', s).value)
+        self.api = DoflerClient(
+            setting('server_host', s).value,
+            setting('server_port', s).intvalue,
+            setting('server_username', s).vaue,
+            setting('server_password', s).value,
+            setting('server_ssl', s).boolvalue,
+            setting('server_anonymize', s).boolvalue)
 
     def run(self):
         '''

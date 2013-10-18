@@ -74,18 +74,8 @@ def start(parser):
     if parser in spawned and spawned[parser].p.isalive():
         return False
     else:
-        s = Session()
-        interface = setting('listen_interface', s).value
-        command = setting('%s_command' % parser, s).value
-        host = setting('server_host', s).value
-        port = setting('server_port', s).intvalue
-        user = setting('server_username', s).vaue 
-        passwd = setting('server_password', s).value
-        ssl = setting('server_ssl', s).boolvalue
-        anon = setting('server_anonymize', s).boolvalue
         try:
-            api = DoflerClient(host, port, user, passwd, ssl, anon)
-            spawned[parser] = parsers[parser](command, interface, api)
+            spawned[parser] = parsers[parser]()
         except:
             return False
         else:

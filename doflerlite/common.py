@@ -17,21 +17,16 @@ _log_to_file = False
 log = logging.getLogger('DoFler')
 
 
-def log_to_console(self, level='info'):
+def log_to_console(self):
     '''
     Enables Console logging if not already enabled. 
-
-    :param level: The log level that is desired for the console.
-                  Valid values are: debug, info, warn, error, critical
-                  Default value is info.
-    :type level: str 
-    :return: None
-    '''  
-    if not _log_to_console:
+    '''
+    s = Session()
+    if not _log_to_console and setting('log_file', s).boolvalue:
         stderr = logging.StreamHandler()
         console_format = logging.Formatter('%(levelname)s %(message)s')
         stderr.setFormatter(console_format)
-        log.setLevel(_loglevels[config.get('Logging', 'level')])
+        log.setLevel(_loglevels[setting('log_console_level', s).value])
         log.addHandler(stderr)
         _log_to_console = True
 
@@ -39,22 +34,13 @@ def log_to_console(self, level='info'):
 def log_to_file(self, filename, level='debug'):
     '''
     Enables logging output to a file if not already enabled. 
-
-    :param filename: absolute path & filename for the logfile.
-    :param level: The log level that is desired for the console.
-                  Valid values are: debug, info, warn, error, critical
-                  Default value is info.
-
-    :type filename: str 
-    :type level: str 
-
-    :return: None
     '''
-    if not _log_to_file and setting('log_file', db).boolvalue:
-        hdlr = logging.FileHandler(filename)
+    s = Session()
+    if not _log_to_file and setting('log_file', s).boolvalue:
+        hdlr = logging.FileHandler(setting('log_file_path', s).value)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         hdlr.setFormatter(formatter)
-        log.setLevel(_loglevels[config.get('Logging', 'level')])
+        log.setLevel(_loglevels[setting('log_file_level', s).value])
         log.addHandler(hdlr)
         _log_to_fule = True
 
