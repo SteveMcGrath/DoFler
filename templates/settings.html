@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% include ['notifications.html', 'footer.html'] %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div id="ui-settings">
+	<form action="/ui/settings" method="post">
+	<table>
+		<tbody>
+			<tr>
+				<td class="header" colspan="2">
+					<h2>Central Server Settings</h2>
+					<p>
+						These settings only need to be adjusted if this sensor
+						needs to speak to a central server.  In most single-server
+						setups, there is no need to adjust these.
+					</p>
+				</th>
+			</tr>
+			<tr>
+				<td class="label">Server Host</td>
+				<td class="input"><input type="text" name="server_host" value="{{ server_host }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Server Port</td>
+				<td class="input"><input type="text" name="server_port" value="{{ server_port }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Server SSL</td>
+				<td class="input"><input type="checkbox" name="server_ssl" {% if server_ssl %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Server Username</td>
+				<td class="input"><input type="text" name="server_username" value="{{ server_username }}" /></td> 
+			</tr>
+			<tr>
+				<td class="label">Server Password</td>
+				<td class="input"><input type="pasword" name="server_password" value="1234567890" /></td>
+			</tr>
+			<tr>
+				<td class="label">Anonymize Data<small><p>This setting will anonymize the account passwords if set.</p></small></td>
+				<td class="input"><input type="checkbox" name="server_anonymize" {% if server_anonymize %}checked{% endif %} /></td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr>
+				<td class="header" colspan="2">
+					<h2>API Settings</h2>
+					<p>
+						These settings pertain to the back-end API and this WebUI.
+						These only need to be adjusted if you plan on exposing the 
+						API &amp; WebUI to the network.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">API Address</td>
+				<td class="input"><input type="text" name="api_host" value="{{ api_host }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">API Port</td>
+				<td class="input"><input type="text" name="api_port" value="{{ api_port }}" /></td> 
+			</tr>
+			<tr>
+				<td class="label">API App Server</td>
+				<td class="input"><input type="text" name="api_app_server" value="{{ api_app_server }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">API SSL</td>
+				<td class="input"><input type="checkbox" name="api_ssl" {% if api_ssl %}checked{% endif %} /></td>
+			</tr> 
+			<tr>
+				<td class="label">API Debugging</td>
+				<td class="input"><input type="checkbox" name="api_debug" {% if api_debug %}checked{% endif %} /></td>
+			</tr> 
+		</tbody>
+		<tbody>
+			<tr>
+				<td class="header" colspan="2">
+					<h2>Logging</h2>
+					<p>
+						These settings control how DoFler handles logging.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Log to Console</td> 
+				<td class="input"><input type="checkbox" name="log_console" {% if log_console %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Console Log Level</td>
+				<td class="input"><input type="text" name="log_console_level" value="{{ log_console_level }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Log to File</td>
+				<td class="input"><input type="checkbox" name="log_file" {% if log_file %}checked{% endif %} /></td> 
+			</tr>
+			<tr>
+				<td class="label">Log File Location</td>
+				<td class="input"><input type="text" name="log_file_path" value="{{ log_file_path }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Logfile Log Level</td>
+				<td class="input"><input type="text" name="log_file_level" value="{{ log_file_level }}" /></td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr>
+				<td class="header" colspan="2">
+					<h2>WebUI Settings</h2>
+					<p>
+						These settings relate to how the WebUI behaves.  Things like the 
+						UI refresh times &amp; what items to display.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Display Image Results</td>
+				<td class="input"><input type="checkbox" name="web_images" {% if web_images %}checked{% endif %} /></td> 
+			</tr>
+			<tr>
+				<td class="label">Image Update Delay</td>
+				<td class="input"><input type="text" name="web_image_delay" value="{{ web_image_delay }}" /></td> 
+			</tr>
+			<tr>
+				<td class="label">Display Captured Accounts</td>
+				<td class="input"><input type="checkbox" name="web_accounts" {% if web_accounts %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Account Update Delay</td>
+				<td class="input"><input type="text" name="web_account_delay" value="{{ web_account_delay }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Display Protocol Trending</td>
+				<td class="input"><input type="checkbox" name="web_stats" {% if web_stats %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Protocol Trending Update Delay</td>
+				<td class="input"><input type="text" name="web_stat_delay" value="{{ web_stat_delay }}" /></td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr>
+				<td class="header" colspan="2">
+					<h2>Parser Settings</h2>
+					<p>
+						Parser related settings, such as which parsers are enabled,
+						should we autostart the enabled parsers, and what are the actual
+						commands being run to spawn the appropriate app.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Autostart Enabled Parsers</td>
+				<td class="input"><input type="checkbox" name="autostart" {% if autostart %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Account Parser Enabled</td>
+				<td class="input"><input type="checkbox" name="ettercap_enabled" {% if ettercap_enabled %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Account Parser Command</td>
+				<td class="input"><input type="text" name="ettercap_command" value="{{ ettercap_command }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Images Parser Enabled</td>
+				<td class="input"><input type="checkbox" name="driftnet_enabled" {% if driftnet_enabled %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Images Parser Command</td>
+				<td class="input"><input type="text" name="driftnet_command" value="{{ driftnet_command }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Stats Parser Enabled</td>
+				<td class="input"><input type="checkbox" name="tshark_enabled" {% if tshark_enabled %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td class="label">Stats Parser Command</td>
+				<td class="input"><input type="text" name="tshark_command" value="{{ tshark_command }}" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<input type="submit" value="Save Settings" />
+	</form>
+</div>
+						
+{% endblock %}

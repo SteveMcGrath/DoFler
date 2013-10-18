@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% include ['notifications.html', 'footer.html'] %}
+{% block title %}Viewer{% endblock %}
+{% block content %}
+
+{% if web_images: %}
+<div id="ui-images">
+	<script language="javascript">
+	var image_ts = 0;
+	var max_images = {{ web_images_max }};
+	window.setInterval(function(){
+		$.getJSON('/get/reset/images', function(reset){
+			if (reset){
+				$('.dofler-img').remove();
+			};
+			$.getJSON('/get/images/' + image_ts, function(data){
+				if ($('img[src="/get/image/' + val.md5sum + '"]').length < 1){
+					$('#ui-images').prepend('<img class="dofler-img" src="/get/image/' + val.md5sum + '" />');
+					if ($('.dofler-img').length > max_images){
+						$('.dofler-img:last').remove();
+					};
+				};
+			});
+		});
+	}, {{ web_images_delay * 1000 }});
+	</script>
+</div>
+{% endif %}
+
+{% if web_accounts %}
+<div id="ui-accounts">
+	<script language="javascript">
+	window.setInterval(function(){
+		max_accounts = {{ web_accounts_max }};
+		$.getJSON('/get/reset/accounts', function(reset){
+			if (reset){
+				$('.dofler-account').remove();
+			};
+			$.getJSON('/get/accounts/' + account_id, function(data){
+				$.each(data, function(key, val){
+					account_id = val.id;
+					$('#accounts-table tbody').prepend('<tr class="dofler-account">' + '<td>' + val.info.substr(0,28) + '</td><td>' + val.proto + '</td><td>' + val.username + '</td><td>' + val.password.substr(0,15) + '</td></tr>');
+					if ($('.dofler-account').length > max_accounts){
+						$('.dofler-account:last').remove();
+					};
+				});
+			});
+		});
+	}, {{ web_accounts_delay * 1000 }});
+	</script>
+</div>
+{% endif %}
+
+{% if web_stats %}
+<div id="ui-stats">
+	<script language="javascript">
+	/* The Stats JS calls go here */
+	</script>
+</div>
+{% endif %}
+{% endblock %}
