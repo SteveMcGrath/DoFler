@@ -1,7 +1,8 @@
 from hashlib import md5
 import logging
 import json
-from dofler.db import Session, User
+from dofler.models import Setting, User
+from dofler.db import Session
 
 
 _loglevels = {
@@ -49,7 +50,7 @@ def log_to_file(self, filename, level='debug'):
 
     :return: None
     '''
-    if not _log_to_file:
+    if not _log_to_file and setting('log_file', db).boolvalue:
         hdlr = logging.FileHandler(filename)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         hdlr.setFormatter(formatter)
@@ -156,3 +157,19 @@ def auth_login(request, db):
             if user.check(password):
                 loggedin = True
     return loggedin
+
+
+def setting(name, s):
+    '''
+    Retreives the specified setting object from the database.  By abstracting
+    this out, we can save a lot of menotinous code.
+
+    :param name: Setting name
+    :param s: Session object
+
+    :type name: str 
+    :type s: Session Object 
+
+    :return: Setting Object
+    '''
+    return s.query(Setting).filter_by(name).one()

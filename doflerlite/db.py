@@ -26,6 +26,7 @@ def initialize():
         s.add(Setting('api_debug', '0'))
         s.add(Setting('api_port', '8080'))
         s.add(Setting('api_host', '127.0.0.1'))
+        s.add(Setting('api_ssl', '0'))
         s.add(Setting('api_app_server', 'paste'))
         s.add(Setting('server_host', '127.0.0.1'))
         s.add(Setting('server_port', '8080'))
@@ -49,4 +50,3 @@ def initialize():
 
 
 initialize()
-

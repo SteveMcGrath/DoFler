@@ -2,7 +2,7 @@ import time
 from dofler.parsers import ettercap, tshark, driftnet
 from dofler.log import log
 from dofler.db import Session
-from dofler.models import Setting
+from dofler.common import setting
 from dofler.api.client import DoflerClient
 
 
@@ -12,6 +12,21 @@ parsers = {
     'driftnet': driftnet.Parser,
 }
 spawned = {}
+
+
+def autostart():
+    '''
+    Automatically starts up the parsers that are enabled if autostart is
+    turned on. 
+    '''
+    s = Session()
+    if setting('autostart', s).boolvalue:
+        if setting('driftnet_enabled').boolvalue:
+            start('driftnet')
+        if setting('ettercap_enabled').boolvalue:
+            start('ettercap')
+        if setting('tshark_enabled').boolvalue:
+            start('tshark')
 
 
 def status():
@@ -60,14 +75,14 @@ def start(parser):
         return False
     else:
         s = Session()
-        interface = s.query(Setting).filter_by(name='listen_interface').value
-        command = s.query(Setting).filter_by(name='%s_command' % parser).value
-        host = s.query(Setting).filter_by(name='server_host').value
-        port = s.query(Setting).filter_by(name='server_port').intvalue
-        user = s.query(Setting).filter_by(name='server_username').vaue 
-        passwd = s.query(Setting).filter_by(name='server_password').value
-        ssl = s.query(Setting).filter_by(name='server_ssl').boolvalue
-        anon = s.query(Setting).filter_by(name='server_anonymize').boolvalue
+        interface = setting('listen_interface', s).value
+        command = setting('%s_command' % parser, s).value
+        host = setting('server_host', s).value
+        port = setting('server_port', s).intvalue
+        user = setting('server_username', s).vaue 
+        passwd = setting('server_password', s).value
+        ssl = setting('server_ssl', s).boolvalue
+        anon = setting('server_anonymize', s).boolvalue
         try:
             api = DoflerClient(host, port, user, passwd, ssl, anon)
             spawned[parser] = parsers[parser](command, interface, api)
