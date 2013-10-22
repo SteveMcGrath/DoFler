@@ -49,15 +49,30 @@ body{
 /* Status Page */
 
 .ui-parser {
+  margin-top: 25px;
   height: 20px;
   padding: 10px;
+  padding-bottom: 25px;
   margin: 5px;
+  width: 100%;
   vertical-align: center;
+  border-bottom-width: thin;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
 }
 
 .ui-parser span {
   width: 200px;
   text-align: right;
+}
+
+.ui-parser .ui-button {
+  float: right;
+  margin-right: 10px;
+}
+
+#ui-parsers {
+  margin-top: 50px;
 }
 
 /* Link Buttons */
@@ -136,9 +151,7 @@ body{
 /* Settings Page */
 
 #ui-settings {
-  left: auto;
-  right: auto;
-  width: 550px;
+  width: 100%;
 }
 
 #ui-settings .label {
@@ -146,7 +159,19 @@ body{
 }
 
 #ui-settings tr {
-  border-bottom: 1px solid;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-bottom-color: grey;
+}
+
+#ui-settings .label {
+  width: 300px;
+}
+
+#ui-settings input[type="text"] {
+  width: 100%;
 }
 
 /* Login & New User Pages */
@@ -246,7 +271,7 @@ body{
 
 #ui-stats {
   position: fixed;
-  width: 850px;
+  width: 70%;
   height: 200px;
   bottom: 0px;
   left: 0px;
@@ -262,13 +287,13 @@ body{
 }
 
 #proto-trend {
-  width: 800px;
+  width: 90%;
   height: 100%;
   float: right;
 }
 
 #proto-legend {
-  width: 45px;
+  width: 10%;
   height: 100%;
   float: left;
   background-color: #000000;
