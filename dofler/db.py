@@ -7,17 +7,18 @@ import time
 
 engine = create_engine(config.config.get('Database', 'db'), echo=False)
 Session = sessionmaker(bind=engine)
-
+setting_engine = create_engine(config.config.get('Database', 'setting_db'))
+SettingSession = sessionmaker(bind=setting_engine)
 
 def initialize():
     Account.metadata.create_all(engine)
     Image.metadata.create_all(engine)
     Stat.metadata.create_all(engine)
-    User.metadata.create_all(engine)
-    Setting.metadata.create_all(engine)
-    s = Session()
+    User.metadata.create_all(setting_engine)
+    Setting.metadata.create_all(setting_engine)
+    s = SettingSession()
     if s.query(User).count() < 1:
-        s.add(User('admin', '5f4dcc3b5aa765d61d8327deb882cf99'))
+        s.add(User('admin', 'password'))
         s.add(Setting('log_console', '1'))
         s.add(Setting('log_console_level', 'info'))
         s.add(Setting('log_file', '0'))
@@ -49,7 +50,7 @@ def initialize():
         s.add(Setting('driftnet_enabled', '1'))
         s.add(Setting('driftnet_command', 'driftnet -ai {IF} -d /tmp'))
         s.add(Setting('tshark_enabled', '1'))
-        s.add(Setting('tshark_command', 'tshark -i {IF} -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap'))
+        s.add(Setting('tshark_command', 'tshark -T psml -Sli {IF} -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap'))
         s.add(Setting('cookie_key', str(md5hash(time.time()))))
     s.commit()
     s.close()
