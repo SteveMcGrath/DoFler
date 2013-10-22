@@ -37,7 +37,7 @@ class Account(Base):
 
 class Image(Base):
     __tablename__ = 'images'
-    md5sum = Column(Text, primary_key=True)
+    md5sum = Column(String(32), primary_key=True)
     timestamp = Column(Integer)
     data = Column(LargeBinary)
     filetype = Column(Text)
@@ -75,8 +75,8 @@ class Stat(Base):
 
 class User(Base):
     __tablename__ = 'users'
-    name = Column(Text, primary_key=True)
-    password = Column(Text)
+    name = Column(String(32), primary_key=True)
+    password = Column(String(32))
 
     def __init__(self, username, password):
         self.name = username
@@ -88,7 +88,7 @@ class User(Base):
 
 class Setting(Base):
     __tablename__ = 'settings'
-    name = Column(Text, primary_key=True)
+    name = Column(String(128), primary_key=True)
     value = Column(Text)
 
     def __init__(self, name, value):
