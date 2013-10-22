@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% include ['notifications.html', 'footer.html'] %}
 {% block title %}Settings{% endblock %}
+{% block navbar %}<li><a href="/">Return</a></li> | {% endblock %}
 {% block content %}
 <div id="ui-settings">
 	<form action="/ui/settings" method="post">
@@ -26,7 +26,12 @@
 			</tr>
 			<tr>
 				<td class="label">Server SSL</td>
-				<td class="input"><input type="checkbox" name="server_ssl" {% if server_ssl %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="server_ssl">
+						<option value="0" {% if server_ssl == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if server_ssl == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Server Username</td>
@@ -34,11 +39,16 @@
 			</tr>
 			<tr>
 				<td class="label">Server Password</td>
-				<td class="input"><input type="pasword" name="server_password" value="1234567890" /></td>
+				<td class="input"><input type="password" name="server_password" value="1234567890" /></td>
 			</tr>
 			<tr>
 				<td class="label">Anonymize Data<small><p>This setting will anonymize the account passwords if set.</p></small></td>
-				<td class="input"><input type="checkbox" name="server_anonymize" {% if server_anonymize %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="server_anonymize">
+						<option value="0" {% if server_anonymize == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if server_anonymize == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 		</tbody>
 		<tbody>
@@ -65,12 +75,13 @@
 				<td class="input"><input type="text" name="api_app_server" value="{{ api_app_server }}" /></td>
 			</tr>
 			<tr>
-				<td class="label">API SSL</td>
-				<td class="input"><input type="checkbox" name="api_ssl" {% if api_ssl %}checked{% endif %} /></td>
-			</tr> 
-			<tr>
 				<td class="label">API Debugging</td>
-				<td class="input"><input type="checkbox" name="api_debug" {% if api_debug %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="api_debug">
+						<option value="0" {% if api_debug == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if api_debug == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr> 
 		</tbody>
 		<tbody>
@@ -84,15 +95,33 @@
 			</tr>
 			<tr>
 				<td class="label">Log to Console</td> 
-				<td class="input"><input type="checkbox" name="log_console" {% if log_console %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="log_console">
+						<option value="0" {% if log_console == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if log_console == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Console Log Level</td>
-				<td class="input"><input type="text" name="log_console_level" value="{{ log_console_level }}" /></td>
+				<td class="input">
+					<select name="log_console_level">
+						<option value="debug" {% if log_console_level == 'debug' %}selected{% endif %} />DEBUG</option>
+						<option value="info" {% if log_console_level == 'info' %}selected{% endif %} />INFO</option>
+						<option value="warn" {% if log_console_level == 'warn' %}selected{% endif %} />WARN</option>
+						<option value="error" {% if log_console_level == 'error' %}selected{% endif %} />ERROR</option>
+						<option value="critical" {% if log_console_level == 'critical' %}selected{% endif %} />CRITICAL</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Log to File</td>
-				<td class="input"><input type="checkbox" name="log_file" {% if log_file %}checked{% endif %} /></td> 
+				<td class="input">
+					<select name="log_file">
+						<option value="0" {% if log_file == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if log_file == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Log File Location</td>
@@ -100,7 +129,15 @@
 			</tr>
 			<tr>
 				<td class="label">Logfile Log Level</td>
-				<td class="input"><input type="text" name="log_file_level" value="{{ log_file_level }}" /></td>
+				<td class="input">
+					<select name="log_file_level">
+						<option value="debug" {% if log_file_level == 'debug' %}selected{% endif %} />DEBUG</option>
+						<option value="info" {% if log_file_level == 'info' %}selected{% endif %} />INFO</option>
+						<option value="warn" {% if log_file_level == 'warn' %}selected{% endif %} />WARN</option>
+						<option value="error" {% if log_file_level == 'error' %}selected{% endif %} />ERROR</option>
+						<option value="critical" {% if log_file_level == 'critical' %}selected{% endif %} />CRITICAL</option>
+					</select>
+				</td>
 			</tr>
 		</tbody>
 		<tbody>
@@ -115,27 +152,54 @@
 			</tr>
 			<tr>
 				<td class="label">Display Image Results</td>
-				<td class="input"><input type="checkbox" name="web_images" {% if web_images %}checked{% endif %} /></td> 
+				<td class="input">
+					<select name="web_images">
+						<option value="0" {% if web_images == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if web_images == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Image Update Delay</td>
 				<td class="input"><input type="text" name="web_image_delay" value="{{ web_image_delay }}" /></td> 
 			</tr>
 			<tr>
+				<td class="label">Max Images Onscreen</td>
+				<td class="input"><input type="text" name="web_image_max" value="{{ web_image_max }}" /></td>
+			</tr>
+			<tr>
 				<td class="label">Display Captured Accounts</td>
-				<td class="input"><input type="checkbox" name="web_accounts" {% if web_accounts %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="web_accounts">
+						<option value="0" {% if web_accounts == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if web_accounts == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Account Update Delay</td>
 				<td class="input"><input type="text" name="web_account_delay" value="{{ web_account_delay }}" /></td>
 			</tr>
 			<tr>
+				<td class="label">Max Accounts Onscreen</td>
+				<td class="input"><input type="text" name="web_account_max" value="{{ web_account_max }}" /></td>
+			</tr>
+			<tr>
 				<td class="label">Display Protocol Trending</td>
-				<td class="input"><input type="checkbox" name="web_stats" {% if web_stats %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="web_stats">
+						<option value="0" {% if web_stats == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if web_stats == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Protocol Trending Update Delay</td>
 				<td class="input"><input type="text" name="web_stat_delay" value="{{ web_stat_delay }}" /></td>
+			</tr>
+			<tr>
+				<td class="label">Max Protocols Onscreen</td>
+				<td class="input"><input type="text" name="web_stat_max" value="{{ web_stat_max }}" /></td>
 			</tr>
 		</tbody>
 		<tbody>
@@ -151,11 +215,25 @@
 			</tr>
 			<tr>
 				<td class="label">Autostart Enabled Parsers</td>
-				<td class="input"><input type="checkbox" name="autostart" {% if autostart %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="autostart">
+						<option value="0" {% if autostart == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if autostart == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Listening Interface</td>
+				<td class="input"><input type="text" name="listen_interface" value="{{ listen_interface }}" /></td> 
 			</tr>
 			<tr>
 				<td class="label">Account Parser Enabled</td>
-				<td class="input"><input type="checkbox" name="ettercap_enabled" {% if ettercap_enabled %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="ettercap_enabled">
+						<option value="0" {% if ettercap_enabled == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if ettercap_enabled == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Account Parser Command</td>
@@ -163,7 +241,12 @@
 			</tr>
 			<tr>
 				<td class="label">Images Parser Enabled</td>
-				<td class="input"><input type="checkbox" name="driftnet_enabled" {% if driftnet_enabled %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="driftnet_enabled">
+						<option value="0" {% if driftnet_enabled == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if driftnet_enabled == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Images Parser Command</td>
@@ -171,7 +254,12 @@
 			</tr>
 			<tr>
 				<td class="label">Stats Parser Enabled</td>
-				<td class="input"><input type="checkbox" name="tshark_enabled" {% if tshark_enabled %}checked{% endif %} /></td>
+				<td class="input">
+					<select name="tshark_enabled">
+						<option value="0" {% if tshark_enabled == 0 %}selected{% endif %} />Disabled</option>
+						<option value="1" {% if tshark_enabled == 1 %}selected{% endif %} />Enabled</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Stats Parser Command</td>

@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
-{% block navbar %}<li><a href="/">Return</a></li> | {% endblock %}
+{% block title %}New User{% endblock %}
 {% block content %}
+<div id="return-to-main"><a href="/">Return to Main Screen</a></div>
 <div id="login">
-	<form action="/ui/login" method="post">
-		<h2>DoFler Login</h2>
-		<small><p>The Dashboard of Fail</p></small>
+	<form action="/ui/new" method="post">
+		<h2>New User Creation</h2>
 		<table>
 			<tr>
 				<td class="label">Username</td>

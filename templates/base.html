@@ -8,13 +8,33 @@
 	<script type="text/javascript" src="/ui/static/jquery.min.js"></script>
 	<script type="text/javascript" src="/ui/static/jquery.flot.min.js"></script>
 	<script type="text/javascript" src="/ui/static/jquery.flot.time.min.js"></script>
+	{% block stylesheets %}{% endblock %}
 	<title>DoFler Sensor - {%block title %}{% endblock %}</title>
 	{% endblock %}
 </head>
 <body>
-	<div id="notifications">{% block notifications %}{% endblock %}</div>
-	<div id="errors">{% block errors %}{% endblock %}</div>
 	<div id="content">{% block content %}{% endblock %}</div>
-	<dif id="footer">{% block footer %}{% endblock %}</div>
+	<div id="notifications">
+		{% if note %}
+		<div class="message">{{ note }}</div>
+		{% endif %}
+	</div>
+	<div id="errors">
+		{% if error %}
+		<div class="message">{{ error }}</div>
+		{% endif %}
+	</div>
+	<div id="navbar">
+		<ul>
+			{% block navbar %}{% endblock %}
+			{% if auth %}
+			<li><a href="/ui/settings">Settings</a></li> |
+			<li><a {% if status %}id="status-ok"{% else %}class="status-error"{% endif %} href="/ui/status">Parsers</a></li> |
+			<li><a href="/ui/logout">Logout</a></li>
+			{% else %}
+			<li><a href="/ui/login">Login</a></li>
+			{% endif %}
+		</ul>
+	</div>
 </body>
 </html>
