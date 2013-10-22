@@ -1,10 +1,10 @@
-from bottle import (Bottle, request, response, redirect, debug, run, 
-                    static_file, error)
+from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
+from sqlalchemy import desc
 from bottle.ext import sqlalchemy
 from dofler.common import jsonify
 from dofler.models import *
-from dofler.db import engine, Session
+from dofler.db import engine, Base
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -12,6 +12,12 @@ plugin = sqlalchemy.Plugin(
     commit=True, use_kwargs=False
 )
 app.install(plugin)
+
+@app.hook('before_request')
+def set_json_header():
+    response.set_header('Content-Type', 'application/json')
+    response.set_header('Access-Control-Allow-Origin', '*')
+
 
 @app.get('/images/<ts:int>')
 def recent_images(ts, db):
@@ -51,7 +57,7 @@ def account_total(db):
     return jsonify(db.query(Account).count())
 
 
-@app.get('/accounts/<int:oid>')
+@app.get('/accounts/<oid:int>')
 def accounts(oid, db):
     '''
     Returns any accounts that are newer than the oid specified.
@@ -59,18 +65,40 @@ def accounts(oid, db):
     if oid is not '0':
         items = db.query(Account).filter(Account.id > oid).all()
     else:
-        items = db.query(Account).all()
+        items = db.query(Account).limit(setting('web_image_max').intvalue).all()
     return jsonify([i.dump() for i in items])
 
 
-@app.get('/stats/<int:limit>')
+@app.get('/stats/<limit:int>')
 def stats(limit, db):
     '''
     Returns the aggregate protocol stats. 
     '''
-    data = {}
-    protos = db.query(Protocol).order_by(Protocol.total).limit(limit).all()
+    data = []
+    protos = db.query(Stat.proto, func.sum(Stat.count))\
+                .group_by(Stat.proto)\
+                .order_by(desc(func.sum(Stat.count)))\
+                .limit(limit).all()
     for proto in protos:
-        data[proto.name] = proto.history(180)
+        data.append({
+            'label': proto[0],
+            'data': [[a[0] * 1000, a[1]] for a in db.query(Stat.timestamp, func.sum(Stat.count))\
+                                            .filter(Stat.proto == proto[0])\
+                                            .group_by(Stat.timestamp)\
+                                            .order_by(desc(Stat.timestamp))\
+                                            .limit(180)\
+                                            .all()]
+        })
     return jsonify(data)
 
+
+@app.get('/reset/<datatype>')
+def reset(datatype, db):
+    '''
+    Returns whether a reset code has been sent in the last 30 seconds for the
+    specified type of data. 
+    '''
+    check = db.query(Reset).filter(Reset.type == datatype,
+                    Reset.timestamp > int(time.time()) - 30).count()
+    if check > 0: return True
+    return False

@@ -1,10 +1,8 @@
 import urllib2
 import time
-import MultipartPostHandler
-from urllib import urlencode
-from cookielib import CookieJar
-from dofler.log import log 
-from dofler.common import md5hash
+import os
+import requests
+from dofler.common import md5hash, log
 
 class DoflerClient(object):
     '''
@@ -17,13 +15,11 @@ class DoflerClient(object):
         self.ssl = ssl
         self.anonymize = anon
         self.username = username
-        self.jar = CookieJar()
-        self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),
-                            MultipartPostHandler.MultipartPostHandler())
+        self.opener = requests.Session()
         self.login(username, password)
 
 
-    def call(url, data):
+    def call(self, url, data, files={}):
         '''
         This is the core function that calls the API.  all API calls route
         through here.
@@ -40,8 +36,9 @@ class DoflerClient(object):
             True: 'https://',
             False: 'http://'
         }
-        return self.opener.open('%s%s:%s%s' % (ssl[self.ssl], self.host, 
-                                               self.port, url, data))
+        location = '%s%s:%s%s' % (ssl[self.ssl], self.host, self.port, url)
+        log.debug('CLIENT: %s' % location)
+        return self.opener.post(location, data=data, files=files)
 
 
     def login(self, username, password):
@@ -56,13 +53,10 @@ class DoflerClient(object):
 
         :return: None
         '''
-        date = str(time.time())
-        data = {
-            'timestamp': date,
+        self.call('/auth/login', {
             'username': username,
-            'md5hash': md5hash(username, date, password)
-        }
-        self.call('/auth/login', urlencode(data))
+            'password': password
+        })
 
 
     def account(self, username, password, info, proto, parser):
@@ -90,16 +84,16 @@ class DoflerClient(object):
         if self.anonymize:
             if len(password) >= 3:
                 password = '%s%s' % (password[:3], '*' * (len(password) - 3))
-        self.call('/post/account', urlencode({
+        self.call('/post/account', {
             'username': username,
             'password': password,
             'info': info,
             'proto': proto,
             'parser': parser,
-        }))
+        })
 
 
-    def image(self, fobj, filename):
+    def image(self, filename):
         '''
         Image API Call.  Uploads the image into the database.
 
@@ -111,15 +105,15 @@ class DoflerClient(object):
 
         :return: None
         '''
-        try:
-            self.call('/post/image', {'file': fobj, 
-                'filetype': filename.split('.')[-1]})
-        except:
-            try:
-                log.error('API: Upload Failed. %s=%skb' % (filename, 
-                                            os.path.getsize(filename) / 1024)))
-            except:
-                log.error('API: %s doesnt exist' % filename)
+        if os.path.exists(filename):
+            #try:
+                self.call('/post/image', {'filetype': filename.split('.')[-1]},
+                                         {'file': open(filename, 'rb')})
+            #except:
+            #    log.error('API: Upload Failed. %s=%skb' % (filename, 
+            #                                os.path.getsize(filename) / 1024))
+        else:
+            log.error('API: %s doesnt exist' % filename)
 
 
     def stat(self, proto, count):
@@ -135,8 +129,11 @@ class DoflerClient(object):
 
         :return: None
         '''
-        self.call('/post/stats', urlencode({'proto': proto, 'count': count, 
-                                            'username': self.username}))
+        self.call('/post/stat', {
+            'proto': proto, 
+            'count': count, 
+            'username': self.username
+        })
 
 
     def reset(self, env):
@@ -148,4 +145,4 @@ class DoflerClient(object):
         :type env: str 
         :return: None 
         '''
-        self.call('/post/reset/%s' % env, None)
+        self.call('/post/reset', {'type': env})

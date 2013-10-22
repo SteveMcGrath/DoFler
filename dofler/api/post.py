@@ -1,10 +1,9 @@
-from bottle import (Bottle, request, response, redirect, debug, run, 
-                    static_file, error)
+from bottle import Bottle, request, response, redirect, static_file, error
 from bottle.ext import sqlalchemy
 from dofler.api.auth import auth
 from dofler.common import md5hash
 from dofler.models import *
-from dofler.db import engine, Session
+from dofler.db import engine, Base
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -17,12 +16,17 @@ app.install(plugin)
 @app.post('/account')
 def new_account(db):
     '''Generates a new account into the database if it doesnt already exist.'''
-    if auth(request, db):
-        username = request.forms.get('username'),
-        password = request.forms.get('password'),
-        info = request.forms.get('info'),
-        proto = request.forms.get('proto'),
-        parser = request.forms.get('parser'),
+    if auth(request):
+        username = str(request.forms.get('username')),
+        password = str(request.forms.get('password')),
+        info = str(request.forms.get('info')),
+        proto = str(request.forms.get('proto')),
+        parser = str(request.forms.get('parser')),
+        if isinstance(username, tuple): username = username[0]
+        if isinstance(password, tuple): password = password[0]
+        if isinstance(info, tuple): info = info[0]
+        if isinstance(proto, tuple): proto = proto[0]
+        if isinstance(parser, tuple): parser = parser[0]
         try:
             account = db.query(Account).filter_by(username=username,
                                                  proto=proto,
@@ -36,7 +40,7 @@ def new_account(db):
 @app.post('/image')
 def upload_image(db):
     '''Updates and/or creates a image object into the database.'''
-    if auth(request, db):
+    if auth(request):
         filedata = request.files.file.file.read()
         md5sum = md5hash(filedata)
         try:
@@ -46,7 +50,7 @@ def upload_image(db):
             db.merge(image)
         except:
             image = Image(int(time.time()), 
-                          bleach.clean(request.forms.get('filetype')),
+                          request.forms.get('filetype'),
                           filedata
             )
             db.add(image)
@@ -55,11 +59,19 @@ def upload_image(db):
 @app.post('/stat')
 def upload_stat(db):
     '''Uploads new statistics to the database.'''
-    if auth(request, db):
-        sensor = request.forms.get('sensor')
+    if auth(request):
+        username = request.forms.get('username')
         proto = request.forms.get('proto')
         count = int(request.forms.get('count'))
-        stat = Stat(sensor, proto, count)
-        if db.query(Protocol).filter_by(name=proto).count() < 1:
-            db.add(Protocol(proto))
-        db.add(stat)
+        if isinstance(username, tuple): sensor = sensor[0]
+        if isinstance(proto, tuple): proto = proto[0]
+        db.add(Stat(proto, username, count))
+
+
+@app.post('/reset')
+def push_reset(db):
+    '''
+    Pushes a reset into the DB to clear out any undesirable data from the UI. 
+    '''
+    if auth(request):
+        db.add(Reset(request.forms.get('type')))

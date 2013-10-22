@@ -1,8 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Table, Column, Integer, Text, LargeBinary
+from sqlalchemy import Table, Column, Integer, Text, LargeBinary, ForeignKey, String
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import select, func
 import time
+from dofler.md5 import md5hash
 
 Base = declarative_base()
 
@@ -24,6 +26,7 @@ class Account(Base):
 
     def dump(self):
         return {
+            'id': self.id,
             'username': self.username,
             'password': self.password,
             'info': self.info,
@@ -55,57 +58,19 @@ class Image(Base):
         }
 
 
-class Protocol(Base):
-    __tablename__ = 'protocols'
-    name = Column(Text, primary_key=True)
-    stats = relationship('Stat', backref='protocol', 
-                         order_by='desc(Stat.timestamp)')
-
-    def __init__(self, name):
-        self.name = name
-
-    @hybrid_property
-    def total(self):
-        '''
-        Returns the total number of packets for the given protocol. 
-        '''
-        count = 0
-        for item in self.stats:
-            count += item.count
-        return count
-
-    def history(self, minutes):
-        '''
-        Returns the normalized protocol trend for the number of minutes passed.
-        '''
-        history = []
-        cache = int(time.time())
-        count = 0
-        for item in self.stats:
-            if len(history) > minutes:
-                break
-            if cache - item.timestamp > 60:
-                history.append([cache, count])
-                cache = item.timestamp
-                count = 0
-            else:
-                count += item.count
-        return history
-
-
 class Stat(Base):
     __tablename__ = 'stats'
     id = Column(Integer, primary_key=True)
-    protocol = Column(Text, ForeignKey('protocols.name'))
+    proto = Column(Text)
     count = Column(Integer)
     timestamp = Column(Integer)
-    sensor = Column(Text)
+    user = Column(Text)
 
-    def __init__(self, protocol, sensor, count):
-        self.protocol = protocol
+    def __init__(self, protocol, username, count):
+        self.proto = protocol
         self.count = count
-        self.timestamp = int(time.time())
-        self.sensor = sensor
+        self.timestamp = int(time.time()) - (int(time.time()) % 60)
+        self.user = username
 
 
 class User(Base):
@@ -118,7 +83,7 @@ class User(Base):
         self.password = md5hash(password)
 
     def check(self, password):
-        return self.password == md5hash(password):
+        return self.password == md5hash(password)
 
 
 class Setting(Base):
@@ -140,7 +105,7 @@ class Setting(Base):
     @hybrid_property
     def boolvalue(self):
         try:
-            return bool(self.value)
+            return bool(int(self.value))
         except:
             return self.value
 
@@ -153,4 +118,14 @@ class Setting(Base):
                 return int(self.value)
             except:
                 return self.value
-    
+
+
+class Reset(Base):
+    __tablename__ = 'resets'
+    id = Column(Integer, primary_key=True)
+    type = Column(Text)
+    timestamp = Column(Integer)
+
+    def __init__(self, datatype):
+        self.type = datatype
+        self.timestamp = int(time.time())

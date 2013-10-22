@@ -6,6 +6,7 @@ class Parser(BaseParser):
     Ettercap password parser.  This parser interprets the output from ettercap
     (basically looking for account info) and then passes it on to the API.
     '''
+    name = 'ettercap'
     ruser = re.compile(r'USER: (.*?)  ')    # USER Regex: Pulls out USER field.
     rpass = re.compile(r'PASS: (.*?)  ')    # PASS Regex: Pulls out PASS field.
     rinfo = re.compile(r'INFO: (.*?)$')     # INFO Regex: Pulls out INFO field.

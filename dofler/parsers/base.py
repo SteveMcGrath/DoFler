@@ -1,8 +1,9 @@
 import multiprocessing
 import time
 import pexpect
-from dofler.log import log
+import psutil
 from dofler.db import Session
+from dofler.common import setting, log
 from dofler.api.client import DoflerClient
 
 class BaseParser(multiprocessing.Process):
@@ -12,25 +13,35 @@ class BaseParser(multiprocessing.Process):
     need to keep repeating it in all of the parser classes.
     '''
     name = 'base'
-    stop = False
-
-    def __init__(self):
-        s = Session()
-        self.command = setting('%s_command' % self.name, s).value\
-                        .replace('{IF}', setting('listen_interface', s).value)
-        self.api = DoflerClient(
-            setting('server_host', s).value,
-            setting('server_port', s).intvalue,
-            setting('server_username', s).vaue,
-            setting('server_password', s).value,
-            setting('server_ssl', s).boolvalue,
-            setting('server_anonymize', s).boolvalue)
+    delay = 0
 
     def run(self):
         '''
         Process startup.
         '''
+        s = Session()
+        while int(time.time()) < self.delay:
+            log.debug('%s: Parser Waiting til %s currently %s. sleeping 1s.' %(
+                self.name, self.delay, int(time.time())))
+            time.sleep(1)
+        self.command = setting('%s_command' % self.name).value\
+                        .replace('{IF}', setting('listen_interface').value)
+        self.api = DoflerClient(
+            host=setting('server_host').value,
+            port=setting('server_port').intvalue,
+            username=setting('server_username').value,
+            password=setting('server_password').value,
+            ssl=setting('server_ssl').boolvalue,
+            anon=setting('server_anonymize').boolvalue)
+        s.close()
         self.realtime_process()
+
+
+    def terminate(self):
+        for process in psutil.Process(self.pid).get_children():
+            process.kill()
+        self.cleanup()
+        multiprocessing.Process.terminate(self)
 
 
     def realtime_process(self):
@@ -40,22 +51,17 @@ class BaseParser(multiprocessing.Process):
         the stop flag to true, and it should cause the process to be terminated
         and the cleanup performed.
         '''
-        while not self.stop:
-            self.p = pexpect.spawn(cmd)
-            while not self.stop:
+        while True:
+            self.p = pexpect.spawn(self.command)
+            while self.p.isalive():
                 try:
                     line = self.p.readline()
                     if line == '':
-                        if self.p.isalive():
-                            time.sleep(0.1)
-                        else:
-                            self.stop = True
+                        time.sleep(0.1)
                     else:
                         self.parse(line)
                 except pexpect.TIMEOUT:
                     pass
-            self.p.kill(9)
-        self.cleanup()
 
 
     def parse(self, line):

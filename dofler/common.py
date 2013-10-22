@@ -1,6 +1,7 @@
 from hashlib import md5
 import logging
 import json
+from md5 import md5hash
 from dofler.models import Setting, User
 from dofler.db import Session
 
@@ -15,32 +16,36 @@ _loglevels = {
 _log_to_console = False
 _log_to_file = False
 log = logging.getLogger('DoFler')
+#sqllog = logging.getLogger('sqlalchemy.engine')
+#sqllog.setLevel(logging.INFO)
+#hdlr = logging.FileHandler('/var/log/dofler-sql.log')
+#hdlr.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+#sqllog.addHandler(hdlr)
 
-
-def log_to_console(self):
+def log_to_console():
     '''
     Enables Console logging if not already enabled. 
     '''
-    s = Session()
-    if not _log_to_console and setting('log_file', s).boolvalue:
+    global _log_to_console
+    if not _log_to_console and setting('log_file').boolvalue:
         stderr = logging.StreamHandler()
         console_format = logging.Formatter('%(levelname)s %(message)s')
         stderr.setFormatter(console_format)
-        log.setLevel(_loglevels[setting('log_console_level', s).value])
+        log.setLevel(_loglevels[setting('log_console_level').value])
         log.addHandler(stderr)
         _log_to_console = True
 
 
-def log_to_file(self, filename, level='debug'):
+def log_to_file():
     '''
     Enables logging output to a file if not already enabled. 
     '''
-    s = Session()
-    if not _log_to_file and setting('log_file', s).boolvalue:
-        hdlr = logging.FileHandler(setting('log_file_path', s).value)
+    global _log_to_file
+    if not _log_to_file and setting('log_file').boolvalue:
+        hdlr = logging.FileHandler(setting('log_file_path').value)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         hdlr.setFormatter(formatter)
-        log.setLevel(_loglevels[setting('log_file_level', s).value])
+        log.setLevel(_loglevels[setting('log_file_level').value])
         log.addHandler(hdlr)
         _log_to_fule = True
 
@@ -63,21 +68,6 @@ def ignore_exception(IgnoreException=Exception,DefaultVal=None):
 sint = ignore_exception(ValueError)(int)
 
 
-def md5hash(*items):
-    '''md5hash list, of, items
-    A simple convenience function to return a hex md5hash of all of the
-    items given.
-
-    :param *items: list of items to hash. 
-    :type *items: list
-    :return: str 
-    '''
-    m = md5()
-    for item in items:
-        m.update(str(item))
-    return m.hexdigest()
-
-
 def jsonify(data):
     '''
     A simple shortcut for dumping json dictionaries.  This can come in handy
@@ -90,7 +80,7 @@ def jsonify(data):
     return json.dumps(data)
 
 
-def auth(request, db):
+def auth(request):
     '''
     Authentication Check.  Returns True or False based on if the account 
     cookie is set.
@@ -103,19 +93,18 @@ def auth(request, db):
 
     :return: bool    
     '''
-    if request.remote_addr in ['127.0.0.1', 'localhost']:
-        return True
-    else:
-        secret = db.query(Setting).filter_by(name='cookie_key').one()
-        name = request.get_cookie('sensor', secret=secret.value)
-        try:
-            sensor = db.query(User).filter_by(name=name).one()
-            return True
-        except:
-            return False
+    s = Session()
+    name = request.get_cookie('user', secret=setting('cookie_key').value)
+    try:
+        sensor = s.query(User).filter_by(name=name).one()
+        value = True
+    except:
+        value = False
+    s.close()
+    return value
 
 
-def auth_login(request, db):
+def auth_login(request):
     '''
     Base Login Function.  This function is what will handle all of the
     authentication for the API and the UI.  While both behave differently as 
@@ -130,22 +119,23 @@ def auth_login(request, db):
 
     :return: bool
     '''
+    s = Session()
     loggedin = False
-    if not auth(request, db):
-        secret = db.query(Setting).filter_by(name='cookie_key').one()
+    if not auth(request):
         username = request.forms.get('username')
         password = request.forms.get('password')
-        try:
-            user = db.query(User).filter_by(name=name).one()
-        except:
-            pass
-        else:
-            if user.check(password):
-                loggedin = True
+        #try:
+        user = s.query(User).filter_by(name=username).one()
+        #except:
+        #    pass
+        #else:
+        if user.check(password):
+            loggedin = True
+    s.close()
     return loggedin
 
 
-def setting(name, s):
+def setting(name):
     '''
     Retreives the specified setting object from the database.  By abstracting
     this out, we can save a lot of menotinous code.
@@ -158,4 +148,7 @@ def setting(name, s):
 
     :return: Setting Object
     '''
-    return s.query(Setting).filter_by(name).one()
+    s = Session()
+    item = s.query(Setting).filter_by(name=name).one()
+    s.close()
+    return item
