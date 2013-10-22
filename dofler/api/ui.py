@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 from dofler import common
 from dofler.common import auth, auth_login, setting
 from dofler.models import *
-from dofler.db import engine, Base
+from dofler.db import engine, Base, SettingSession
 from dofler import monitor
 
 env = Environment(
@@ -172,8 +172,7 @@ def settings_post(db):
     '''
     Settings Update Handler. 
     '''
-    #for item in request.forms:
-    #    print item, request.forms[item]
+    s = SettingSession()
     if auth(request):
         for item in request.forms:
             settingobj = setting(item)
@@ -182,8 +181,9 @@ def settings_post(db):
                     settingobj.value = request.forms[item]
             else:
                 settingobj.value = request.forms[item]
-            db.merge(settingobj)
-        db.commit()
+            s.merge(settingobj)
+        s.commit()
+        s.close()
         common.log_to_console()
         common.log_to_file()
         monitor.autostart()

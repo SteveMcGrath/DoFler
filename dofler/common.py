@@ -3,7 +3,7 @@ import logging
 import json
 from md5 import md5hash
 from dofler.models import Setting, User
-from dofler.db import Session
+from dofler.db import Session, SettingSession
 
 
 _loglevels = {
@@ -93,7 +93,7 @@ def auth(request):
 
     :return: bool    
     '''
-    s = Session()
+    s = SettingSession()
     name = request.get_cookie('user', secret=setting('cookie_key').value)
     try:
         sensor = s.query(User).filter_by(name=name).one()
@@ -119,7 +119,7 @@ def auth_login(request):
 
     :return: bool
     '''
-    s = Session()
+    s = SettingSession()
     loggedin = False
     if not auth(request):
         username = request.forms.get('username')
@@ -148,7 +148,7 @@ def setting(name):
 
     :return: Setting Object
     '''
-    s = Session()
+    s = SettingSession()
     item = s.query(Setting).filter_by(name=name).one()
     s.close()
     return item
