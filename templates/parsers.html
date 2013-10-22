@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Status{% endblock %}
+{% block navbar %}<li><a href="/">Return</a></li> | {% endblock %}
+{% block content %}
+
+<div id="ui-parsers">
+	{% for parser in parsers %}
+	<div class="ui-parser">
+		<span>{{ parser }}</span>
+		{% if parsers[parser] %}
+		<a class="ui-button" href="/ui/stop/{{ parser }}">Stop</a>
+		<a class="ui-button" href="/ui/restart/{{ parser }}">Restart</a>
+		{% else %}
+		<a class="ui-button" href="/ui/start/{{ parser }}">Start</a>
+		{% endif %}
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
