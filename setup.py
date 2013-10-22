@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='dofler',
-    version='0.4.0.140',
+    version='0.4.0.150',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -26,6 +26,7 @@ setup(
         'jinja2',
         'requests',
         'psutil',
+        'beautifulsoup',
     ],
     data_files=[
         ('/usr/share/dofler/static', [
