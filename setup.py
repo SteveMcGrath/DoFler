@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='dofler',
-    version='0.4',
+    version='0.4.0.140',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -21,11 +21,11 @@ setup(
         'bottle', 
         'sqlalchemy',
         'bottle-sqlalchemy',
-        'bleach',
         'paste',
-        'beautifulsoup',
         'pexpect',
-        'MultipartPostHandler',
+        'jinja2',
+        'requests',
+        'psutil',
     ],
     data_files=[
         ('/usr/share/dofler/static', [
@@ -38,9 +38,8 @@ setup(
             'templates/base.html',
             'templates/login.html',
             'templates/main.html',
-            'templates/notifications.html',
             'templates/settings.html',
-            'templates/status.html',
+            'templates/parsers.html',
             'templates/newuser.html',
         ])
     ],
