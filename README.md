@@ -39,13 +39,13 @@ clients running.
 
 ## Installation Guides
 
-* [mysql_guide][Configuring to talk to a MySQL Database]
-* [network_guide][Configuring a Distributed Client/Server Installation]
-* [fedora_guide][Fedora Installation Guide] ** Old Guide
+* [Configuring to talk to a MySQL Database][mysql_guide]
+* [Configuring a Distributed Client/Server Installation][network_guide]
+* [Fedora Installation Guide][fedora_guide] ** Old Guide for 0.3.
 
-[network_guide]: https://raw.github.com/SteveMcGrath/DoFler/master/doc-data/network-guide.md
-[mysql_guide]: https://raw.github.com/SteveMcGrath/DoFler/master/doc-data/mysql-guide.md
-[fedora_guide]: https://raw.github.com/SteveMcGrath/DoFler/master/doc-data/fedora-install-guide.md
+[network_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/network-guide.md
+[mysql_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/mysql-guide.md
+[fedora_guide]: https://github.com/SteveMcGrath/DoFler/blob/master/doc-data/fedora-install-guide.md
 
 # ToDo
 
