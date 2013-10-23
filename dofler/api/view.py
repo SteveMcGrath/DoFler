@@ -82,7 +82,7 @@ def stats(limit, db):
     for proto in protos:
         data.append({
             'label': proto[0],
-            'data': [[a[0] * 1000, a[1]] for a in db.query(Stat.timestamp, func.sum(Stat.count))\
+            'data': [[int(a[0] * 1000), int(a[1])] for a in db.query(Stat.timestamp, func.sum(Stat.count))\
                                             .filter(Stat.proto == proto[0])\
                                             .group_by(Stat.timestamp)\
                                             .order_by(desc(Stat.timestamp))\

@@ -1,8 +1,8 @@
 from distutils.core import setup
 
 setup(
-    name='dofler',
-    version='0.4.0.150',
+    name='DoFler',
+    version='0.4.0.151',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
