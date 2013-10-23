@@ -33,7 +33,7 @@ clients running.
 
 ## Install Scripts
 
-* [is_linux][Linux Installation Script] (CentOS, Fedora, Ubuntu)
+* [Linux Installation Script][is_linux] (CentOS, Fedora, Ubuntu)
 
 [is_linux]: https://raw.github.com/SteveMcGrath/DoFler/master/scripts/install.sh
 
