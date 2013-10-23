@@ -28,9 +28,8 @@ clients running.
 
 ## Installation
 
-* Install using pip or easy_install `pip install dofler doflersvc`
-* Adjust the config file at /etc/dofler/dofler.conf & /etc/dofler/service.conf as needed.
-* Start up the approprate services (_dofler-server_ and _dofler_)
+* Install using pip or easy_install `pip install dofler`
+* Start up the approprate services (_dofler_)
 
 ## Install Scripts
 
