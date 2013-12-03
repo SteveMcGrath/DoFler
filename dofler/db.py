@@ -43,6 +43,7 @@ def initialize():
         s.add(Setting('web_stat_max', '5'))
         s.add(Setting('web_image_max', '200'))
         s.add(Setting('web_account_max', '25'))
+        s.add(Setting('web_display_settings', '1'))
         s.add(Setting('autostart', '0'))
         s.add(Setting('listen_interface', 'eth1'))
         s.add(Setting('ettercap_enabled', '1'))
