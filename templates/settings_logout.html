@@ -1,5 +1,5 @@
 {% extends "settings_base.html" %}
-{% setting_menu = 'logout' %}
+{% set setting_menu = 'logout' %}
 {% block settings_content %}
 <form action="/ui/settings/logout" method="post">
 	<label for="logout">Logout of the Admin Panel</label>
