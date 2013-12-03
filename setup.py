@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.0.151',
+    version='0.4.1.0',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -44,7 +44,7 @@ setup(
             'static/images/settings_services.png',
             'static/images/settings_users.png',
             'static/images/settings_webui.png',
-        ])
+        ]),
         ('/usr/share/dofler/templates', [
             'templates/base.html',
             'templates/main.html',
