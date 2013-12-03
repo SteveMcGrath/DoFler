@@ -2,6 +2,7 @@ from dofler import monitor
 from dofler import common
 from dofler import api
 from dofler import db
+from dofler.models import Setting
 import time
 import sys
 from cmd import Cmd
@@ -50,6 +51,18 @@ class CLI(Cmd):
             s.merge(setting)
             s.commit()
             s.close()
+
+
+    def do_list(self, s):
+        '''
+        list
+
+        Lists all of the available settings. 
+        '''
+        s = db.SettingSession()
+        for setting in s.query(Setting).all()
+            print setting.name
+        s.close()
 
 
 def startup():
