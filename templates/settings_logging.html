@@ -1,0 +1,35 @@
+{% extends "settings_base.html" %}
+{% setting_menu = 'logging' %}
+{% block settings_content %}
+<form action="/ui/settings/logging" method="post">
+	<label for="log_console">Log to Console</label>
+	<select name="log_console">
+		<option value="0" {% if log_console == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if log_console == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="log_console_level">Console Log Level</label>
+	<select name="log_console_level">
+		<option value="debug" {% if log_console_level == 'debug' %}selected{% endif %} />DEBUG</option>
+		<option value="info" {% if log_console_level == 'info' %}selected{% endif %} />INFO</option>
+		<option value="warn" {% if log_console_level == 'warn' %}selected{% endif %} />WARN</option>
+		<option value="error" {% if log_console_level == 'error' %}selected{% endif %} />ERROR</option>
+		<option value="critical" {% if log_console_level == 'critical' %}selected{% endif %} />CRITICAL</option>
+	</select>
+	<label for="log_file">Log to File</label>
+	<select name="log_file">
+		<option value="0" {% if log_file == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if log_file == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="log_file_path">Log File Path</label>
+	<input type="text" name="log_file_path" value="{{ log_file_path }}" />
+	<label for="log_file_level">Log File Level</label>
+	<select name="log_file_level">
+		<option value="debug" {% if log_file_level == 'debug' %}selected{% endif %} />DEBUG</option>
+		<option value="info" {% if log_file_level == 'info' %}selected{% endif %} />INFO</option>
+		<option value="warn" {% if log_file_level == 'warn' %}selected{% endif %} />WARN</option>
+		<option value="error" {% if log_file_level == 'error' %}selected{% endif %} />ERROR</option>
+		<option value="critical" {% if log_file_level == 'critical' %}selected{% endif %} />CRITICAL</option>
+	</select>
+	<input type="submit" value="Update" />
+</form>
+{% endblock %}

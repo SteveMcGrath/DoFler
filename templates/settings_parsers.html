@@ -1,0 +1,23 @@
+{% extends "settings_base.html" %}
+{% setting_menu = 'parsers' %}
+{% block settings_content %}
+<form action="/ui/settings/parsers" method="post">
+	<label for="autostart">Automatically Start Enabled Parsers</label>
+	<select name="autostart">
+		<option value="0" {% if autostart == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if autostart == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="listen_interface">Listening Interface</label>
+	<input type="text" name="listen_interface" value="{{ listen_interface }}" />
+	{% for parser in parsers %}
+	<label for="{{ parser }}_enabled">{{ parser|capitalize }} Enabled</label>
+	<select name="{{ parser }}_enabled">
+		<option value="0" {% if parsers[parser]['enabled'] == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if parsers[parser]['enabled'] == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="{{ parser }}_command">{{ parser|capitalize }} Command</label>
+	<input type="text" name="{{ parser }}_command" value="{{ parsers[parser]['command'] }}" />
+	{% endfor %}
+	<input type="submit" value="Update" />
+</form>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% menu_back == True %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div id="settings-sidebar">
+	<h2>General</h2>
+	<ul>
+		{% if auth %}
+		<li {% if setting_menu == 'logout' %}id="selected"{% endif %}>
+			<a href="/settings/logout">
+				<img src="/static/images/settings_login.png" />Log Off
+			</a>
+		</li>
+		<li {% if setting_menu == 'users' %}id="selected"{% endif %}>
+			<a href="/settings/users">
+				<img src="/static/images/settings_users.png" />User Management
+			</a>
+		</li>
+		{% else %}
+		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
+			<a href="/settings/login">
+				<img src="/static/images/settings_login.png" />Log In
+			</a>
+		</li>
+		{% endif %}
+		<li {% if setting_menu == 'docs' %}id="selected"{% endif %}>
+			<a href="/settings/docs">
+				<img src="/static/images/settings_help.png" />Documentation
+			</a>
+		</li>
+		{% if setting_menu == 'docs' %}
+		<ul>
+			<li  {% if doc_item == 'introduction' %}id="doc_selected"{% endif %}>
+				<a href="/settings/docs/intro">
+					<img src="/static/images/doc.png" />Introduction
+				</a>
+			</li>
+			<li  {% if doc_item == 'walkthrough' %}id="doc_selected"{% endif %}>
+				<a href="/settings/docs/walkthrough">
+					<img src="/static/images/doc.png" />Walkthrough
+				</a>
+			</li>
+		</ul>
+		{% endif %}
+	</ul>
+	{% if auth %}
+	<h2>Client/Server Settings</h2>
+	<ul>
+		<li {% if setting_menu == 'server' %}id="menu_selected"{% endif %}>
+			<a href="/settings/server">
+				<img src="/static/images/settings_server.png" />Server
+			</a>
+		</li>
+		<li {% if setting_menu == 'api' %}id="menu_selected"{% endif %}>
+			<a href="/settings/api">
+				<img src="/static/images/settings_api.png" />API
+			</a>
+		</li>
+	</ul>
+	<h2>Web Interface</h2>
+	<ul>
+		<li {% if setting_menu == 'webui' %}id="menu_selected"{% endif %}>
+			<a href="/settings/webui">
+				<img src="/static/images/settings_webui.png" />Web Front-End
+			</a>
+		</li>
+	</ul>
+	<h2>Parsers</h2>
+	<ul>
+		<li {% if setting_menu == 'parsers' %}id="menu_selected"{% endif %}>
+			<a href="/settings/parsers">
+				<img src="/static/images/settings_parsers.png" />Parser Settings
+			</a>
+		</li>
+		<li {% if setting_menu == 'services' %}id="menu_selected"{% endif %}>
+			<a href="/settings/services">
+				<img src="/static/images/settings_services.png" />Service Status
+			</a>
+		</li>
+	</ul>
+	{% endif %}
+</div>
+<div id="settings-content">
+	{% block settings_content %}{% endblock %}
+</div>
+{% endblock %}

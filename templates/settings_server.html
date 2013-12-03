@@ -1,0 +1,25 @@
+{% extends "settings_base.html" %}
+{% setting_menu = 'server' %}
+{% block settings_content %}
+<form action="/ui/settings/server" method="post">
+	<label for="server_host">Host</label>
+	<input type="text" name="server_host" value="{{ server_host }}" />
+	<label for="server_port">Port</label>
+	<input type="text" name="server_port" value="{{ server_port }}" />
+	<label for="server_ssl">SSL Encryption</label>
+	<select name="server_ssl">
+		<option value="0" {% if server_ssl == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if server_ssl == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="server_username">Username</label>
+	<input type="text" name="server_username" value="{{ server_username }}" />
+	<label for="server_password">Password</label>
+	<input type="password" name="server_password" value="1234567890" />
+	<label for="server_anonymize">Anonymization</label>
+	<select name="server_anonymize">
+		<option value="0" {% if server_anonymize == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if server_anonymize == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<input type="submit" value="Update" />
+</form>
+{% endblock %}

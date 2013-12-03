@@ -26,13 +26,12 @@
 	</div>
 	<div id="navbar">
 		<ul>
-			{% block navbar %}{% endblock %}
-			{% if auth %}
-			<li><a href="/ui/settings">Settings</a></li> |
-			<li><a {% if status %}id="status-ok"{% else %}class="status-error"{% endif %} href="/ui/status">Parsers</a></li> |
-			<li><a href="/ui/logout">Logout</a></li>
+			{% if menu_back %}
+			<li><a href="/"><img src="/static/images/ui_back.png" />Back</a></li>
 			{% else %}
-			<li><a href="/ui/login">Login</a></li>
+			{% if show_settings %}
+			<li><a href="/ui/settings"><img src="/static/images/ui_settings.png" />Settings</a></li>
+			{% endif %}
 			{% endif %}
 		</ul>
 	</div>

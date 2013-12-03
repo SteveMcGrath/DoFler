@@ -1,0 +1,20 @@
+{% extends "settings_base.html" %}
+{% setting_menu = 'services' %}
+{% block settings_content %}
+<div id="ui-parsers">
+	{% for parser in parsers %}
+	<div class="ui-parser">
+		<span>{{ parser }}</span>
+		<form id="{{ parser }}" action="/ui/settings/services" method="post">
+			<input type="hidden" name="parser" value="{{ parser }}" />
+			{% if parsers[parser] %}
+			<input type="submit" value="Stop" name="action" />
+			<input type="submit" value="Restart" name="action" />
+			{% else %}
+			<input type="submit" value="Start" name="action" />
+			{% endif %}
+		</form>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

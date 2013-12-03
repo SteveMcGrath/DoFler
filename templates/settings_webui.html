@@ -1,0 +1,39 @@
+{% extends "settings_base.html" %}
+{% setting_menu = 'webui' %}
+{% block settings_content %}
+<form action="/ui/settings/webui" method="post">
+	<label for="web_images">Display Images</label>
+	<select name="web_images">
+		<option value="0" {% if web_images == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if web_images == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="web_image_delay">Image Update Delay</label>
+	<input type="text" name="web_image_delay" value="{{ web_image_delay }}" />
+	<label for="web_image_max">Maximum Simultaneous Images</label>
+	<input type="text" name="web_image_max" value="{{ web_image_max }}" />
+	<label for="web_accounts">Display Accounts</label>
+	<select name="web_accounts">
+		<option value="0" {% if web_accounts == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if web_accounts == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="web_account_delay">Account Update Delay</label>
+	<input type="text" name="web_account_delay" value="{{ web_account_delay }}" />
+	<label for="web_account_max">Maximum Simultaneous Accounts</label>
+	<input type="text" name="web_account_max" value="{{ web_account_max }}" />
+	<label for="web_stats">Display Statistics</label>
+	<select name="web_stats">
+		<option value="0" {% if web_stats == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if web_stats == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<label for="web_stat_delay">Statistics Update Delay</label>
+	<input type="text" name="web_stat_delay" value="{{ web_stat_delay }}" />
+	<label for="web_stat_max">Maximum Protocols Displayed</label>
+	<input type="text" name="web_stat_max" value="{{ web_stat_max }}" />
+	<label for="web_display_settings">Display Settings Icon</label>
+	<select name="web_display_settings">
+		<option value="0" {% if web_display_settings == 0 %}selected{% endif %} />Disabled</option>
+		<option value="1" {% if web_display_settings == 1 %}selected{% endif %} />Enabled</option>
+	</select>
+	<input type="submit" value="Update" />
+</form>
+{% endblock %}
