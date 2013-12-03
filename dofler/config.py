@@ -14,3 +14,7 @@ else:
     with open('/etc/dofler.conf', 'w') as cfile:
         config.write(cfile)
 
+def update(setting):
+    config.set('Database', 'db', setting)
+    with open('/etc/dofler.conf', 'w') as cfile:
+        config.write(cfile)
