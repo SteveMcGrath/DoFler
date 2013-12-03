@@ -60,7 +60,7 @@ class CLI(Cmd):
         Lists all of the available settings. 
         '''
         s = db.SettingSession()
-        for setting in s.query(Setting).all()
+        for setting in s.query(Setting).all():
             print setting.name
         s.close()
 
