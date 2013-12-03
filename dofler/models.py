@@ -80,6 +80,9 @@ class User(Base):
 
     def __init__(self, username, password):
         self.name = username
+        self.update(password)
+
+    def update(self, password):
         self.password = md5hash(password)
 
     def check(self, password):
