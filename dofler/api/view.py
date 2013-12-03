@@ -33,6 +33,7 @@ def recent_images(ts, db):
         skippr = 0
     return jsonify([i.dump() for i in db.query(Image)\
                                         .filter(Image.timestamp > ts)\
+                                        .order_by(desc(Image.timestamp))\
                                         .offset(skippr).all()])
 
 

@@ -2,6 +2,8 @@ from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
 from bottle.ext import sqlalchemy
 from jinja2 import Environment, FileSystemLoader
+from ConfigParser import ConfigParser
+from dofler import config
 from dofler import common
 from dofler.common import auth, auth_login, setting
 from dofler.models import *
@@ -20,45 +22,29 @@ plugin = sqlalchemy.Plugin(
 )
 app.install(plugin)
 
-def get_settings_page(auth, error=False, note=False):
-    return env.get_template('settings.html').render(
-        error=error,
-        note=note,
-        auth=auth,
-        status=monitor.status(),
-        log_console=setting('log_console').intvalue,
-        log_console_level=setting('log_console_level').value,
-        log_file=setting('log_file').intvalue,
-        log_file_level=setting('log_file_level').value,
-        log_file_path=setting('log_file_path').value,
-        api_debug=setting('api_debug').intvalue,
-        api_port=setting('api_port').value,
-        api_host=setting('api_host').value,
-        api_app_server=setting('api_app_server').value,
-        cookie_key=setting('cookie_key').value,
-        server_host=setting('server_host').value,
-        server_port=setting('server_port').value,
-        server_ssl=setting('server_ssl').intvalue,
-        server_anonymize=setting('server_anonymize').intvalue,
-        server_username=setting('server_username').value,
-        web_images=setting('web_images').boolvalue,
-        web_accounts=setting('web_accounts').boolvalue,
-        web_stats=setting('web_stats').intvalue,
-        web_image_delay=setting('web_image_delay').value,
-        web_account_delay=setting('web_account_delay').value,
-        web_stat_delay=setting('web_stat_delay').value,
-        web_stat_max=setting('web_stat_max').intvalue,
-        autostart=setting('autostart').intvalue,
-        ettercap_enabled=setting('ettercap_enabled').intvalue,
-        driftnet_enabled=setting('driftnet_enabled').intvalue,
-        tshark_enabled=setting('tshark_enabled').intvalue,
-        ettercap_command=setting('ettercap_command').value,
-        driftnet_command=setting('driftnet_command').value,
-        tshark_command=setting('tshark_command').value,
-        listen_interface=setting('listen_interface').value,
-        web_account_max=setting('web_account_max').value,
-        web_image_max=setting('web_image_max').value
-    )
+
+def update_settings(settings):
+    '''
+    Settings Updater 
+    '''
+    s = SettingSession()
+    for item in settings:
+        if item == 'database':
+            config.update(settings[item])
+        else:
+            settingobj = setting(item)
+            if item == 'server_password':
+                if settings[item] != '1234567890':
+                    settingobj.value = settings[item]
+            else:
+                settingobj.value = settings[item]
+            s.merge(settingobj)
+    s.commit()
+    s.close()
+    common.log_to_console()
+    common.log_to_file()
+    monitor.autostart()
+
 
 @app.get('/')
 def main_page(db):
@@ -67,7 +53,6 @@ def main_page(db):
     '''
     return env.get_template('main.html').render(
         auth=auth(request), 
-        status=monitor.status(),
         web_images=setting('web_images').boolvalue,
         web_accounts=setting('web_accounts').boolvalue,
         web_stats=setting('web_stats').boolvalue,
@@ -76,7 +61,8 @@ def main_page(db):
         web_stat_delay=setting('web_stat_delay').intvalue,
         web_image_max=setting('web_image_max').intvalue,
         web_account_max=setting('web_account_max').intvalue,
-        web_stat_max=setting('web_stat_max').intvalue
+        web_stat_max=setting('web_stat_max').intvalue,
+        web_display_settings=setting('web_display_settings').boolvalue
     )
 
 
@@ -85,185 +71,196 @@ def static_files(path):
     return static_file(path, root='/usr/share/dofler/static')
 
 
-@app.get('/login')
-def login_page(db):
-    '''
-    Authentication Screen
-    '''
-    return env.get_template('login.html').render(
-        auth=auth(request), 
-        status=monitor.status()
-    )
-
-
-@app.post('/login')
-def login_post(db):
-    '''
-    Authentication Handler. 
-    '''
-    if auth_login(request):
-        response.set_cookie('user', 
-            request.forms.get('username'), 
-            secret=setting('cookie_key').value
-        )
-        response.add_header('Authentication', 'SUCCESS')
-        redirect('/')
-    else:
-        return env.get_template('login.html').render(
-            error='Authentication Failed',
-            auth=False,
-            status=monitor.status()
-        )
-
-
-@app.get('/logout')
-def logout(db):
-    '''
-    Logout Handler.
-    '''
-    response.delete_cookie('user')
-    redirect('/')
-
-
-@app.get('/new')
-def new_user_page(db):
-    '''
-    New User Page. 
-    '''
-    return env.get_template('newuser.html').render(
-        auth=auth(request), 
-        status=monitor.status()
-    )
-
-
-@app.post('/new')
-def new_user_post(db):
-    '''
-    New User Handler. 
-    '''
-    if auth(request):
-        db.add(User(
-            request.forms.get('username'),
-            request.forms.get('password')
-        ))
-        return eng.get_template('newuser.html').render(
-            note='Account Created',
-            auth=auth(request), 
-            status=monitor.status()
-        )
-    else:
-        return eng.get_template('newuser.html').render(
-            error='Must be Logged in to create accounts.',
-            auth=auth(request), 
-            status=monitor.status()
-        )
-
-
 @app.get('/settings')
 def settings_page(db):
     '''
     Settings Page
     '''
-    return get_settings_page(auth(request))
+    return env.get_template('settings_base.html').render(
+        auth=auth(request))
 
 
-@app.post('/settings')
-def settings_post(db):
+@app.get('/settings/login')
+@app.post('/settings/login')
+def login(db):
     '''
-    Settings Update Handler. 
+    Authentication Page
     '''
-    s = SettingSession()
-    if auth(request):
-        for item in request.forms:
-            settingobj = setting(item)
-            if item == 'server_password':
-                if request.forms['server_password'] != '1234567890':
-                    settingobj.value = request.forms[item]
-            else:
-                settingobj.value = request.forms[item]
-            s.merge(settingobj)
-        s.commit()
-        s.close()
-        common.log_to_console()
-        common.log_to_file()
-        monitor.autostart()
-        return get_settings_page(auth(request), note='Settings Updated')
-    else:
-        return get_settings_page(auth(request),
-            error='Must be Authenticated to Change Settings')
-
-
-@app.get('/status')
-def status_page(db):
-    '''
-    Parser Status Page. 
-    '''
-    return env.get_template('parsers.html').render(
-        parsers=monitor.parser_status(),
-        auth=auth(request), 
-        status=monitor.status()
+    note=None
+    error=None
+    logged_in=False
+    if request.method == 'POST':
+        if auth_login(request):
+            response.set_cookie('user', 
+                request.forms.get('username'), 
+                secret=setting('cookie_key').value
+            )
+            response.add_header('Authentication', 'SUCCESS')
+            note='Login Successful'
+            logged_in=True
+        else:
+            error='Authentication Failed'
+    return env.get_template('settings_base.html').render(
+        auth=logged_in,
+        note=note,
+        error=error
     )
 
 
-@app.get('/stop/<parser>')
-def stop_parser(parser, db):
+@app.get('/settings/users')
+@app.post('/settings/users')
+def user_settings(db):
     '''
-    Stops the parser specified. 
+    User Management Page
     '''
-    if auth(request):
-        monitor.stop(parser)
-        return env.get_template('parsers.html').render(
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
-    else:
-        return env.get_template('parsers.html').render(
-            error='Must be Authenticated to Stop Parsers',
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
+    if auth(request) and request.method == 'POST':
+        username = request.forms.get('username')
+        password = request.forms.get('password')
+        action = request.forms.get('action')
+        if action == 'Create':
+            db.add(User(username, password))
+        if action == 'Update':
+            user = db.query(User).filter_by(name=username).one()
+            user.update(password)
+            db.merge(user)
+        if action == 'Remove' and username != 'admin':
+            user = db.query(User).filter_by(name=username).one()
+            db.delete(user)
+    return env.get_template('settings_users.html',
+        auth=auth(request),
+        users=db.query(User).all()
+    )
 
 
-@app.get('/start/<parser>')
-def start_parser(parser, db):
+@app.get('/settings/api')
+@app.post('/settings/api')
+def api_settings(db):
     '''
-    Starts the parser specified. 
+    API Settings Page 
     '''
-    if auth(request):
-        monitor.start(parser)
-        return env.get_template('parsers.html').render(
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
-    else:
-        return env.get_template('parsers.html').render(
-            error='Must be Authenticated to Start Parsers',
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
+    if auth(request) and request.method == 'POST':
+        settings = {}
+        for item in request.forms:
+            settings[item] = request.forms[item]
+        update_settings(settings)
+    return env.get_template('settings_api.html',
+        auth=auth(request),
+        api_debug=setting('api_debug').intvalue,
+        api_port=setting('api_port').value,
+        api_host=setting('api_host').value,
+        api_app_server=setting('api_app_server').value,
+        cookie_key=setting('cookie_key').value,
+        database=config.config.get('Database', 'db')
+    )
 
 
-@app.get('/restart/<parser>')
-def restart_parser(parser, db):
+@app.get('/settings/server')
+@app.post('/settings/server')
+def api_settings(db):
     '''
-    Stops the parser specified. 
+    Server Settings Page 
     '''
-    if auth(request):
-        monitor.stop(parser)
-        monitor.start(parser)
-        return env.get_template('parsers.html').render(
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
-    else:
-        return env.get_template('parsers.html').render(
-            error='Must be Authenticated to Restart Parsers',
-            parsers=monitor.parser_status(),
-            auth=auth(request), 
-            status=monitor.status()
-        )
+    if auth(request) and request.method == 'POST':
+        settings = {}
+        for item in request.forms:
+            settings[item] = request.forms[item]
+        update_settings(settings)
+    return env.get_template('settings_server.html',
+        auth=auth(request),
+        server_host=setting('server_host').value,
+        server_port=setting('server_port').value,
+        server_ssl=setting('server_ssl').intvalue,
+        server_anonymize=setting('server_anonymize').intvalue,
+        server_username=setting('server_username').value
+    )
+
+
+@app.get('/settings/logging')
+@app.post('/settings/logging')
+def api_settings(db):
+    '''
+    Logging Settings Page 
+    '''
+    if auth(request) and request.method == 'POST':
+        settings = {}
+        for item in request.forms:
+            settings[item] = request.forms[item]
+        update_settings(settings)
+    return env.get_template('settings_logging.html',
+        auth=auth(request),
+        log_console=setting('log_console').intvalue,
+        log_console_level=setting('log_console_level').value,
+        log_file=setting('log_file').intvalue,
+        log_file_level=setting('log_file_level').value,
+        log_file_path=setting('log_file_path').value
+    )
+
+
+@app.get('/settings/webui')
+@app.post('/settings/webui')
+def api_settings(db):
+    '''
+    WebUI Settings Page 
+    '''
+    if auth(request) and request.method == 'POST':
+        settings = {}
+        for item in request.forms:
+            settings[item] = request.forms[item]
+        update_settings(settings)
+    return env.get_template('settings_webui.html',
+        auth=auth(request),
+        web_images=setting('web_images').boolvalue,
+        web_accounts=setting('web_accounts').boolvalue,
+        web_stats=setting('web_stats').intvalue,
+        web_image_delay=setting('web_image_delay').value,
+        web_account_delay=setting('web_account_delay').value,
+        web_stat_delay=setting('web_stat_delay').value,
+        web_stat_max=setting('web_stat_max').intvalue,
+        web_display_settings=setting('web_display_settings').boolvalue
+    )
+
+
+@app.get('/settings/services')
+@app.post('/settings/services')
+def services_settings(db):
+    '''
+    Services Status Page 
+    '''
+    if auth(request) and request.method == 'POST':
+        parser = request.forms.get('parser')
+        action = request.forms.get('action')
+        if action == 'Stop':
+            monitor.stop(parser)
+        if action == 'Start':
+            monitor.start(parser)
+        if action == 'Restart':
+            monitor.stop(parser)
+            monitor.start(parser)
+    return env.get_template('settings_services.html',
+        auth=auth(request),
+        parsers=monitor.parser_status()
+    )
+
+
+@app.get('/settings/parsers')
+@app.post('/settings/parsers')
+def parsers_settings(db):
+    '''
+    Parser Configuration Settings Page
+    '''
+    if auth(request) and request.method == 'POST':
+        settings = {}
+        for item in request.forms:
+            settings[item] = request.forms[item]
+        update_settings(settings)
+    plist = monitor.parser_status()
+    parsers = {}
+    for item in plist:
+        parsers[item]['enabled'] = setting('%s_enabled' % item)
+        parsers[item]['command'] = setting('%s_command' % item)
+    return env.get_template('settings_parsers.html',
+        auth=auth(request),
+        parsers=parsers,
+        autostart=setting('autostart'),
+        listen_interface=setting('listen_interface')
+    )
