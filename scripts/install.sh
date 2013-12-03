@@ -80,7 +80,7 @@ respawn limit 15 5
 start on runlevel [2345]
 stop on runlevel [016]
 
-exec /usr/bin/DoFler
+exec /usr/bin/dofler run
 EOF
 
 # 
