@@ -128,16 +128,6 @@ body{
   right: 0px;
 }
 
-#navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-#navbar li {
-  display: inline;
-}
-
 #navbar a:link {color: white;}
 #navbar a:visited {color: white}
 #navbar a:hover {color: grey;}
@@ -152,7 +142,11 @@ body{
 
 #settings-sidebar {
   width: 30%;
-
+  display: block;
+  float left;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #fff;
 }
 
 #settings-sidebar ul {
@@ -163,9 +157,9 @@ body{
 
 #settings-sidebar li {
   border-style: solid;
-  border-bottom: 2px;
-  border-top: 2px;
+  border: 1px;
   border-color: #fff;
+  background-color: rgba(65, 70, 70, 0.4);
 }
 
 #settings-sidebar li.menu_selected {
@@ -186,6 +180,12 @@ body{
 
 #settings-sidebar a:hover {
   color: #fff;
+}
+
+#settings-content {
+  width: 70%;
+  display: block;
+  float: right;
 }
 
 #settings-content label {
