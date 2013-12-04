@@ -5,6 +5,11 @@
 <div id="settings-sidebar">
 	<h2>General</h2>
 	<ul>
+		<li>
+			<a href="/ui/">
+				<img src="/ui/static/images/ui_back.png" />Return to WebUI
+			</a>
+		</li>
 		{% if auth %}
 		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
 			<a href="/ui/settings/login">

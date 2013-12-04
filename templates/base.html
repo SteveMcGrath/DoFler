@@ -24,16 +24,6 @@
 		<div class="message">{{ error }}</div>
 		{% endif %}
 	</div>
-	<div id="navbar">
-		<ul>
-			{% if menu_back %}
-			<li><a href="/"><img src="/static/images/ui_back.png" />Back</a></li>
-			{% else %}
-			{% if show_settings %}
-			<li><a href="/ui/settings"><img src="/static/images/ui_settings.png" />Settings</a></li>
-			{% endif %}
-			{% endif %}
-		</ul>
-	</div>
+	<div id="navbar">{% block navbar %}{% endblock %}</div>
 </body>
 </html>

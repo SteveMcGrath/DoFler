@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Viewer{% endblock %}
 {% block stylesheets %}<style> html {overflow: hidden;}</style>{% endblock %}
+{% block navbar %}
+    {% if show_settings %}
+        <a href="/ui/settings"><img src="/static/images/ui_settings.png" />Settings</a>
+    {% endif %}
+{% endblock %}
 {% block content %}
 
 {% if web_images: %}
