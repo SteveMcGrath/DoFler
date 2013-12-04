@@ -270,12 +270,12 @@ def parsers_settings(db):
     for item in monitor.parser_status():
         print item
         parsers[item] = {
-            'enabled': setting('%s_enabled' % item).value,
+            'enabled': setting('%s_enabled' % item).boolvalue,
             'command': setting('%s_command' % item).value,
         }
     return env.get_template('settings_parsers.html').render(
         auth=auth(request),
         parsers=parsers,
-        autostart=setting('autostart'),
-        listen_interface=setting('listen_interface')
+        autostart=setting('autostart').boolvalue,
+        listen_interface=setting('listen_interface').value
     )

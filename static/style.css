@@ -49,13 +49,10 @@ body{
 /* Status Page */
 
 .ui-parser {
-  margin-top: 25px;
-  height: 20px;
-  padding: 10px;
+  height: 30px;
+  padding-top: 10px;
   padding-bottom: 25px;
-  margin: 5px;
   width: 100%;
-  vertical-align: center;
   border-bottom-width: thin;
   border-bottom-style: solid;
   border-bottom-color: grey;
@@ -64,20 +61,18 @@ body{
 .ui-parser span {
   width: 200px;
   text-align: right;
-}
-
-.ui-parser .ui-button {
-  float: right;
-  margin-right: 10px;
+  line-height: 0px;
+  vertical-align: bottom;
 }
 
 #ui-parsers {
   margin-top: 50px;
 }
 
-#ui-parsers input[type="submit"] {
+#ui-parsers form {
   float: right;
-  padding-right: 20px;
+  vertical-align: middle;
+  margin-right: 20px;
 }
 
 /* Navigation */
