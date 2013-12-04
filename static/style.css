@@ -141,7 +141,7 @@ body{
 /* Settings Page */
 
 #settings-sidebar {
-  width: 30%;
+  width: 20%;
   height: 100%;
   display: block;
   position: absolute;
@@ -195,7 +195,7 @@ body{
 }
 
 #settings-content {
-  width: 69%;
+  width: 79%;
   height: 100%;
   padding-top: 20px;
   display: block;

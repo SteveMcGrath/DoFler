@@ -92,7 +92,9 @@ def login(db):
         if auth_login(request):
             response.set_cookie('user', 
                 request.forms.get('username'), 
-                secret=setting('cookie_key').value
+                secret=setting('cookie_key').value,
+                path='/',
+                max_age=3600,
             )
             response.add_header('Authentication', 'SUCCESS')
             logged_in=True
@@ -136,7 +138,7 @@ def user_settings(db):
         if action == 'Remove' and username != 'admin':
             user = db.query(User).filter_by(name=username).one()
             db.delete(user)
-    return env.get_template('settings_users.html',
+    return env.get_template('settings_users.html').render(
         auth=auth(request),
         users=db.query(User).all()
     )
@@ -153,7 +155,7 @@ def api_settings(db):
         for item in request.forms:
             settings[item] = request.forms[item]
         update_settings(settings)
-    return env.get_template('settings_api.html',
+    return env.get_template('settings_api.html').render(
         auth=auth(request),
         api_debug=setting('api_debug').intvalue,
         api_port=setting('api_port').value,
@@ -175,7 +177,7 @@ def api_settings(db):
         for item in request.forms:
             settings[item] = request.forms[item]
         update_settings(settings)
-    return env.get_template('settings_server.html',
+    return env.get_template('settings_server.html').render(
         auth=auth(request),
         server_host=setting('server_host').value,
         server_port=setting('server_port').value,
@@ -196,7 +198,7 @@ def api_settings(db):
         for item in request.forms:
             settings[item] = request.forms[item]
         update_settings(settings)
-    return env.get_template('settings_logging.html',
+    return env.get_template('settings_logging.html').render(
         auth=auth(request),
         log_console=setting('log_console').intvalue,
         log_console_level=setting('log_console_level').value,
@@ -217,7 +219,7 @@ def api_settings(db):
         for item in request.forms:
             settings[item] = request.forms[item]
         update_settings(settings)
-    return env.get_template('settings_webui.html',
+    return env.get_template('settings_webui.html').render(
         auth=auth(request),
         web_images=setting('web_images').boolvalue,
         web_accounts=setting('web_accounts').boolvalue,
@@ -246,7 +248,7 @@ def services_settings(db):
         if action == 'Restart':
             monitor.stop(parser)
             monitor.start(parser)
-    return env.get_template('settings_services.html',
+    return env.get_template('settings_services.html').render(
         auth=auth(request),
         parsers=monitor.parser_status()
     )
@@ -268,7 +270,7 @@ def parsers_settings(db):
     for item in plist:
         parsers[item]['enabled'] = setting('%s_enabled' % item)
         parsers[item]['command'] = setting('%s_command' % item)
-    return env.get_template('settings_parsers.html',
+    return env.get_template('settings_parsers.html').render(
         auth=auth(request),
         parsers=parsers,
         autostart=setting('autostart'),
