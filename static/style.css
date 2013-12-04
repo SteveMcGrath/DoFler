@@ -156,22 +156,30 @@ body{
 }
 
 #settings-sidebar li {
+  height: 35px;
   border-style: solid;
   border: 1px;
   border-color: #fff;
   background-color: rgba(65, 70, 70, 0.4);
+  vertical-align: middle;
 }
 
-#settings-sidebar li.menu_selected {
+#settings-sidebar li#menu_selected {
   background-color: #1A3380;
 }
 
+#settings-sidebar img {
+  vertical-align: middle;
+}
+
 #settings-sidebar h2 {
-  font-size: 12;
+  font-size: 1em;
+  text-align: center;
 }
 
 #settings-sidebar a {
   color: #fff;
+  text-decoration: none;
 }
 
 #settings-sidebar a:visited {
