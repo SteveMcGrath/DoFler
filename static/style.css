@@ -142,8 +142,11 @@ body{
 
 #settings-sidebar {
   width: 30%;
+  height: 100%;
   display: block;
-  float left;
+  position: absolute;
+  top: 0px;
+  left: 0px;
   border-right-style: solid;
   border-right-width: 1px;
   border-right-color: #fff;
@@ -192,9 +195,13 @@ body{
 }
 
 #settings-content {
-  width: 70%;
+  width: 69%;
+  height: 100%;
+  padding-top: 20px;
   display: block;
-  float: right;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 
 #settings-content label {

@@ -86,7 +86,6 @@ def login(db):
     '''
     Authentication Page
     '''
-    note=None
     error=None
     logged_in=False
     if request.method == 'POST':
@@ -96,14 +95,25 @@ def login(db):
                 secret=setting('cookie_key').value
             )
             response.add_header('Authentication', 'SUCCESS')
-            note='Login Successful'
             logged_in=True
         else:
             error='Authentication Failed'
+    else:
+        logged_in=auth(request)
     return env.get_template('settings_login.html').render(
         auth=logged_in,
-        note=note,
         error=error
+    )
+
+
+@app.post('/settings/logout')
+def logout(db):
+    '''
+    User Logout. 
+    '''
+    response.delete_cookie('user', secret=setting('cookie_key').value)
+    return env.get_template('settings_base.html').render(
+        auth=False,
     )
 
 
