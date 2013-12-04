@@ -208,11 +208,15 @@ body{
   width: 300px;
 }
 
+#settings-content label:before {
+  content:"\A"; 
+  white-space:pre;
+}
+
 #settings-content input[type="text"] {
-  width: 100%;
   border-bottom: 2px;
-  border-style: solid;
-  border-color: #fff;
+  border-bottom-style: solid;
+  border-bottom-color: #fff;
   color: #c7c8c8;
   background: rgba(15, 20, 20, 0.4);
 }
