@@ -1,12 +1,3 @@
-import db
-import api
-import parsers
-import md5
-import common
-import models
-import monitor
-import svc
-
 __version__ = '0.4.1.52'
 __author__ = 'Steven McGrath <steve@chigeek.com>'
 __website__ = 'http://chigeek.com/tag/dofler.html'
@@ -19,3 +10,12 @@ def get_version_info():
         'website': __website__,
         'repository': __repository__,
     }
+
+import db
+import api
+import parsers
+import md5
+import common
+import models
+import monitor
+import svc
