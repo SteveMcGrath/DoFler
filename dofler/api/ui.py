@@ -266,11 +266,13 @@ def parsers_settings(db):
         for item in request.forms:
             settings[item] = request.forms[item]
         update_settings(settings)
-    plist = monitor.parser_status()
     parsers = {}
-    for item in plist:
-        parsers[item]['enabled'] = setting('%s_enabled' % item)
-        parsers[item]['command'] = setting('%s_command' % item)
+    for item in monitor.parser_status():
+        print item
+        parsers[item] = {
+            'enabled': setting('%s_enabled' % item).value,
+            'command': setting('%s_command' % item).value,
+        }
     return env.get_template('settings_parsers.html').render(
         auth=auth(request),
         parsers=parsers,
