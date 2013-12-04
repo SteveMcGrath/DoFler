@@ -1,12 +1,13 @@
 from distutils.core import setup
+import dofler
 
 setup(
     name='DoFler',
-    version='0.4.1.1',
+    version=dofler.__version__,
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
-    url='https://github.com/SteveMcGrath/DoFler',
+    url=dofler.__repository__,
     packages=[
         'dofler', 
         'dofler.api', 
@@ -27,6 +28,7 @@ setup(
         'requests',
         'psutil',
         'beautifulsoup',
+        'markdown',
     ],
     data_files=[
         ('/usr/share/dofler/static', [
@@ -35,6 +37,10 @@ setup(
             'static/jquery.flot.time.min.js',
             'static/style.css',
         ]),
+        ('/usr/share/dofler/docs', [
+            'docs/introduction.md',
+            'docs/walkthrough.md',
+        ])
         ('/usr/share/dofler/static/images', [
             'static/images/doc.png',
             'static/images/settings_api.png',

@@ -3,6 +3,7 @@ from sqlalchemy.sql import func, label
 from bottle.ext import sqlalchemy
 from jinja2 import Environment, FileSystemLoader
 from ConfigParser import ConfigParser
+from dofler import get_version_info
 from dofler import config
 from dofler import common
 from dofler.common import auth, auth_login, setting
@@ -77,7 +78,33 @@ def settings_page(db):
     Settings Page
     '''
     return env.get_template('settings_base.html').render(
-        auth=auth(request))
+        auth=auth(request),
+        vinfo=get_version_info()
+    )
+
+
+@app.get('/settings/docs')
+@app.get('/settings/docs/<path:path>')
+def documentation(path=None, db):
+    '''
+    Documentation Pages.
+    '''
+    data = None
+    if path:
+        try:
+            with open('/usr/share/dofler/docs/%s' % path) as mdfile:
+                data = markdown.markdown(mdfile.read(), extensions=[
+                    'codehilite',
+                    'extra',
+                ])
+        except:
+            pass
+    return env.get_template('settings_doc_page.html').render(
+        auth=auth(request),
+        doc_content=data
+    )
+
+
 
 
 @app.get('/settings/login')
@@ -268,7 +295,6 @@ def parsers_settings(db):
         update_settings(settings)
     parsers = {}
     for item in monitor.parser_status():
-        print item
         parsers[item] = {
             'enabled': setting('%s_enabled' % item).boolvalue,
             'command': setting('%s_command' % item).value,

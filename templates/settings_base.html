@@ -29,13 +29,13 @@
 		{% endif %}
 		<li {% if setting_menu == 'docs' %}id="selected"{% endif %}>
 			<a href="/ui/settings/docs">
-				<img src="/ui/static/images/settings_help.png" />Documentation
+				<img src="/ui/static/images/doc.png" />Documentation
 			</a>
 		</li>
 		{% if setting_menu == 'docs' %}
 		<ul>
 			<li  {% if doc_item == 'introduction' %}id="doc_selected"{% endif %}>
-				<a href="/ui/settings/docs/intro">
+				<a href="/ui/settings/docs/introduction">
 					<img src="/ui/static/images/doc.png" />Introduction
 				</a>
 			</li>
@@ -85,6 +85,12 @@
 	{% endif %}
 </div>
 <div id="settings-content">
-	{% block settings_content %}{% endblock %}
+	{% block settings_content %}
+	<p>DoFler {{ vinfo['version'] }}</p>
+	<p>Written By: {{ vinfo['author'] }}</p>
+	<p>Devblog: <a href="{{ vinfo['website'] }}">{{ vinfo['website'] }}</a></p>
+	<p>Code Repository: <a href="{{ vinfo['repository'] }}">{{ vinfo['repository'] }}</a></p>
+	<p>Issue Tracker: <a href="{{ vinfo['repository'] }}/issues">{{ vinfo['repository'] }}</a></p>
+	{% endblock %}
 </div>
 {% endblock %}

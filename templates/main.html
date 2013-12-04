@@ -22,7 +22,9 @@
             $.getJSON('/get/images/' + image_ts, function(data){
                 $.each(data, function(key, val){
                     if ($('img[src="/get/image/' + val.md5sum + '"]').length < 1){
-                        image_ts = val.timestamp;
+                        if (val.timestamp > image_ts ){
+                            image_ts = val.timestamp;
+                        };
                         if (!reset){
                             $('#ui-images').prepend('<img class="dofler-img" src="/get/image/' + val.md5sum + '" />');
                             if ($('.dofler-img').length > {{ web_image_max }}){
