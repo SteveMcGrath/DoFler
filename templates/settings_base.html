@@ -6,37 +6,37 @@
 	<h2>General</h2>
 	<ul>
 		{% if auth %}
-		<li {% if setting_menu == 'logout' %}id="selected"{% endif %}>
-			<a href="/settings/logout">
+		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
+			<a href="/ui/settings/login">
 				<img src="/static/images/settings_login.png" />Log Off
 			</a>
 		</li>
 		<li {% if setting_menu == 'users' %}id="selected"{% endif %}>
-			<a href="/settings/users">
+			<a href="/ui/settings/users">
 				<img src="/static/images/settings_users.png" />User Management
 			</a>
 		</li>
 		{% else %}
 		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
-			<a href="/settings/login">
+			<a href="/ui/settings/login">
 				<img src="/static/images/settings_login.png" />Log In
 			</a>
 		</li>
 		{% endif %}
 		<li {% if setting_menu == 'docs' %}id="selected"{% endif %}>
-			<a href="/settings/docs">
+			<a href="/ui/settings/docs">
 				<img src="/static/images/settings_help.png" />Documentation
 			</a>
 		</li>
 		{% if setting_menu == 'docs' %}
 		<ul>
 			<li  {% if doc_item == 'introduction' %}id="doc_selected"{% endif %}>
-				<a href="/settings/docs/intro">
+				<a href="/ui/settings/docs/intro">
 					<img src="/static/images/doc.png" />Introduction
 				</a>
 			</li>
 			<li  {% if doc_item == 'walkthrough' %}id="doc_selected"{% endif %}>
-				<a href="/settings/docs/walkthrough">
+				<a href="/ui/settings/docs/walkthrough">
 					<img src="/static/images/doc.png" />Walkthrough
 				</a>
 			</li>
@@ -47,12 +47,12 @@
 	<h2>Client/Server Settings</h2>
 	<ul>
 		<li {% if setting_menu == 'server' %}id="menu_selected"{% endif %}>
-			<a href="/settings/server">
+			<a href="/ui/settings/server">
 				<img src="/static/images/settings_server.png" />Server
 			</a>
 		</li>
 		<li {% if setting_menu == 'api' %}id="menu_selected"{% endif %}>
-			<a href="/settings/api">
+			<a href="/ui/settings/api">
 				<img src="/static/images/settings_api.png" />API
 			</a>
 		</li>
@@ -60,7 +60,7 @@
 	<h2>Web Interface</h2>
 	<ul>
 		<li {% if setting_menu == 'webui' %}id="menu_selected"{% endif %}>
-			<a href="/settings/webui">
+			<a href="/ui/settings/webui">
 				<img src="/static/images/settings_webui.png" />Web Front-End
 			</a>
 		</li>
@@ -68,12 +68,12 @@
 	<h2>Parsers</h2>
 	<ul>
 		<li {% if setting_menu == 'parsers' %}id="menu_selected"{% endif %}>
-			<a href="/settings/parsers">
+			<a href="/ui/settings/parsers">
 				<img src="/static/images/settings_parsers.png" />Parser Settings
 			</a>
 		</li>
 		<li {% if setting_menu == 'services' %}id="menu_selected"{% endif %}>
-			<a href="/settings/services">
+			<a href="/ui/settings/services">
 				<img src="/static/images/settings_services.png" />Service Status
 			</a>
 		</li>
