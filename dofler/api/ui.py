@@ -1,6 +1,7 @@
 from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
 from bottle.ext import sqlalchemy
+import markdown
 from jinja2 import Environment, FileSystemLoader
 from ConfigParser import ConfigParser
 from dofler import get_version_info
