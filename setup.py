@@ -44,6 +44,8 @@ setup(
             'static/images/settings_services.png',
             'static/images/settings_users.png',
             'static/images/settings_webui.png',
+            'static/images/ui_back.png',
+            'static/images/ui_settings.png',
         ]),
         ('/usr/share/dofler/templates', [
             'templates/base.html',
