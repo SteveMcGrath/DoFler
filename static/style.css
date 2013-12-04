@@ -75,9 +75,7 @@ body{
   margin-top: 50px;
 }
 
-/* Link Buttons */
-
-.ui-button {
+#ui-parsers input[type="submit"] {
   padding: 10px 15px;
   background: #4479BA;
   color: #FFF;
@@ -96,18 +94,6 @@ body{
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
-}
-.ui-button:hover {
-  background: #356094;
-  border: solid 1px #2A4E77;
-  text-decoration: none;
-}
-.ui-button:active {
-  -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-  background: #2E5481;
-  border: solid 1px #203E5F;
 }
 
 /* Navigation */
@@ -213,12 +199,19 @@ body{
   white-space:pre;
 }
 
-#settings-content input[type="text"] {
+#settings-content input[type="text"], input[type="password"] {
+  border-style: none;
   border-bottom: 2px;
   border-bottom-style: solid;
   border-bottom-color: #fff;
   color: #c7c8c8;
-  background: rgba(15, 20, 20, 0.4);
+  font-family: "Verdana"; 
+  background: #000;
+}
+
+#settings-content input[type="submit"]:before {
+  content:"\A"; 
+  white-space:pre;
 }
 
 /* Image Display */
