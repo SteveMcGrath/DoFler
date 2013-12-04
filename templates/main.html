@@ -2,9 +2,9 @@
 {% block title %}Viewer{% endblock %}
 {% block stylesheets %}<style> html {overflow: hidden;}</style>{% endblock %}
 {% block navbar %}
-    {% if show_settings %}
+    {% if web_display_settings %}
     <div id="navbar">
-        <a href="/ui/settings"><img src="/static/images/ui_settings.png" />Settings</a>
+        <a href="/ui/settings"><img src="/static/images/ui_settings.png" /></a>
     </div>
     {% endif %}
 {% endblock %}
@@ -91,9 +91,11 @@
     <div id="proto-trend"></div>
     <div id="proto-legend"></div>
     <script language="javascript">
+    plot = $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right"}, legend: {container: $('#proto-legend')}});
     function ui_stats() {
         $.getJSON('/get/stats/{{ web_stat_max }}', function(data){
-            $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right"}, legend: {container: $('#proto-legend')}});
+            plot.setData(data);
+            plot.draw();
         });
     };
     ui_stats();

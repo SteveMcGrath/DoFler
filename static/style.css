@@ -51,7 +51,6 @@ body{
 .ui-parser {
   height: 30px;
   padding-top: 10px;
-  padding-bottom: 25px;
   width: 100%;
   border-bottom-width: thin;
   border-bottom-style: solid;
@@ -62,7 +61,7 @@ body{
   width: 200px;
   text-align: right;
   line-height: 0px;
-  vertical-align: bottom;
+  vertical-align: middle;
 }
 
 #ui-parsers {
@@ -186,6 +185,7 @@ body{
   color: #c7c8c8;
   font-family: "Verdana"; 
   background: #000;
+  width: 50%;
 }
 
 /* Image Display */
