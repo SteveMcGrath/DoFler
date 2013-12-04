@@ -85,7 +85,7 @@ def settings_page(db):
 
 @app.get('/settings/docs')
 @app.get('/settings/docs/<path:path>')
-def documentation(path=None, db):
+def documentation(db, path=None):
     '''
     Documentation Pages.
     '''
