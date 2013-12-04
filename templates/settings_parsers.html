@@ -18,6 +18,7 @@
 	<label for="{{ parser }}_command">{{ parser|capitalize }} Command</label>
 	<input type="text" name="{{ parser }}_command" value="{{ parsers[parser]['command'] }}" />
 	{% endfor %}
+	<br />
 	<input type="submit" value="Update" />
 </form>
 {% endblock %}

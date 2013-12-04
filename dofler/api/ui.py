@@ -138,9 +138,10 @@ def user_settings(db):
         if action == 'Remove' and username != 'admin':
             user = db.query(User).filter_by(name=username).one()
             db.delete(user)
+    users = db.query(User).all()
     return env.get_template('settings_users.html').render(
         auth=auth(request),
-        users=db.query(User).all()
+        users=users
     )
 
 
