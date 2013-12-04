@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.1.0',
+    version='0.4.1.1',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -50,7 +50,6 @@ setup(
             'templates/main.html',
             'templates/settings_base.html',
             'templates/settings_login.html',
-            'templates/settings_logout.html',
             'templates/settings_logging.html',
             'templates/settings_doc_page.html',
             'templates/settings_users.html',
