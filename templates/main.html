@@ -4,7 +4,7 @@
 {% block navbar %}
     {% if web_display_settings %}
     <div id="navbar">
-        <a href="/ui/settings"><img src="/static/images/ui_settings.png" /></a>
+        <a href="/ui/settings"><img src="/ui/static/images/ui_settings.png" /></a>
     </div>
     {% endif %}
 {% endblock %}
@@ -91,11 +91,9 @@
     <div id="proto-trend"></div>
     <div id="proto-legend"></div>
     <script language="javascript">
-    plot = $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right"}, legend: {container: $('#proto-legend')}});
     function ui_stats() {
         $.getJSON('/get/stats/{{ web_stat_max }}', function(data){
-            plot.setData(data);
-            plot.draw();
+            $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right", timezone: "browser"}, legend: {container: $('#proto-legend')}});
         });
     };
     ui_stats();
