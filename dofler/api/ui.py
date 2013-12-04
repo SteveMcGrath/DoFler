@@ -100,7 +100,7 @@ def login(db):
             logged_in=True
         else:
             error='Authentication Failed'
-    return env.get_template('settings_base.html').render(
+    return env.get_template('settings_login.html').render(
         auth=logged_in,
         note=note,
         error=error

@@ -3,7 +3,9 @@
 {% block stylesheets %}<style> html {overflow: hidden;}</style>{% endblock %}
 {% block navbar %}
     {% if show_settings %}
+    <div id="navbar">
         <a href="/ui/settings"><img src="/static/images/ui_settings.png" />Settings</a>
+    </div>
     {% endif %}
 {% endblock %}
 {% block content %}
