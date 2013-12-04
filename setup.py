@@ -40,7 +40,7 @@ setup(
         ('/usr/share/dofler/docs', [
             'docs/introduction.md',
             'docs/walkthrough.md',
-        ])
+        ]),
         ('/usr/share/dofler/static/images', [
             'static/images/doc.png',
             'static/images/settings_api.png',
