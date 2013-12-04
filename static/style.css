@@ -150,46 +150,49 @@ body{
 
 /* Settings Page */
 
-#ui-settings {
-  width: 100%;
+#settings-sidebar {
+  width: 30%;
+
 }
 
-#ui-settings .label {
-  text-align: right;
+#settings-sidebar li {
+  border-style: solid;
+  border-bottom: 2px;
+  border-top: 2px;
+  border-color: #fff;
 }
 
-#ui-settings tr {
-  padding-bottom: 10px;
-  padding-top: 10px;
-  border-bottom-style: solid;
-  border-bottom-width: thin;
-  border-bottom-color: grey;
+#settings-sidebar li.menu_selected {
+  background-color: #1A3380;
 }
 
-#ui-settings .label {
+#settings-sidebar h2 {
+  font-size: 12;
+}
+
+#settings-sidebar a {
+  color: #fff;
+}
+
+#settings-sidebar a:visited {
+  color: #fff;
+}
+
+#settings-sidebar a:hover {
+  color: #fff;
+}
+
+#settings-content label {
   width: 300px;
 }
 
-#ui-settings input[type="text"] {
+#settings-content input[type="text"] {
   width: 100%;
-}
-
-/* Login & New User Pages */
-
-#login {
-  width: 550px;
-  height: 250px;
-  bottom: 50%;
-  left: 50%;
-  margin-left: -275px;
-  margin-top: -125px;
-  position: fixed;
-  padding: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border-width: thin;
-  border-color: gray;
+  border-bottom: 2px;
   border-style: solid;
+  border-color: #fff;
+  color: #c7c8c8;
+  background: rgba(15, 20, 20, 0.4);
 }
 
 /* Image Display */
