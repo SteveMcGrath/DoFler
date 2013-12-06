@@ -32,20 +32,6 @@
 				<img src="/ui/static/images/doc.png" />Documentation
 			</a>
 		</li>
-		{% if setting_menu == 'docs' %}
-		<ul>
-			<li  {% if doc_item == 'introduction' %}id="doc_selected"{% endif %}>
-				<a href="/ui/settings/docs/introduction">
-					<img src="/ui/static/images/doc.png" />Introduction
-				</a>
-			</li>
-			<li  {% if doc_item == 'walkthrough' %}id="doc_selected"{% endif %}>
-				<a href="/ui/settings/docs/walkthrough">
-					<img src="/ui/static/images/doc.png" />Walkthrough
-				</a>
-			</li>
-		</ul>
-		{% endif %}
 	</ul>
 	{% if auth %}
 	<h2>Client/Server Settings</h2>

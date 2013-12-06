@@ -1,4 +1,4 @@
-__version__ = '0.4.1.52'
+__version__ = '0.4.1.55'
 __author__ = 'Steven McGrath <steve@chigeek.com>'
 __website__ = 'http://chigeek.com/tag/dofler.html'
 __repository__ = 'https://github.com/SteveMcGrath/DoFler'
