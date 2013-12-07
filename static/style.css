@@ -188,7 +188,7 @@ body{
   width: 50%;
 }
 
-#settings-content td input[type="text"], input[type="password"] {
+#settings-content td input[type="text"], td input[type="password"] {
   width: 100%;
 }
 
