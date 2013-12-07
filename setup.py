@@ -1,13 +1,13 @@
 from distutils.core import setup
-import dofler
+#import dofler
 
 setup(
     name='DoFler',
-    version=dofler.__version__,
+    version='0.4.1.65',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
-    url=dofler.__repository__,
+    url='https://github.com/SteveMcGrath/DoFler',
     packages=[
         'dofler', 
         'dofler.api', 
