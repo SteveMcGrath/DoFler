@@ -121,8 +121,6 @@ def login(db):
             response.set_cookie('user', 
                 request.forms.get('username'), 
                 secret=setting('cookie_key').value,
-                path='/',
-                max_age=3600,
             )
             response.add_header('Authentication', 'SUCCESS')
             logged_in=True
@@ -141,7 +139,9 @@ def logout(db):
     '''
     User Logout. 
     '''
-    response.delete_cookie('user')
+    response.delete_cookie('user',
+        request.get_cookie('user', secret=setting('cookie_key').value),
+        secret=setting('cookie_key').value)
     return env.get_template('settings_login.html').render(
         auth=False,
     )

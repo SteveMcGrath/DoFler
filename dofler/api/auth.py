@@ -22,4 +22,7 @@ def login():
 @app.get('/logout')
 def logout():
     '''Simply deletes the account cookie, effectively logging the sensor out.'''
-    response.delete_cookie('user')
+    response.delete_cookie('user',
+        request.get_cookie('user', secret=setting('cookie_key').value),
+        secret=setting('cookie_key').value)
+    )
