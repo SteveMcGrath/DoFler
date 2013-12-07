@@ -18,8 +18,11 @@
 		{% for user in users %}
 		<form id="{{ user.name }}" action="/ui/settings/users" method="post">
 			<tr>
-				<td><input type="text" name="username" value="{{ user.name }}" /></td>
-				<td><input type="password" name="password" /></td>
+				<td>{{ user.name }}</td>
+				<td>
+					<input type="hidden" name="username" value="{{ user.name }}" />
+					<input type="password" name="password" />
+				</td>
 				<td>
 					<input type="submit" value="Update" name="action" />
 					<input type="submit" value="Remove" name="action" />
