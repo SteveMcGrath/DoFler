@@ -257,6 +257,8 @@ def api_settings(db):
         web_account_delay=setting('web_account_delay').value,
         web_stat_delay=setting('web_stat_delay').value,
         web_stat_max=setting('web_stat_max').intvalue,
+        web_image_max=setting('web_image_max').intvalue,
+        web_account_max=setting('web_account_max').intvalue,
         web_display_settings=setting('web_display_settings').boolvalue
     )
 
