@@ -161,11 +161,11 @@ def user_settings(db):
         if action == 'Create':
             s.add(User(username, password))
         if action == 'Update':
-            user = db.query(User).filter_by(name=username).one()
+            user = s.query(User).filter_by(name=username).one()
             user.update(password)
             s.merge(user)
         if action == 'Remove' and username != 'admin':
-            user = db.query(User).filter_by(name=username).one()
+            user = s.query(User).filter_by(name=username).one()
             s.delete(user)
         s.commit()
     users = s.query(User).all()
