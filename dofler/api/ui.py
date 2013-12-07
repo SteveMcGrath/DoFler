@@ -93,7 +93,7 @@ def documentation(db, path=None):
     data = None
     if path:
         try:
-            with open('/usr/share/dofler/docs/%s' % path) as mdfile:
+            with open('/usr/share/dofler/docs/%s.md' % path) as mdfile:
                 data = markdown.markdown(mdfile.read(), extensions=[
                     'codehilite',
                     'extra',

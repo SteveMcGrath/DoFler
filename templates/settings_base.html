@@ -10,25 +10,25 @@
 			</a>
 		</li>
 		{% if auth %}
-		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
+		<li {% if setting_menu == 'login' %}id="menu_selected"{% endif %}>
 			<a href="/ui/settings/login">
 				<img src="/ui/static/images/settings_login.png" />Log Off
 			</a>
 		</li>
-		<li {% if setting_menu == 'users' %}id="selected"{% endif %}>
+		<li {% if setting_menu == 'users' %}id="menu_selected"{% endif %}>
 			<a href="/ui/settings/users">
 				<img src="/ui/static/images/settings_users.png" />User Management
 			</a>
 		</li>
 		{% else %}
-		<li {% if setting_menu == 'login' %}id="selected"{% endif %}>
+		<li {% if setting_menu == 'login' %}id="menu_selected"{% endif %}>
 			<a href="/ui/settings/login">
 				<img src="/ui/static/images/settings_login.png" />Log In
 			</a>
 		</li>
 		{% endif %}
-		<li {% if setting_menu == 'docs' %}id="selected"{% endif %}>
-			<a href="/ui/settings/docs">
+		<li {% if setting_menu == 'docs' %}id="menu_selected"{% endif %}>
+			<a href="/ui/settings/docs/introduction">
 				<img src="/ui/static/images/doc.png" />Documentation
 			</a>
 		</li>
