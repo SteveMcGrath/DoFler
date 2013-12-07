@@ -153,20 +153,23 @@ def user_settings(db):
     '''
     User Management Page
     '''
+    s = SettingSession()
     if auth(request) and request.method == 'POST':
         username = request.forms.get('username')
         password = request.forms.get('password')
         action = request.forms.get('action')
         if action == 'Create':
-            db.add(User(username, password))
+            s.add(User(username, password))
         if action == 'Update':
             user = db.query(User).filter_by(name=username).one()
             user.update(password)
-            db.merge(user)
+            s.merge(user)
         if action == 'Remove' and username != 'admin':
             user = db.query(User).filter_by(name=username).one()
-            db.delete(user)
-    users = db.query(User).all()
+            s.delete(user)
+        s.commit()
+    users = s.query(User).all()
+    s.close()
     return env.get_template('settings_users.html').render(
         auth=auth(request),
         users=users
