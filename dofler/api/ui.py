@@ -142,7 +142,7 @@ def logout(db):
     User Logout. 
     '''
     response.delete_cookie('user', secret=setting('cookie_key').value)
-    return env.get_template('settings_base.html').render(
+    return env.get_template('settings_login.html').render(
         auth=False,
     )
 
