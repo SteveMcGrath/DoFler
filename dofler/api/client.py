@@ -2,6 +2,7 @@ import urllib2
 import time
 import os
 import requests
+import json
 from dofler.common import md5hash, log
 
 class DoflerClient(object):
