@@ -1,10 +1,11 @@
 from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 from bottle.ext import sqlalchemy
 from dofler.common import jsonify
 from dofler.models import *
 from dofler.db import engine, Base
+from dofler import monitor
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -33,8 +34,9 @@ def recent_images(ts, db):
         skippr = 0
     return jsonify([i.dump() for i in db.query(Image)\
                                         .filter(Image.timestamp > ts)\
-                                        .order_by(desc(Image.timestamp))\
-                                        .offset(skippr).all()])
+                                        .order_by(asc(Image.timestamp.asc()))\
+                                        .offset(skippr).all()]
+    )
 
 
 @app.get('/image/<md5sum>')
@@ -103,3 +105,11 @@ def reset(datatype, db):
                     Reset.timestamp > int(time.time()) - 30).count()
     if check > 0: return True
     return False
+
+
+@app.get('/services')
+def services(db):
+    '''
+    Returns the running status of the services on the dofler sensor. 
+    '''
+    return jsonify(monitor.parser_status())
