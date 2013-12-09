@@ -51,7 +51,7 @@ def initialize():
         s.add(Setting('driftnet_enabled', '1'))
         s.add(Setting('driftnet_command', 'driftnet -ai {IF} -d /tmp'))
         s.add(Setting('tshark_enabled', '1'))
-        s.add(Setting('tshark_command', 'tshark -T psml -Sli {IF} -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap'))
+        s.add(Setting('tshark_command', '/bin/bash -c \'dumpcap -i {IF} -P -w - | tshark -T psml -PS -l -r -\''))
         s.add(Setting('cookie_key', str(md5hash(time.time()))))
     s.commit()
     s.close()
