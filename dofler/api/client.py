@@ -152,7 +152,7 @@ class DoflerClient(object):
         '''
         Gets the current service statuses. 
         '''
-        return json.loads(self.call('/post/services').read())
+        return json.loads(self.call('/post/services', {}).content)
 
 
     def start(self, name):

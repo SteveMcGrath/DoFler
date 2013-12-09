@@ -1,7 +1,7 @@
 from bottle import Bottle, request, response, redirect, static_file, error
 from bottle.ext import sqlalchemy
 from dofler.api.auth import auth
-from dofler.common import md5hash
+from dofler.common import md5hash, jsonify
 from dofler.models import *
 from dofler.db import engine, Base
 from dofler import monitor
@@ -78,7 +78,7 @@ def push_reset(db):
         db.add(Reset(request.forms.get('type')))
 
 
-@app.get('/services')
+@app.post('/services')
 def services(db):
     '''
     Returns the running status of the services on the dofler sensor. 

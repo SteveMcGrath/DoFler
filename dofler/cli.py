@@ -7,6 +7,8 @@ from cmd import Cmd
 from bottle import debug, run
 from getpass import getpass
 import time
+import os
+import sys
 
 
 class CLI(Cmd):
@@ -14,8 +16,13 @@ class CLI(Cmd):
         '''
         Initiates a login and then returns the api client object.
         '''
-        passwd = getpass('\nEnter Admin Password : ')
-        return api.DoflerClient(
+        if os.path.exists(os.path.join(os.environ['HOME'], '.dofler_admin')):
+            pfile = open(os.path.join(os.environ['HOME'], '.dofler_admin'))
+            passwd = pfile.read() 
+            pfile.close()
+        else:
+            passwd = getpass('\nEnter Admin Password : ')
+        return api.client.DoflerClient(
             '127.0.0.1', 
             common.setting('api_port').intvalue,
             'admin',
