@@ -102,7 +102,7 @@ class CLI(Cmd):
         Lists all of the installed services and their running status. 
         '''
         api = self.getapi()
-        self.svc_disp(api.services())
+        self.svcs_disp(api.services())
 
 
     def do_start(self, s):
