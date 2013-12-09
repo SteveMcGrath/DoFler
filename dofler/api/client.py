@@ -160,11 +160,17 @@ class DoflerClient(object):
         '''
         Starts the defined service. 
         '''
-        self.call('/ui/settings/services', {'action': 'Start', 'parser': name})
+        return json.loads(self.call('/post/services', {
+                'action': 'Start', 
+                'parser': name
+        }).content)
 
 
     def stop(self, name):
         '''
         Stops the defined service. 
         '''
-        self.call('/ui/settings/services', {'action': 'Stop', 'parser': name})
+        return json.loads(self.call('/post/services', {
+            'action': 'Stop', 
+            'parser': name
+        }).content)

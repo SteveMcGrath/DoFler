@@ -28,6 +28,16 @@ class CLI(Cmd):
             'admin',
             passwd
         )
+
+
+    def svcs_disp(self, services):
+        '''
+        Displays the API status. 
+        '''
+        vals = {False: 'STOPPED', True: 'RUNNING'}
+        for service in services:
+            print '%-20s : %s' % (service, vals[services[service]])
+
         
 
     def do_run(self, s):
@@ -92,10 +102,7 @@ class CLI(Cmd):
         Lists all of the installed services and their running status. 
         '''
         api = self.getapi()
-        vals = {False: 'STOPPED', True: 'RUNNING'}
-        svcs = api.services()
-        for item in svcs:
-            print '%-20s : %s' % (item, vals[svcs[item]])
+        self.svc_disp(api.services())
 
 
     def do_start(self, s):
@@ -105,7 +112,7 @@ class CLI(Cmd):
         Starts the designated service. 
         '''
         api = self.getapi()
-        api.start(s)
+        self.svcs_disp(api.start(s))
 
 
     def do_stop(self, s):
@@ -115,7 +122,7 @@ class CLI(Cmd):
         Stops the designated service. 
         '''
         api = self.getapi()
-        api.stop(s)
+        self.svcs_disp(api.stop(s))
 
 
     def do_restart(self, s):
@@ -126,4 +133,4 @@ class CLI(Cmd):
         '''
         api = self.getapi()
         api.stop(s)
-        api.start(s)
+        self.svcs_disp(api.start(s))

@@ -83,4 +83,14 @@ def services(db):
     '''
     Returns the running status of the services on the dofler sensor. 
     '''
+    if auth(request) and request.method == 'POST':
+        parser = request.forms.get('parser') or None
+        action = request.forms.get('action') or None
+        if action == 'Stop':
+            monitor.stop(parser)
+        if action == 'Start':
+            monitor.start(parser)
+        if action == 'Restart':
+            monitor.stop(parser)
+            monitor.start(parser)
     return jsonify(monitor.parser_status())
