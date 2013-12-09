@@ -12,7 +12,6 @@ def login():
         response.set_cookie('user', 
             request.forms.get('username'), 
             secret=setting('cookie_key').value,
-            path='/'
         )
         response.add_header('Authentication', 'SUCCESS')
     else:
