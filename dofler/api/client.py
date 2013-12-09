@@ -146,3 +146,24 @@ class DoflerClient(object):
         :return: None 
         '''
         self.call('/post/reset', {'type': env})
+
+
+    def services(self):
+        '''
+        Gets the current service statuses. 
+        '''
+        return json.loads(self.call('/post/services').read())
+
+
+    def start(self, name):
+        '''
+        Starts the defined service. 
+        '''
+        self.call('/ui/settings/services', {'action': 'Start', 'parser': name})
+
+
+    def stop(self, name):
+        '''
+        Stops the defined service. 
+        '''
+        self.call('/ui/settings/services', {'action': 'Stop', 'parser': name})

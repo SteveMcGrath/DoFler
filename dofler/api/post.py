@@ -4,6 +4,7 @@ from dofler.api.auth import auth
 from dofler.common import md5hash
 from dofler.models import *
 from dofler.db import engine, Base
+from dofler import monitor
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -75,3 +76,11 @@ def push_reset(db):
     '''
     if auth(request):
         db.add(Reset(request.forms.get('type')))
+
+
+@app.get('/services')
+def services(db):
+    '''
+    Returns the running status of the services on the dofler sensor. 
+    '''
+    return jsonify(monitor.parser_status())

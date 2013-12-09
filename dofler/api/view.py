@@ -5,7 +5,6 @@ from bottle.ext import sqlalchemy
 from dofler.common import jsonify
 from dofler.models import *
 from dofler.db import engine, Base
-from dofler import monitor
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -105,11 +104,3 @@ def reset(datatype, db):
                     Reset.timestamp > int(time.time()) - 30).count()
     if check > 0: return True
     return False
-
-
-@app.get('/services')
-def services(db):
-    '''
-    Returns the running status of the services on the dofler sensor. 
-    '''
-    return jsonify(monitor.parser_status())

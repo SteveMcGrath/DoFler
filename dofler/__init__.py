@@ -18,4 +18,5 @@ import md5
 import common
 import models
 import monitor
+import cli
 import svc
