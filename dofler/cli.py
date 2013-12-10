@@ -18,7 +18,7 @@ class CLI(Cmd):
         '''
         if os.path.exists(os.path.join(os.environ['HOME'], '.dofler_admin')):
             pfile = open(os.path.join(os.environ['HOME'], '.dofler_admin'))
-            passwd = pfile.read() 
+            passwd = pfile.read().strip('\n')
             pfile.close()
         else:
             passwd = getpass('\nEnter Admin Password : ')

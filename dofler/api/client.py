@@ -58,7 +58,7 @@ class DoflerClient(object):
         self.call('/post/login', {
             'username': username,
             'password': password
-        })
+        }).result()
 
 
     def account(self, username, password, info, proto, parser):
@@ -157,7 +157,7 @@ class DoflerClient(object):
         return json.loads(self.call('/post/services', {
                 'action': 'none',
                 'parser': 'none',
-        }).content)
+        }).result().content)
 
 
     def start(self, name):
@@ -165,9 +165,9 @@ class DoflerClient(object):
         Starts the defined service. 
         '''
         return json.loads(self.call('/post/services', {
-                'action': 'start', 
+                'action': 'Start', 
                 'parser': name
-        }).content)
+        }).result().content)
 
 
     def stop(self, name):
@@ -175,6 +175,6 @@ class DoflerClient(object):
         Stops the defined service. 
         '''
         return json.loads(self.call('/post/services', {
-            'action': 'stop', 
+            'action': 'Stop', 
             'parser': name
-        }).content)
+        }).result().content)
