@@ -1,8 +1,9 @@
 import urllib2
 import time
 import os
-import requests
+#import requests
 import json
+from requests_futures.sessions import FuturesSession
 from dofler.common import md5hash, log
 
 class DoflerClient(object):
@@ -16,7 +17,7 @@ class DoflerClient(object):
         self.ssl = ssl
         self.anonymize = anon
         self.username = username
-        self.opener = requests.Session()
+        self.opener = FuturesSession(max_workers=10)
         self.login(username, password)
 
 
@@ -54,7 +55,7 @@ class DoflerClient(object):
 
         :return: None
         '''
-        self.call('/auth/login', {
+        self.call('/post/login', {
             'username': username,
             'password': password
         })

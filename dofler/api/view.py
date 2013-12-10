@@ -1,6 +1,6 @@
 from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
-from sqlalchemy import desc, asc
+from sqlalchemy import desc
 from bottle.ext import sqlalchemy
 from dofler.common import jsonify
 from dofler.models import *
@@ -32,11 +32,9 @@ def recent_images(ts, db):
             skippr = 0
     else:
         skippr = 0
-    return jsonify([i.dump() for i in db.query(Image)\
-                                        .filter(Image.timestamp > ts)\
-                                        .order_by(Image.timestamp)\
-                                        .offset(skippr).all()]
-    )
+    images = db.query(Image).filter(Image.timestamp >= ts)\
+               .order_by(desc(Image.timestamp)).limit(200).all()
+    return jsonify([i.dump() for i in reversed(images)])
 
 
 @app.get('/image/<md5sum>')

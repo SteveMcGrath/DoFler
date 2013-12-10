@@ -1,4 +1,3 @@
-import auth
 import post
 import view
 import client
@@ -6,7 +5,6 @@ import ui
 from bottle import Bottle, redirect
 
 app = Bottle()
-app.mount('/auth', auth.app)
 app.mount('/post', post.app)
 app.mount('/get', view.app)
 app.mount('/ui', ui.app)

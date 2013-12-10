@@ -1,7 +1,6 @@
 from bottle import Bottle, request, response, redirect, static_file, error
 from bottle.ext import sqlalchemy
-from dofler.api.auth import auth
-from dofler.common import md5hash, jsonify
+from dofler.common import md5hash, jsonify, auth, auth_login, setting
 from dofler.models import *
 from dofler.db import engine, Base
 from dofler import monitor
@@ -12,6 +11,27 @@ plugin = sqlalchemy.Plugin(
     commit=True, use_kwargs=False
 )
 app.install(plugin)
+
+
+@app.post('/login')
+def login():
+    '''Login function'''
+    if auth_login(request):
+        response.set_cookie('user', 
+            request.forms.get('username'), 
+            secret=setting('cookie_key').value,
+        )
+        response.add_header('Authentication', 'SUCCESS')
+    else:
+        response.add_header('Authentication', 'FAILURE')
+
+
+@app.get('/logout')
+def logout():
+    '''Simply deletes the account cookie, effectively logging the sensor out.'''
+    response.delete_cookie('user',
+        secret=setting('cookie_key').value
+    )
 
 
 @app.post('/account')
