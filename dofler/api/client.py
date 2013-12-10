@@ -153,7 +153,10 @@ class DoflerClient(object):
         '''
         Gets the current service statuses. 
         '''
-        return json.loads(self.call('/post/services', {}).content)
+        return json.loads(self.call('/post/services', {
+                'action': 'none',
+                'parser': 'none',
+        }).content)
 
 
     def start(self, name):
@@ -161,7 +164,7 @@ class DoflerClient(object):
         Starts the defined service. 
         '''
         return json.loads(self.call('/post/services', {
-                'action': 'Start', 
+                'action': 'start', 
                 'parser': name
         }).content)
 
@@ -171,6 +174,6 @@ class DoflerClient(object):
         Stops the defined service. 
         '''
         return json.loads(self.call('/post/services', {
-            'action': 'Stop', 
+            'action': 'stop', 
             'parser': name
         }).content)
