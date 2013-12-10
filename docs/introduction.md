@@ -47,6 +47,8 @@ API (url: /post/stat) after 60 seconds of starting up the parser, then you may
 need to adjust the settings.  Here are some common commands for various
 installations, versions, and packaged versions:
 
+_NOTE: These commands all use rungbuffers, and may not be desirable_
+
 * __Debian Testing :__ `tshark -T psml -PS -l -i {IF} -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap`
 * __CentOS/RHEL 6 :__ `tshark -T psml -i {IF} -S -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap`
 * __Ubuntu 12.04 :__ `tshark -T psml -Sli {IF} -b filesize:100000 -b files:3 -w /tmp/tshark-stats.pcap`

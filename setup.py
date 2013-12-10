@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.1.65',
+    version='0.4.1.94',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -29,6 +29,7 @@ setup(
         'psutil',
         'beautifulsoup',
         'markdown',
+        'requests_futures',
     ],
     data_files=[
         ('/usr/share/dofler/static', [
