@@ -11,6 +11,12 @@ setting_engine = create_engine(config.config.get('Database', 'setting_db'))
 SettingSession = sessionmaker(bind=setting_engine)
 
 def initialize():
+    '''
+    Database Initialization Function
+
+    Creates all the default values for the settings databases if they are in a
+    pristine state.  This is run at every startup of the code.
+    '''
     Account.metadata.create_all(engine)
     Image.metadata.create_all(engine)
     Stat.metadata.create_all(engine)

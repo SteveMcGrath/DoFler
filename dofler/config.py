@@ -15,6 +15,9 @@ else:
         config.write(cfile)
 
 def update(setting):
+    '''
+    Updates the Configuration file with the in-memory config file.
+    '''
     config.set('Database', 'db', setting)
     with open('/etc/dofler.conf', 'w') as cfile:
         config.write(cfile)
