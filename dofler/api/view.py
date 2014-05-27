@@ -1,11 +1,19 @@
+# -*- coding: utf-8 -*-
 from bottle import Bottle, request, response, redirect, static_file, error
 from sqlalchemy.sql import func, label
 from sqlalchemy import desc
 from bottle.ext import sqlalchemy
-from dofler.common import jsonify
+from dofler.common import jsonify, setting
 from dofler.models import *
 from dofler.db import engine, Base
+import requests
 import time
+import sys
+
+if sys.getdefaultencoding() != 'utf-8':  
+    reload(sys)  
+    sys.setdefaultencoding('utf-8')  
+default_encoding = sys.getdefaultencoding()
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -92,6 +100,38 @@ def stats(limit, db):
                                             .all()]
         })
     return jsonify(data)
+
+
+@app.get('/vulns')
+def get_pvs_data(db):
+    '''
+    Returns the top 5 vulnerable hosts as detected from the PVS sensor.
+    '''
+    resp = requests.post('https://%s:8835/login' % setting('pvs_host').value,
+        data={
+            'login': setting('pvs_user').value,
+            'password': setting('pvs_password').value,
+            'nocookie': 1, 'json': 1
+    }, verify=False)
+    pvs_key = resp.json()['reply']['contents']['token']
+    data = requests.post('https://%s:8835/report2/hosts/sort' % setting('pvs_host').value, data={
+        'report': 0, 'json': 1, 'token': pvs_key}, verify=False)
+    hosts = data.json()['reply']['contents']['hostlist']['host']
+    shosts = sorted(hosts, key=lambda k: k['severity_index'], reverse=True)
+    rethosts = []
+    max_vulns = 0
+    for item in shosts[:5]:
+        d = {'host': item['hostname']}
+        sevs = {0: 'info', 1: 'low', 2: 'medium', 3: 'high', 4: 'critical'}
+        for severity in item['severitycount']['item']:
+            d[sevs[severity['severitylevel']]] = severity['count']
+        if item['severity'] > max_vulns:
+            max_vulns = item['severity']
+        rethosts.append(d)
+    requests.post('https://%s:8835/logout' % setting('pvs_host').value, data={
+        'seq': 1802, 'json': 1, 'token': pvs_key}, verify=False)
+    return jsonify({'vuln_max': max_vulns, 'hosts': rethosts})
+
 
 
 @app.get('/reset/<datatype>')
