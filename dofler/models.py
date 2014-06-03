@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, Text, LargeBinary, ForeignKey, String
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import select, func
+import base64
 import time
+import bleach
 from dofler.md5 import md5hash
 
 Base = declarative_base()
@@ -27,9 +30,9 @@ class Account(Base):
     def dump(self):
         return {
             'id': self.id,
-            'username': self.username,
-            'password': self.password,
-            'info': self.info,
+            'username': bleach.clean(self.username.decode('ISO-8859-1', 'replace')),
+            'password': bleach.clean(self.password.decode('ISO-8859-1', 'replace')),
+            'info': bleach.clean(self.info),
             'proto': self.proto,
             'parser': self.parser,
         }
@@ -49,6 +52,10 @@ class Image(Base):
         self.filetype = filetype
         self.data = data
         self.count = 1
+
+    @hybrid_property
+    def b64data(self):
+        return base64.b64encode(self.data)
 
     def dump(self):
         return {

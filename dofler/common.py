@@ -77,7 +77,7 @@ def jsonify(data):
     :type data: dict
     :return: str
     '''
-    return json.dumps(data)
+    return json.dumps(data, encoding='ISO-8859-1')
 
 
 def auth(request):
