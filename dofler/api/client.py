@@ -4,6 +4,9 @@ import os
 import json
 from requests_futures.sessions import FuturesSession
 from dofler.common import md5hash, log
+from dofler.models import *
+from dofler.db import Session, SettingSession
+from dofler.md5 import md5hash
 
 class DoflerClient(object):
     '''
@@ -85,13 +88,18 @@ class DoflerClient(object):
         if self.anonymize:
             if len(password) >= 3:
                 password = '%s%s' % (password[:3], '*' * (len(password) - 3))
-        self.call('/post/account', {
-            'username': username,
-            'password': password,
-            'info': info,
-            'proto': proto,
-            'parser': parser,
-        })
+        if self.host in ['localhost', '127.0.0.1']:
+            s = Session()
+            s.add(Account(username, password, info, proto, parser))
+            s.commit()
+        else:
+            self.call('/post/account', {
+                'username': username,
+                'password': password,
+                'info': info,
+                'proto': proto,
+                'parser': parser,
+            })
 
 
     def image(self, filename):
@@ -107,12 +115,28 @@ class DoflerClient(object):
         :return: None
         '''
         if os.path.exists(filename):
-            #try:
-                self.call('/post/image', {'filetype': filename.split('.')[-1]},
-                                         {'file': open(filename, 'rb')})
-            #except:
-            #    log.error('API: Upload Failed. %s=%skb' % (filename, 
-            #                                os.path.getsize(filename) / 1024))
+            if self.host in ['localhost', '127.0.0.1']:
+                imgfile = open(filename, 'rb')
+                md5 = md5hash(imgfile.read())
+                s = Session()
+                try:
+                    image = s.query(Image).filter_by(md5sum=md5).one()
+                    image.timestamp = int(time.time())
+                    image.count += 1
+                    s.merge(image)
+                except:
+                    ftype = filename.split('.')[-1]
+                    s.add(Image(int(time.time()), ftype, imgfile.read()))
+                s.commit()
+                s.close()
+                imgfile.close()
+            else:
+                try:
+                    self.call('/post/image', {'filetype': filename.split('.')[-1]},
+                                             {'file': open(filename, 'rb')})
+                except:
+                    log.error('API: Upload Failed. %s=%skb' % (filename, 
+                                                os.path.getsize(filename) / 1024))
         else:
             log.error('API: %s doesnt exist' % filename)
 
@@ -130,11 +154,17 @@ class DoflerClient(object):
 
         :return: None
         '''
-        self.call('/post/stat', {
-            'proto': proto, 
-            'count': count, 
-            'username': self.username
-        })
+        if self.host in ['localhost', '127.0.0.1']:
+            s = Session()
+            s.add(Stat(proto, self.username, count))
+            s.commit()
+            s.close()
+        else:
+            self.call('/post/stat', {
+                'proto': proto, 
+                'count': count, 
+                'username': self.username
+            })
 
 
     def reset(self, env):
