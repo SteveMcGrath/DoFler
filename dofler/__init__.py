@@ -1,4 +1,4 @@
-__version__ = '0.4.1.94'
+__version__ = '0.4.2.0'
 __author__ = 'Steven McGrath <steve@chigeek.com>'
 __website__ = 'http://chigeek.com/tag/dofler.html'
 __repository__ = 'https://github.com/SteveMcGrath/DoFler'
@@ -11,6 +11,10 @@ def get_version_info():
         'repository': __repository__,
     }
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 import db
 import api
 import parsers
@@ -20,3 +24,4 @@ import models
 import monitor
 import cli
 import svc
+import report
