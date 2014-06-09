@@ -3,9 +3,12 @@ import time
 import os
 import json
 from requests_futures.sessions import FuturesSession
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from dofler.common import md5hash, log
+from dofler import config
 from dofler.models import *
-from dofler.db import Session, SettingSession
+from dofler.db import SettingSession
 from dofler.md5 import md5hash
 
 class DoflerClient(object):
@@ -21,6 +24,9 @@ class DoflerClient(object):
         self.username = username
         self.opener = FuturesSession(max_workers=10)
         self.login(username, password)
+        if self.host in ['localhost', '127.0.0.1']:
+            self.engine = create_engine(config.config.get('Database', 'db'), echo=False)
+            self.Session = sessionmaker(bind=self.engine)
 
 
     def call(self, url, data, files={}):
@@ -89,9 +95,11 @@ class DoflerClient(object):
             if len(password) >= 3:
                 password = '%s%s' % (password[:3], '*' * (len(password) - 3))
         if self.host in ['localhost', '127.0.0.1']:
-            s = Session()
+            s = self.Session()
             s.add(Account(username, password, info, proto, parser))
             s.commit()
+            log.debug('DATABASE: Added Account: %s:%s:%s:%s:%s' % (username,
+                password, info, proto, parser))
         else:
             self.call('/post/account', {
                 'username': username,
@@ -116,20 +124,24 @@ class DoflerClient(object):
         '''
         if os.path.exists(filename):
             if self.host in ['localhost', '127.0.0.1']:
-                imgfile = open(filename, 'rb')
-                md5 = md5hash(imgfile.read())
-                s = Session()
-                try:
+                with open(filename, 'rb') as imagefile:
+                    data = imagefile.read()
+                md5 = md5hash(data)
+                print md5
+                s = self.Session()
+                if s.query(Image).filter_by(md5sum=md5).count() > 0:
                     image = s.query(Image).filter_by(md5sum=md5).one()
                     image.timestamp = int(time.time())
                     image.count += 1
                     s.merge(image)
-                except:
+                    log.debug('DATABASE: Updated Image %s' % image.md5sum)
+                else:
                     ftype = filename.split('.')[-1]
-                    s.add(Image(int(time.time()), ftype, imgfile.read()))
+                    image = Image(int(time.time()), ftype, data, md5)
+                    s.add(image)
+                    log.debug('DATABASE: Added Image %s' % image.md5sum)
                 s.commit()
                 s.close()
-                imgfile.close()
             else:
                 try:
                     self.call('/post/image', {'filetype': filename.split('.')[-1]},
@@ -155,10 +167,11 @@ class DoflerClient(object):
         :return: None
         '''
         if self.host in ['localhost', '127.0.0.1']:
-            s = Session()
+            s = self.Session()
             s.add(Stat(proto, self.username, count))
             s.commit()
             s.close()
+            log.debug('DATABASE: Added Stat %s:%s:%s' % (proto, count, self.username))
         else:
             self.call('/post/stat', {
                 'proto': proto, 
