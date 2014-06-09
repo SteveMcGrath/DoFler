@@ -46,8 +46,8 @@ class Image(Base):
     filetype = Column(Text)
     count = Column(Integer)
 
-    def __init__(self, timestamp, filetype, data):
-        self.md5sum = md5hash(data)
+    def __init__(self, timestamp, filetype, data, md5sum):
+        self.md5sum = md5sum
         self.timestamp = timestamp
         self.filetype = filetype
         self.data = data
@@ -133,9 +133,9 @@ class Setting(Base):
 class Reset(Base):
     __tablename__ = 'resets'
     id = Column(Integer, primary_key=True)
-    type = Column(Text)
+    datatype = Column(Text)
     timestamp = Column(Integer)
 
     def __init__(self, datatype):
-        self.type = datatype
+        self.datatype = datatype
         self.timestamp = int(time.time())
