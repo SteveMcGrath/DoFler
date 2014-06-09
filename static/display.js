@@ -1,7 +1,7 @@
 image_ts = 0;
 account_id = 0;
 
-function ui_images() {
+function ui_images(images_max) {
     $.getJSON('/get/reset/images', function(reset){
         if (reset){
             $('.dofler-img').remove();
@@ -14,7 +14,7 @@ function ui_images() {
                     };
                     if (!reset){
                         $('#images-display').prepend('<img class="dofler-img" src="/get/image/' + val.md5sum + '" />');
-                        if ($('.dofler-img').length > 200){
+                        if ($('.dofler-img').length > images_max){
                             $('.dofler-img:last').remove();
                         };
                     };
@@ -24,7 +24,7 @@ function ui_images() {
     });
 };
 
-function ui_accounts() {
+function ui_accounts(accounts_max) {
     $.getJSON('/get/reset/accounts', function(reset){
         if (reset){
             $('.dofler-account').remove();
@@ -32,13 +32,19 @@ function ui_accounts() {
         $.getJSON('/get/accounts/' + account_id, function(data){
             $.each(data, function(key, val){
                 account_id = val.id;
-                $('#accounts-table tbody').prepend('<tr class="dofler-account">' + 
-                    '<td class="text">' + val.info.substr(0,28) + '</td>' + 
-                    '<td class="text">' + val.proto + '</td>' + 
-                    '<td class="text">' + val.username.substr(0,15) + '</td>' + 
-                    '<td class="text">' + val.password.substr(0,15) + '</td></tr>'
-                );
-                if ($('.dofler-account').length > 10){
+                if (val.proto == 'ADMIN' && val.username == 'ADMIN' && val.password == 'ADMIN'){
+                    $('#accounts-table tbody').prepend('<tr class="dofler-account">' +
+                        '<td class="text" colspan="4">' + val.info + '</td>'
+                    );
+                }else{
+                    $('#accounts-table tbody').prepend('<tr class="dofler-account">' + 
+                        '<td class="text">' + val.info.substr(0,28) + '</td>' + 
+                        '<td class="text">' + val.proto + '</td>' + 
+                        '<td class="text">' + val.username.substr(0,15) + '</td>' + 
+                        '<td class="text">' + val.password.substr(0,15) + '</td></tr>'
+                    );
+                };
+                if ($('.dofler-account').length > accounts_max){
                     $('.dofler-account:last').remove();
                 };
             });
@@ -46,8 +52,8 @@ function ui_accounts() {
     });
 };
 
-function ui_stats() {
-    $.getJSON('/get/stats/5', function(data){
+function ui_stats(stats_max) {
+    $.getJSON('/get/stats/' + stats_max, function(data){
         $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right", timezone: "browser"}, 
                 legend: {position: "nw"}
             //legend: {container: $('#proto-legend')}
@@ -55,8 +61,8 @@ function ui_stats() {
     });
 };
 
-function ui_vulns(){
-    $.getJSON('/get/vulns', function(data){
+function ui_vulns(vulns_max){
+    $.getJSON('/get/vulns/' + vulns_max, function(data){
         $('#vuln-table tbody').empty();
         max = data['vuln_max']
         $.each(data['hosts'], function(key, val){
@@ -74,12 +80,22 @@ function ui_vulns(){
 
 
 $(function(){
-    ui_stats();
-    ui_accounts();
-    ui_images();
-    ui_vulns();
-    window.setInterval(ui_images, 5* 1000);
-    window.setInterval(ui_accounts, 30 * 1000);
-    window.setInterval(ui_vulns, 30 * 1000);
-    window.setInterval(ui_stats, 60 * 1000);
+    $.getJSON('/get/settings', function(settings){
+        if (settings['stats_enabled']){
+            ui_stats(settings['stats_max']);
+            window.setInterval(ui_stats, settings['stats_delay'] * 1000);
+        };
+        if (settings['accounts_enabled']){
+            ui_accounts(settings['accounts_max']);
+            window.setInterval(ui_accounts, settings['accounts_delay'] * 1000);
+        };
+        if (settings['images_enabled']){
+            ui_images(settings['images_max']);
+            window.setInterval(ui_images, settings['images_delay'] * 1000);
+        };
+        if (settings['vulns_enabled']){
+            ui_vulns(settings['vulns_max']);
+            window.setInterval(ui_vulns, settings['vulns_delay'] * 1000);
+        };
+    });
 });
