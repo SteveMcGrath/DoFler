@@ -2,6 +2,7 @@ from dofler import monitor
 from dofler import common
 from dofler import api
 from dofler import db
+from dofler import report
 from dofler.models import Setting
 from cmd import Cmd
 from bottle import debug, run
@@ -55,6 +56,63 @@ class CLI(Cmd):
             server=common.setting('api_app_server').value,
             reloader=common.setting('api_debug').boolvalue,
         )
+
+
+    def do_msg(self, s):
+        '''
+        msg MESSAGE
+
+        Adds the specified message to the accounts captured table.
+        '''
+        api = self.getapi()
+        api.anonymize = False
+        api.account('ADMIN', 'ADMIN', s, 'ADMIN', 'MESSAGE')
+
+
+    def do_report(self, s):
+        '''
+        report NAME 
+
+        Generates a report with the specified name of the contents of the
+        database.
+        '''
+        report.gen_report(s)
+
+
+    def do_cleardb(self, s):
+        '''
+        cleardb
+
+        Clears out the main database (not the settings db).  This should only
+        be done while dofler is not running!
+        '''
+        from sqlalchemy.engine import reflection
+        from sqlalchemy.schema import (MetaData, Table, DropTable, 
+                                       ForeignKeyConstraint, DropConstraint)
+        conn = db.engine.connect()
+        trans = conn.begin()
+        inspector = reflection.Inspector.from_engine(db.engine)
+        metadata = MetaData(db.engine)
+        metadata.reflect()
+        metadata.drop_all()
+        trans.commit()
+        conn.close()
+        vuln_db = '/opt/pvs/var/pvs/db/reports.db'
+        if os.path.exists(vuln_db):
+            os.system('service pvs stop')
+            os.remove(vuln_db)
+            os.system('service pvs start')
+
+
+    def do_reset(self, s):
+        '''
+        reset [images|accounts]
+
+        Clears out the current list of items on the WebUI and initiates a 30
+        second timer before allowing new content to be displayed.
+        '''
+        api = self.getapi()
+        api.reset(s)
 
 
     def do_get(self, s):
@@ -112,7 +170,12 @@ class CLI(Cmd):
         Starts the designated service. 
         '''
         api = self.getapi()
-        self.svcs_disp(api.start(s))
+        if s == 'all':
+            for service in api.services():
+                api.start(service)
+        else:
+            api.start(s)
+        self.svcs_disp(api.services())
 
 
     def do_stop(self, s):
@@ -122,7 +185,12 @@ class CLI(Cmd):
         Stops the designated service. 
         '''
         api = self.getapi()
-        self.svcs_disp(api.stop(s))
+        if s == 'all':
+            for service in api.services():
+                api.stop(service)
+        else:
+            api.stop(s)
+        self.svcs_disp(api.services())
 
 
     def do_restart(self, s):
@@ -132,5 +200,9 @@ class CLI(Cmd):
         Restarts the designated service. 
         '''
         api = self.getapi()
-        api.stop(s)
-        self.svcs_disp(api.start(s))
+        if s == 'all':
+            for service in api.services():
+                api.restart(service)
+        else:
+            api.restart(s)
+        self.svcs_disp(api.services())
