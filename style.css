@@ -1,0 +1,115 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700);
+
+html {
+	font-family: 'Open Sans Contensed', sans-serif;
+	font-weight: 300;
+	background-color: #000;
+}
+
+/* Image Display */
+
+#images-display {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	background-color: #000;
+}
+
+#images-display img {
+	padding: 1px;
+	max-width: 400px;
+	max-height: 400px;
+	display: block;
+	float: left;
+}
+
+#image-container {
+	max-height: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	background-color: #000;
+}
+
+/* Multiple Content Display */
+
+#multi-display {
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 100%;
+	width: 40%;
+	min-width: 460px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	display: block;
+	background-color: rgba(0,0,0,0.45);
+	color: #FFF;
+}
+
+#multi-display h1 {
+	padding-top: 0px;
+	font-size: 1.2em;
+	border-bottom: solid 1px #FFF;
+	margin-right: 10px;
+}
+
+/* Account Display Section */
+
+#account-display {
+	padding-bottom: 10px;
+	height: 33.3%;
+}
+
+#account-display table {
+	width: 100%;
+	color: #FFF;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* Vulnerability Display Section */
+
+#vuln-display {
+	height: 23.3%;
+	width: 100%;
+}
+
+#vuln-display table {
+	width: 100%;
+	color: #FFF;
+	display: inline-block;
+}
+
+#vuln-display table td:first-child {
+	width: 10%;
+}
+
+.vulnerabilities {width: 100%; height: 18px;}
+
+.v-crit, .v-high, .v-med, .v-low {
+	display: inline-block;
+	height: 100%;
+	padding: 0px;
+	float: left;
+}
+
+.v-crit {background-color: #e667d7;}
+.v-high {background-color: #c43f3a;}
+.v-med {background-color: #ee9336;}
+.v-low {background-color: #61d07f;}
+.v-info {background-color: #616ad0;}
+
+
+/* Protocol Trending Section */
+
+#proto-wrapper {
+	height: 38%;
+	width: 100%;
+	overflow: hidden;
+}
+
+#proto-trend {
+	width: 100%; 
+	height: 80%;
+	background-color: white;
+}

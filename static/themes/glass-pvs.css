@@ -9,7 +9,7 @@ html {
 td.text {
 	/*-webkit-text-stroke: 2px #000; */
 	background-color: rgba(0,0,0,0.6);
-	font-weight: 700;
+	border-radius: 2px;
 }
 
 /* Image Display */
@@ -117,6 +117,8 @@ td.text {
 #proto-trend {
 	width: 100%; 
 	height: 80%;
+	background-color: rgba(0,0,0,0.6);
+	border-radius: 2px;
 }
 
 .flot-tick-label {

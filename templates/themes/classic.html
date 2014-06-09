@@ -74,7 +74,7 @@
             $.getJSON('/get/accounts/' + account_id, function(data){
                 $.each(data, function(key, val){
                     account_id = val.id;
-                    $('#accounts-table tbody').prepend('<tr class="dofler-account">' + '<td>' + val.info.substr(0,28) + '</td><td>' + val.proto + '</td><td>' + val.username + '</td><td>' + val.password.substr(0,15) + '</td></tr>');
+                    $('#accounts-table tbody').prepend('<tr class="dofler-account">' + '<td>' + val.info.substr(0,28) + '</td><td>' + val.proto + '</td><td>' + val.username.substr(0,15) + '</td><td>' + val.password.substr(0,15) + '</td></tr>');
                     if ($('.dofler-account').length > {{ web_account_max }}){
                         $('.dofler-account:last').remove();
                     };

@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.1.94',
+    version='0.4.2.0b2',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -36,6 +36,7 @@ setup(
             'static/jquery.flot.min.js',
             'static/jquery.flot.time.min.js',
             'static/style.css',
+            'static/display.js',
         ]),
         ('/usr/share/dofler/docs', [
             'docs/introduction.md',
@@ -55,7 +56,6 @@ setup(
         ]),
         ('/usr/share/dofler/templates', [
             'templates/base.html',
-            'templates/main.html',
             'templates/settings_base.html',
             'templates/settings_login.html',
             'templates/settings_logging.html',
@@ -66,6 +66,15 @@ setup(
             'templates/settings_webui.html',
             'templates/settings_parsers.html',
             'templates/settings_services.html',
+            'templates/report.html',
+        ]),
+        ('/usr/share/dofler/templates/themes', [
+            'templates/themes/classic.html',
+            'templates/themes/glass-pvs.html',
+        ]),
+        ('/usr/share/dofler/static/themes', [
+            'static/themes/classic.css',
+            'static/themes/glass-pvs.css',
         ])
     ],
     classifiers=[
