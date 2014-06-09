@@ -53,19 +53,7 @@ def main_page(db):
     '''
     Main View
     '''
-    return env.get_template('main.html').render(
-        auth=auth(request), 
-        web_images=setting('web_images').boolvalue,
-        web_accounts=setting('web_accounts').boolvalue,
-        web_stats=setting('web_stats').boolvalue,
-        web_image_delay=setting('web_image_delay').intvalue,
-        web_account_delay=setting('web_account_delay').intvalue,
-        web_stat_delay=setting('web_stat_delay').intvalue,
-        web_image_max=setting('web_image_max').intvalue,
-        web_account_max=setting('web_account_max').intvalue,
-        web_stat_max=setting('web_stat_max').intvalue,
-        web_display_settings=setting('web_display_settings').boolvalue
-    )
+    return env.get_template('themes/%s.html' % setting('web_theme').value).render()
 
 
 @app.get('/static/<path:path>')

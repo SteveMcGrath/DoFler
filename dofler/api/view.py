@@ -102,8 +102,8 @@ def stats(limit, db):
     return jsonify(data)
 
 
-@app.get('/vulns')
-def get_pvs_data(db):
+@app.get('/vulns/<limit:int>')
+def get_pvs_data(limit, db):
     '''
     Returns the top 5 vulnerable hosts as detected from the PVS sensor.
     '''
@@ -120,7 +120,7 @@ def get_pvs_data(db):
     shosts = sorted(hosts, key=lambda k: k['severity_index'], reverse=True)
     rethosts = []
     max_vulns = 0
-    for item in shosts[:5]:
+    for item in shosts[:limit]:
         d = {'host': item['hostname']}
         sevs = {0: 'info', 1: 'low', 2: 'medium', 3: 'high', 4: 'critical'}
         for severity in item['severitycount']['item']:
@@ -140,7 +140,29 @@ def reset(datatype, db):
     Returns whether a reset code has been sent in the last 30 seconds for the
     specified type of data. 
     '''
-    check = db.query(Reset).filter(Reset.type == datatype,
-                    Reset.timestamp > int(time.time()) - 30).count()
-    if check > 0: return True
-    return False
+    if db.query(Reset).filter(Reset.datatype == datatype)\
+                      .filter(Reset.timestamp > int(time.time()) - 30)\
+                      .count() > 0:
+        return jsonify(1)
+    return jsonify(0)
+
+
+@app.get('/settings')
+def settings(db):
+    '''
+    Returns the settings needed for the WebUI
+    '''
+    return {
+        'stats_enabled': setting('web_stats').boolvalue,
+        'stats_delay': setting('web_stat_delay').intvalue,
+        'stats_max': setting('web_stat_max').intvalue,
+        'accounts_enabled': setting('web_accounts').boolvalue,
+        'accounts_delay': setting('web_account_delay').intvalue,
+        'accounts_max': setting('web_account_max').intvalue,
+        'images_enabled': setting('web_images').boolvalue,
+        'images_delay': setting('web_image_delay').intvalue,
+        'images_max': setting('web_image_max').intvalue,
+        'vulns_enabled': setting('web_pvs_enabled').boolvalue,
+        'vulns_delay': setting('web_pvs_delay').intvalue,
+        'vulns_max': setting('web_pvs_max').intvalue,
+    }
