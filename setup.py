@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.2.0b2',
+    version='0.4.2.0b3',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',

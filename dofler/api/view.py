@@ -93,7 +93,7 @@ def stats(limit, db):
             'label': proto[0],
             'data': [[int(a[0] * 1000), int(a[1])] for a in db.query(Stat.timestamp, func.sum(Stat.count))\
                                             .filter(Stat.proto == proto[0])\
-#                                            .filter(Stat.timestamp >= int(time.time() - 10800))\
+                                            .filter(Stat.timestamp >= int(time.time() - 10800))\
                                             .group_by(Stat.timestamp)\
                                             .order_by(desc(Stat.timestamp))\
                                             .limit(180)\
