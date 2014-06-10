@@ -127,7 +127,6 @@ class DoflerClient(object):
                 with open(filename, 'rb') as imagefile:
                     data = imagefile.read()
                 md5 = md5hash(data)
-                print md5
                 s = self.Session()
                 if s.query(Image).filter_by(md5sum=md5).count() > 0:
                     image = s.query(Image).filter_by(md5sum=md5).one()
