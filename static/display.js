@@ -1,7 +1,11 @@
 image_ts = 0;
 account_id = 0;
+images_max = 0;
+stats_max = 0;
+vulns_max = 0;
+accounts_max = 0;
 
-function ui_images(images_max) {
+function ui_images() {
     $.getJSON('/get/reset/images', function(reset){
         if (reset){
             $('.dofler-img').remove();
@@ -24,7 +28,7 @@ function ui_images(images_max) {
     });
 };
 
-function ui_accounts(accounts_max) {
+function ui_accounts() {
     $.getJSON('/get/reset/accounts', function(reset){
         if (reset){
             $('.dofler-account').remove();
@@ -52,16 +56,15 @@ function ui_accounts(accounts_max) {
     });
 };
 
-function ui_stats(stats_max) {
+function ui_stats() {
     $.getJSON('/get/stats/' + stats_max, function(data){
         $.plot('#proto-trend', data, {xaxis: { mode: "time", position: "right", timezone: "browser"}, 
-                legend: {position: "nw"}
-            //legend: {container: $('#proto-legend')}
+                legend: {position: "nw", backgroundColor: null, backgroundOpacity: 0}
         });
     });
 };
 
-function ui_vulns(vulns_max){
+function ui_vulns(){
     $.getJSON('/get/vulns/' + vulns_max, function(data){
         $('#vuln-table tbody').empty();
         max = data['vuln_max']
@@ -82,19 +85,23 @@ function ui_vulns(vulns_max){
 $(function(){
     $.getJSON('/get/settings', function(settings){
         if (settings['stats_enabled']){
-            ui_stats(settings['stats_max']);
+            stats_max = settings['stats_max'];
+            ui_stats();
             window.setInterval(ui_stats, settings['stats_delay'] * 1000);
         };
         if (settings['accounts_enabled']){
-            ui_accounts(settings['accounts_max']);
+            accounts_max = settings['accounts_max'];
+            ui_accounts();
             window.setInterval(ui_accounts, settings['accounts_delay'] * 1000);
         };
         if (settings['images_enabled']){
-            ui_images(settings['images_max']);
+            images_max = settings['images_max'];
+            ui_images();
             window.setInterval(ui_images, settings['images_delay'] * 1000);
         };
         if (settings['vulns_enabled']){
-            ui_vulns(settings['vulns_max']);
+            vulns_max = settings['vulns_max'];
+            ui_vulns();
             window.setInterval(ui_vulns, settings['vulns_delay'] * 1000);
         };
     });
