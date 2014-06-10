@@ -27,7 +27,7 @@ def log_to_console():
     Enables Console logging if not already enabled. 
     '''
     global _log_to_console
-    if not _log_to_console and setting('log_file').boolvalue:
+    if not _log_to_console and setting('log_console').boolvalue:
         stderr = logging.StreamHandler()
         console_format = logging.Formatter('%(levelname)s %(message)s')
         stderr.setFormatter(console_format)
@@ -47,7 +47,7 @@ def log_to_file():
         hdlr.setFormatter(formatter)
         log.setLevel(_loglevels[setting('log_file_level').value])
         log.addHandler(hdlr)
-        _log_to_fule = True
+        _log_to_file = True
 
 
 def ignore_exception(IgnoreException=Exception,DefaultVal=None):

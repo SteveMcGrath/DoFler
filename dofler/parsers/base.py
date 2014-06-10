@@ -3,8 +3,11 @@ import time
 import pexpect
 import psutil
 from dofler.db import Session
-from dofler.common import setting, log
+from dofler.common import setting
+from dofler import common
 from dofler.api.client import DoflerClient
+
+log = common.log
 
 class BaseParser(multiprocessing.Process):
     '''
