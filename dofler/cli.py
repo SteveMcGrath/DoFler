@@ -3,7 +3,7 @@ from dofler import common
 from dofler import api
 from dofler import db
 from dofler import report
-from dofler.models import Setting
+from dofler.models import Setting, Account, Image, Stat
 from cmd import Cmd
 from bottle import debug, run
 from getpass import getpass
@@ -77,6 +77,46 @@ class CLI(Cmd):
         database.
         '''
         report.gen_report(s)
+    
+    
+    def do_stats(self, s):
+        '''
+        stats
+        
+        Prints out the current statistics for the active dataset within DoFler.
+        '''
+        s = db.Session()
+        print '\n'.join([
+            '* Total Images   : %d' % s.query(Image).count(),
+            '* Total Accounts : %s' % s.query(Account).count(),
+        ])
+    
+    
+    def do_accountdisp(self, s):
+        '''
+        accountdisp
+        
+        Prints all of the accounts currently stored in the database.
+        '''
+        s = db.Session()
+        for account in s.query(Account).all():
+            print '%-30s %-7s %-20s %s' % (account.info, account.proto, account.username, account.password)
+    
+    
+    def do_imagedump(self, s):
+        '''
+        imagedump PATH
+        
+        Dumps the images from the database to disk based on last seen
+        timestamp and md5sum.
+        '''
+        path = s
+        s = Session()
+        for image in s.query(Image).all():
+            imgpath = '%s/%s-%s.%s' % (path, image.timestamp, image.md5sum, image.filetype)
+            with open(imgpath, 'wb') as imgobj:
+                imgobj.write(image.data)
+                print 'Wrote %s' % imgpath
 
 
     def do_cleardb(self, s):
