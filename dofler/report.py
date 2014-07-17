@@ -8,13 +8,7 @@ import base64
 import json
 import time
 import datetime
-import os
-import sys
-
-if os.name == 'nt':
-    DATA_PREFIX = os.path.dirname(sys.executable) + '\\share\\dofler\\'
-else:
-    DATA_PREFIX = "/".join(os.path.dirname(sys.executable).split("/")[:-1]) + '/share/dofler/'
+from dofler.config import DATA_PREFIX
 
 import sys
 reload(sys)

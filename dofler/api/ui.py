@@ -11,18 +11,11 @@ from dofler.common import auth, auth_login, setting
 from dofler.models import *
 from dofler.db import engine, Base, SettingSession
 from dofler import monitor
-import os
-import sys
-
-if os.name == 'nt':
-    DATA_PREFIX = os.path.dirname(sys.executable) + '\\share\\dofler\\'
-else:
-    DATA_PREFIX = "/".join(os.path.dirname(sys.executable).split("/")[:-1]) + '/share/dofler/'
 
 env = Environment(
     lstrip_blocks=True,
     trim_blocks=True,
-    loader=FileSystemLoader(DATA_PREFIX + 'templates')
+    loader=FileSystemLoader(config.DATA_PREFIX + 'templates')
 )
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -65,7 +58,7 @@ def main_page(db):
 
 @app.get('/static/<path:path>')
 def static_files(path):
-    return static_file(path, root=DATA_PREFIX + 'static')
+    return static_file(path, root=config.DATA_PREFIX + 'static')
 
 
 @app.get('/settings')
@@ -88,7 +81,7 @@ def documentation(db, path=None):
     data = None
     if path:
         try:
-            with open(DATA_PREFIX + 'docs/%s.md' % path) as mdfile:
+            with open(config.DATA_PREFIX + 'docs/%s.md' % path) as mdfile:
                 data = markdown.markdown(mdfile.read(), extensions=[
                     'codehilite',
                     'extra',
