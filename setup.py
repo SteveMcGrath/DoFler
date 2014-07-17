@@ -1,4 +1,11 @@
 from distutils.core import setup
+import os
+import sys
+
+if os.name == 'nt':
+    DATA_PREFIX = os.path.dirname(sys.executable) + '\\share\\dofler\\'
+else:
+    DATA_PREFIX = '/usr/share/dofler/'
 
 setup(
     name='DoFler',
@@ -31,18 +38,18 @@ setup(
         'requests_futures',
     ],
     data_files=[
-        ('/usr/share/dofler/static', [
+        (DATA_PREFIX + 'static', [
             'static/jquery.min.js',
             'static/jquery.flot.min.js',
             'static/jquery.flot.time.min.js',
             'static/style.css',
             'static/display.js',
         ]),
-        ('/usr/share/dofler/docs', [
+        (DATA_PREFIX + 'docs', [
             'docs/introduction.md',
             'docs/walkthrough.md',
         ]),
-        ('/usr/share/dofler/static/images', [
+        (DATA_PREFIX + 'images', [
             'static/images/doc.png',
             'static/images/settings_api.png',
             'static/images/settings_login.png',
@@ -54,7 +61,7 @@ setup(
             'static/images/ui_back.png',
             'static/images/ui_settings.png',
         ]),
-        ('/usr/share/dofler/templates', [
+        (DATA_PREFIX + 'templates', [
             'templates/base.html',
             'templates/settings_base.html',
             'templates/settings_login.html',
@@ -68,11 +75,11 @@ setup(
             'templates/settings_services.html',
             'templates/report.html',
         ]),
-        ('/usr/share/dofler/templates/themes', [
+        (DATA_PREFIX + 'templates/themes', [
             'templates/themes/classic.html',
             'templates/themes/glass-pvs.html',
         ]),
-        ('/usr/share/dofler/static/themes', [
+        (DATA_PREFIX + 'static/themes', [
             'static/themes/classic.css',
             'static/themes/glass-pvs.css',
         ])
