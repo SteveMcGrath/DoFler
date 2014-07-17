@@ -8,6 +8,13 @@ import base64
 import json
 import time
 import datetime
+import os
+import sys
+
+if os.name == 'nt':
+    DATA_PREFIX = os.path.dirname(sys.executable) + '\\share\\dofler\\'
+else:
+    DATA_PREFIX = "/".join(os.path.dirname(sys.executable).split("/")[:-1]) + '/share/dofler/'
 
 import sys
 reload(sys)
@@ -88,9 +95,9 @@ def gen_report(title):
         pt10 = json.dumps(proto_top10),
         protos = protos,
         jquery = '\n'.join([
-            open('/usr/share/dofler/static/jquery.min.js').read(),
-            open('/usr/share/dofler/static/jquery.flot.min.js').read(),
-            open('/usr/share/dofler/static/jquery.flot.time.min.js').read(),
+            open(DATA_PREFIX + 'static/jquery.min.js').read(),
+            open(DATA_PREFIX + 'static/jquery.flot.min.js').read(),
+            open(DATA_PREFIX + 'static/jquery.flot.time.min.js').read(),
         ]).encode('utf-8')
     )
     with open('DoFler-%s.html' % title.replace(' ','_'), 'w') as reportfile:
