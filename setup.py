@@ -71,10 +71,14 @@ setup(
         ('/usr/share/dofler/templates/themes', [
             'templates/themes/classic.html',
             'templates/themes/glass-pvs.html',
+            'templates/themes/glass.html',
+            'templates/themes/glass-header.html',
         ]),
         ('/usr/share/dofler/static/themes', [
             'static/themes/classic.css',
             'static/themes/glass-pvs.css',
+            'static/themes/glass.css',
+            'static/themes/glass-header.css',
         ])
     ],
     classifiers=[
