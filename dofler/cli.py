@@ -103,15 +103,14 @@ class CLI(Cmd):
             print '%-30s %-7s %-20s %s' % (account.info, account.proto, account.username, account.password)
     
     
-    def do_imagedump(self, s):
+    def do_imagedump(self, path):
         '''
         imagedump PATH
         
         Dumps the images from the database to disk based on last seen
         timestamp and md5sum.
         '''
-        path = s
-        s = Session()
+        s = db.Session()
         for image in s.query(Image).all():
             imgpath = '%s/%s-%s.%s' % (path, image.timestamp, image.md5sum, image.filetype)
             with open(imgpath, 'wb') as imgobj:
