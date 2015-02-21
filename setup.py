@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DoFler',
-    version='0.4.2.0b5',
+    version='0.4.2.1',
     description='Dashboard of Fail',
     author='Steven McGrath',
     author_email='steve@chigeek.com',
@@ -29,6 +29,7 @@ setup(
         'beautifulsoup',
         'markdown',
         'requests_futures',
+        'bleach',
     ],
     data_files=[
         ('/usr/share/dofler/static', [
