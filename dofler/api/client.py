@@ -10,6 +10,7 @@ from dofler import config
 from dofler.models import *
 from dofler.db import SettingSession
 from dofler.md5 import md5hash
+import bleach
 
 class DoflerClient(object):
     '''
@@ -96,10 +97,19 @@ class DoflerClient(object):
                 password = '%s%s' % (password[:3], '*' * (len(password) - 3))
         if self.host in ['localhost', '127.0.0.1']:
             s = self.Session()
-            s.add(Account(username, password, info, proto, parser))
-            s.commit()
-            log.debug('DATABASE: Added Account: %s:%s:%s:%s:%s' % (username,
-                password, info, proto, parser))
+            if s.query(Account).filter_by(username=bleach.clean(username))\
+                               .filter_by(password=bleach.clean(password))\
+                               .filter_by(info=bleach.clean(info)).count() < 1 and password != '':
+                s.add(Account(bleach.clean(username), 
+                              bleach.clean(password), 
+                              bleach.clean(info), 
+                              bleach.clean(proto), 
+                              bleach.clean(parser)
+                    )
+                )
+                s.commit()
+                log.debug('DATABASE: Added Account: %s:%s:%s:%s:%s' %\
+                          (username, password, info, proto, parser))
         else:
             self.call('/post/account', {
                 'username': username,
