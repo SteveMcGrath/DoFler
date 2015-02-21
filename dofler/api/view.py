@@ -45,6 +45,17 @@ def recent_images(ts, db):
     return jsonify([i.dump() for i in reversed(images)])
 
 
+@app.get('/image/random')
+def random_image(db):
+    '''
+    Returns a random image from the database.  This is MySQL-specific at the moment.
+    '''
+    image = db.query(Image).order_by(func.rand()).first()
+    response.set_header('Content-Type', 'image/%s' % image.filetype)
+    return str(image.data)
+
+
+
 @app.get('/image/<md5sum>')
 def get_image(md5sum, db):
     '''
