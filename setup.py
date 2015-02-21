@@ -22,7 +22,7 @@ setup(
         'sqlalchemy',
         'bottle-sqlalchemy',
         'paste',
-        'pexpect',
+        'pexpect==3.1',
         'jinja2',
         'requests',
         'psutil',
