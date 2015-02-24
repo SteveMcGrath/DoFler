@@ -104,5 +104,11 @@ $(function(){
             ui_vulns();
             window.setInterval(ui_vulns, settings['vulns_delay'] * 1000);
         };
+        if (settings['show_settings']){
+            $("#settings-icon").show();
+        };
+        if (settings['header_text']){
+            $("#header-text").text(settings['header_text']);
+        };
     });
 });

@@ -240,15 +240,23 @@ def api_settings(db):
         update_settings(settings)
     return env.get_template('settings_webui.html').render(
         auth=auth(request),
+        web_theme=setting('web_theme').value,
+        web_header=setting('web_header').value,
         web_images=setting('web_images').boolvalue,
         web_accounts=setting('web_accounts').boolvalue,
         web_stats=setting('web_stats').intvalue,
+        web_pvs=setting('web_pvs_enabled').boolvalue,
         web_image_delay=setting('web_image_delay').value,
         web_account_delay=setting('web_account_delay').value,
         web_stat_delay=setting('web_stat_delay').value,
+        web_pvs_delay=setting('web_pvs_delay').value,
         web_stat_max=setting('web_stat_max').intvalue,
         web_image_max=setting('web_image_max').intvalue,
         web_account_max=setting('web_account_max').intvalue,
+        web_pvs_max=setting('web_pvs_max').intvalue,
+        pvs_host=setting('pvs_host').value,
+        pvs_user=setting('pvs_user').value,
+        pvs_password=setting('pvs_password').value,
         web_display_settings=setting('web_display_settings').boolvalue
     )
 

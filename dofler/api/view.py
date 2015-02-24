@@ -176,4 +176,6 @@ def settings(db):
         'vulns_enabled': setting('web_pvs_enabled').boolvalue,
         'vulns_delay': setting('web_pvs_delay').intvalue,
         'vulns_max': setting('web_pvs_max').intvalue,
+        'header_text': setting('web_header').value,
+        'show_settings': setting('web_display_settings').boolvalue,
     }
