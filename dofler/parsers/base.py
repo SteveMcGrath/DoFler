@@ -41,7 +41,7 @@ class BaseParser(multiprocessing.Process):
 
 
     def terminate(self):
-        for process in psutil.Process(self.pid).get_children():
+        for process in psutil.Process(self.pid).children():
             process.kill()
         self.cleanup()
         multiprocessing.Process.terminate(self)
