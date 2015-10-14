@@ -72,7 +72,7 @@ def upload_image(db):
         except:
             image = Image(int(time.time()), 
                           request.forms.get('filetype'),
-                          filedata
+                          filedata,md5sum
             )
             db.add(image)
 
