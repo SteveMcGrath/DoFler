@@ -15,7 +15,7 @@ from dofler import monitor
 env = Environment(
     lstrip_blocks=True,
     trim_blocks=True,
-    loader=FileSystemLoader('/usr/share/dofler/templates')
+    loader=FileSystemLoader(config.DATA_PREFIX + 'templates')
 )
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -58,7 +58,7 @@ def main_page(db):
 
 @app.get('/static/<path:path>')
 def static_files(path):
-    return static_file(path, root='/usr/share/dofler/static')
+    return static_file(path, root=config.DATA_PREFIX + 'static')
 
 
 @app.get('/settings')
@@ -81,7 +81,7 @@ def documentation(db, path=None):
     data = None
     if path:
         try:
-            with open('/usr/share/dofler/docs/%s.md' % path) as mdfile:
+            with open(config.DATA_PREFIX + 'docs/%s.md' % path) as mdfile:
                 data = markdown.markdown(mdfile.read(), extensions=[
                     'codehilite',
                     'extra',
