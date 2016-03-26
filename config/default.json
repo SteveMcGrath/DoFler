@@ -1,6 +1,7 @@
 {
 	"Database": {
-		"uri": "sqlite:///database.db"
+		"uri": "sqlite:///database.db",
+		"logging": false
 	},
 	"AppServer": {
 		"port": 3000,
@@ -10,7 +11,7 @@
 		"interface": "ens34",
 		"Driftnet": {
 			"autostart": true,
-			"imagePath": "/tmp",
+			"imagePath": "/tmp"
 		},
 		"TShark": {
 			"autostart": true
