@@ -59,6 +59,9 @@ function ngrepParser() {
 								if ((new Date().getTime() - image.date.getTime()) >= 60000) {
 									image.date = new Date();
 								}
+								if (!image.url){
+									image.url = url_nq;
+								}
 								image.save();
 							} else {
 								// As we havent seen the image in the database, we will
@@ -101,7 +104,7 @@ function ngrepParser() {
 			console.log('NGrep: (stderr): ' + data.toString().replace(/(\r\n|\n|\r)/gm, ' '));
 		})
 
-		// If driftnet exists for some reason, log the event to the console
+		// If ngrep exits for some reason, log the event to the console
 		// and then initiate a new instance to work from.
 		child.on('close', function(code) {
 			console.log('NGrep: child terminated with code ' + code);
