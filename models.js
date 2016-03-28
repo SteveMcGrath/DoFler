@@ -4,10 +4,12 @@ var sequelize = new Sequelize(config.Database.uri, {logging: config.Database.log
 
 
 var Image = sequelize.define('image', {
-	hash: {type: Sequelize.STRING(32), unique: true, primaryKey: true},
+	id: {type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true},
+	hash: Sequelize.STRING(32),
 	count: {type: Sequelize.INTEGER, defaultValue: 0},
+	url: Sequelize.STRING,
+	filename: Sequelize.STRING(42),
 	date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-	content: Sequelize.BLOB
 })
 
 var Account = sequelize.define('account', {
@@ -22,17 +24,26 @@ var Account = sequelize.define('account', {
 var Stat = sequelize.define('stat', {
 	id: {type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true},
 	date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-	count: Sequelize.INTEGER,
+	count: {type: Sequelize.INTEGER, defaultValue: 0},
 	transport: Sequelize.STRING
+})
+
+var Host = sequelize.define('host', {
+	name: {type: Sequelize.STRING, unique: true, primaryKey: true},
+	date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
+	count: {type: Sequelize.INTEGER, defaultValue: 0}
 })
 
 
 Image.sync();
 Account.sync();
 Stat.sync();
+Host.sync();
+
 
 module.exports = {
 	Account: Account,
 	Image: Image,
-	Stat: Stat
+	Stat: Stat,
+	Host: Host
 }

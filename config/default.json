@@ -5,15 +5,21 @@
 	},
 	"AppServer": {
 		"port": 3000,
-		"debug": true
+		"debug": true,
+		"static": "static",
+		"templates": "templates",
+		"images": "images"
 	},
 	"Monitoring": {
 		"interface": "ens34",
 		"Driftnet": {
-			"autostart": true,
-			"imagePath": "/tmp"
+			"autostart": false,
+			"tmp": "/tmp/driftnet"
 		},
 		"TShark": {
+			"autostart": true
+		},
+		"NGrep": {
 			"autostart": true
 		}
 	}
