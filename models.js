@@ -9,7 +9,7 @@ var Image = sequelize.define('image', {
 	count: {type: Sequelize.INTEGER, defaultValue: 0},
 	url: Sequelize.STRING,
 	filename: Sequelize.STRING(42),
-	date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
+	date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},	
 })
 
 var Account = sequelize.define('account', {
@@ -18,7 +18,8 @@ var Account = sequelize.define('account', {
 	password: Sequelize.STRING,
 	information: Sequelize.STRING,
 	protocol: Sequelize.STRING,
-	parser: Sequelize.STRING
+	parser: Sequelize.STRING,
+	dns: Sequelize.STRING
 })
 
 var Stat = sequelize.define('stat', {
@@ -45,5 +46,6 @@ module.exports = {
 	Account: Account,
 	Image: Image,
 	Stat: Stat,
-	Host: Host
+	Host: Host,
+	sequelize: sequelize
 }
