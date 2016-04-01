@@ -1,3 +1,10 @@
-var driftnet = require('./driftnet');
-var tshark = require('./tshark');
-var ngrep = require('./ngrep');
+var config = require('config');
+var driftnet = require('./driftnet').parser;
+var tshark = require('./tshark').parser;
+var ngrep = require('./ngrep').parser;
+
+// For each parser, if autostart is set to true in the config
+// file, then we will want to fire that parser up.
+if (config.Monitoring.Driftnet.autostart) 	{ driftnet(); }
+if (config.Monitoring.NGrep.autostart) 		{ ngrep(); }
+if (config.Monitoring.TShark.autostart) 	{ tshark(); }

@@ -4,6 +4,7 @@ var httpreq = require('httpreq');
 var db = require('../models');
 var md5 = require('md5');
 var fs = require('fs');
+var io = require('../web').io;
 
 function ngrepParser() {
 	function run() {
@@ -86,6 +87,7 @@ function ngrepParser() {
 													count: 1
 												}).then(function(image){
 													if (image) {
+														io.emit('images', image);
 														console.log('NGrep: ' + image.filename + ' created from ' + image.url);
 													}
 												})
@@ -120,7 +122,4 @@ function ngrepParser() {
 	var child = run();
 }
 
-// Now to check to see if we actually want to start the parser and fire it up if we do.
-if (config.Monitoring.NGrep.autostart){
-	ngrepParser();
-}
+module.exports = { parser: ngrepParser}

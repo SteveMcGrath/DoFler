@@ -92,7 +92,4 @@ function driftnetParser() {
 	var child = run();
 }
 
-// Now to check to see if we actually want to start the parser and fire it up if we do.
-if (config.Monitoring.Driftnet.autostart){
-	driftnetParser();
-}
+module.exports = { parser: driftnetParser }

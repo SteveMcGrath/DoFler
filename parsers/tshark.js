@@ -2,6 +2,7 @@ var spawn = require('child_process').spawn;
 var config = require('config');
 var Stat = require('../models').Stat;
 var parseXML = require('xml2js').parseString;
+var io = require('../web').io;
 
 function tsharkParser() {
 	var transports = {};	// Transport array for maintaining protocol counts.
@@ -34,7 +35,7 @@ function tsharkParser() {
 				date: ts
 			});
 		}
-
+		io.emit('protocols', 'refresh');
 	}, 60000);	// 60 second timer.
 
 	// 
@@ -143,7 +144,4 @@ function tsharkParser() {
 	var child = run();
 }
 
-// Now to check to see if we actually want to start the parser and fire it up if we do.
-if (config.Monitoring.TShark.autostart){
-	tsharkParser();
-}
+module.exports = { parser: tsharkParser}
