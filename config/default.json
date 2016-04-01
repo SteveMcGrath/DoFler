@@ -1,6 +1,10 @@
 {
+	"WebUI": {
+		"title": "ExampleCon",
+		"slogan": "Example Slogan"
+	},
 	"Database": {
-		"uri": "sqlite:///database.db",
+		"uri": "mysql://dofler:dofler@localhost/dofler",
 		"logging": false
 	},
 	"AppServer": {
@@ -11,7 +15,7 @@
 		"images": "images"
 	},
 	"Monitoring": {
-		"interface": "ens34",
+		"interface": "eno33554960",
 		"Driftnet": {
 			"autostart": false,
 			"tmp": "/tmp/driftnet"
