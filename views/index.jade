@@ -1,0 +1,45 @@
+doctype html
+html(lang="en")
+	head
+		title=title
+		link(rel="stylesheet", href="/static/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/static/css/bootswatch.min.css")
+		link(rel="stylesheet", href="/static/css/dofler.css")
+		script(src="/socket.io/socket.io.js")
+	body
+		div(class=["navbar", "navbar-inverse", "navbar-fixed-top"])
+			div.container
+				div.navbar-header
+					a(href="#", class="navbar-brand") DoFler v#{version} | #{title}
+					div(class=["pull-right", "navbar-brand"]) #{slogan}
+		div#wrapper.container
+			div#images-wrapper.container
+				div.container-fluid
+					div#images
+			div#sidebar-wrapper.container.pull-right
+				div(id="accounts-wrapper", class=["panel", "panel-primary"])
+					div.panel-heading
+						h3.panel-title Accounts
+					div.panel-body
+						table#accounts-list.table
+							tr
+								td steve
+								td pas****
+								td HTTP
+								td google.com
+				div(id="vulns-wrapper", class=["panel", "panel-primary"])
+					div.panel-heading
+						h3.panel-title Vulnerabilities
+					div.panel-body
+						ul#vulns-list
+				div(id="stats-wrapper", class=["panel", "panel-primary"])
+					div.panel-heading
+						h3.panel-title Network Stats
+					div.panel-body
+						#proto-analysis
+		script(src="/static/js/jQuery-1.10.2.min.js")
+		script(src="/static/js/jquery.flot.min.js")
+		script(src="/static/js/jquery.flot.time.min.js")
+		script(src="/static/js/bootstrap.min.js")
+		script(src="/static/js/bootswatch.js")
+		script(src="/static/js/dofler.js")

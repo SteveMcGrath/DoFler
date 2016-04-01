@@ -1,0 +1,38 @@
+#body {
+	overflow: hidden;
+}
+
+#accounts-list {
+	margin-bottom: 0px;
+}
+
+.panel-body {
+	padding: 1px;
+}
+
+#sidebar-wrapper {
+	position: fixed;
+	top: 55px;
+	right: 0px;
+	width: 400px;
+	height: 100%;
+	overflow-y: auto;
+	background-color: rgba(0,0,0,0);
+}
+
+
+#images-wrapper {
+	width: 100%;
+	position: fixed;
+	top: inherit;
+	left: 0px;
+}
+
+.dofler-img {
+  margin-top: 5px; 
+  max-height: 400px; 
+  max-width: 400px; 
+  margin-left: 5px; 
+  display: block; 
+  float: left;
+}
