@@ -25,6 +25,12 @@
 		},
 		"NGrep": {
 			"autostart": true
+		},
+		"PVS": {
+			"autostart": true,
+			"hostname": "PVS_HOSTNAME",
+			"username": "PVS_USERNAME",
+			"password": "PVS_PASSWORD"
 		}
 	}
 }
