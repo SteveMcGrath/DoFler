@@ -31,6 +31,7 @@ In general installing the pre-requisite tools should be a simple matter of insta
 
 ````
 sudo apt-get install ngrep ettercap-text-only tshark
+````
 
 For the database backend, DoFler supports MySQL, Postgres, or just about anything else that the [Sequelize](http://docs.sequelizejs.com/en/latest/) library supports.  For the purposes of this guide, we will cover MariaDB on Ubuntu.
 
