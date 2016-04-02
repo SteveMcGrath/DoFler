@@ -4,6 +4,9 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var db = require('./models');
+var async = require('async');
+var vulnCache = null;
+var hostCache = null;
 
 
 app.set('view engine', 'jade');
@@ -33,48 +36,66 @@ app.get('/images/list', function(req, res) {
 		limit: 200,
 		raw: true
 	}).then(function(images) {
-		res.send(images.reverse());
+		res.json(images.reverse());
 	})
 })
 
 
+app.get('/accounts/list', function(req, res){
+	db.Account.findAll().then(function(accounts) {
+		res.json(accounts);
+	})
+})
+
+
+app.get('/vulns/hosts', function(req, res) {res.json(hostCache);});
+app.get('/vulns/vulns', function(req, res) {res.json(vulnCache);});
+
+
 app.get('/stats/protocols/:limit', function(req, res) {
 	db.Stat.findAll({
-		attributes: ['transport'],
-		order: [[db.sequelize.fn('COUNT', db.sequelize.col('count')), 'DESC']],
-		limit: parseInt(req.params.limit),
-		group: ['transport']
+	  attributes: ['transport'],
+	  order: [[db.sequelize.fn('COUNT', db.sequelize.col('count')), 'DESC']],
+	  limit: parseInt(req.params.limit),
+	  group: ['transport']
 	}).then(function(protos){
-		var dLimit = new Date();
-		dLimit = dLimit.rmHours(8);
-		for (var i in protos) {
-			db.Stat.findAll({
-				where: {
-					date: {gte: dLimit},
-					transport: protos[i].transport,
-				}
-			}).then(function(results) {
-				var d = [];
-				for (var a in results) {
-					d.push([results[a].date, results[a].count]);
-				}
-				res.write(JSON.stringify({
-					label: protos[i].transport,
-					data: d
-				}));
-			}).done();
-		}
-	}).done(function(){
-		res.end();
-	});
+	  var dLimit = new Date();
+	  dLimit = dLimit.rmHours(8);
+
+	  var protocols = []
+	  async.each(protos, function (proto, next) {
+	    db.Stat.findAll({
+	      where: {
+	        date: {gte: dLimit},
+	        transport: proto.transport,
+	      }
+	    }).then(function(results) {
+	      var d = [];
+	      for (var a in results) {
+	        d.push([results[a].date.getTime(), results[a].count]);
+	      }
+
+	      protocols.push({
+	        label: proto.transport,
+	        data: d
+	      })
+
+	      next()
+	    })
+	  }, function (error) {
+	    res.json(protocols);
+	  })
+	})
+})
+
+
+http.listen(config.AppServer.port, function(){
+	console.log('Application Web Server is listening on *:' + config.AppServer.port);
 })
 
 
 module.exports = {
-	io: io
+	io: io,
+	vulnCache: function(data) {vulnCache = data;},
+	hostCache: function(data) {hostCache = data;}
 }
-
-
-http.listen(3000, function(){
-	console.log('listening on *:3000');
-})
