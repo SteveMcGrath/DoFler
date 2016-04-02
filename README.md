@@ -37,13 +37,10 @@ For the database backend, DoFler supports MySQL, Postgres, or just about anythin
 ````
 # Install the binaries
 sudo apt-get install mariadb-client mariadb-server
-
 # Run the initial conifguration 
 mysql_secure_installation
-
 # Create the database 
 mysqladmin -uroot -p create dofler 
-
 # Create the dofler user 
 mysql -uroot -p
 > GRANT ALL PRIVILEGES ON dofler.* TO 'dofler'@'localhost' IDENTIFIED BY 'NEW_PASSWORD';
