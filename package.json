@@ -1,0 +1,42 @@
+{
+  "name": "dofler",
+  "version": "5.0.0",
+  "author": "Steven McGrath <steve@chigeek.com>",
+  "homepage": "http://dofler.net",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SteveMcGrath/DoFler"
+  },
+  "bugs": {
+    "url": "https://github.com/SteveMcGrath/DoFler/issues"
+  },
+  "keywords": [
+    "dofler",
+    "ettercap",
+    "dsniff",
+    "ngrep",
+    "tshark",
+    "wireshark",
+    "driftnet"
+  ],
+  "license": "GPL-3.0",
+  "bin": {
+    "dofler": "node ./server.js"
+  },
+  "directories": {
+    "lib": "./lib",
+  },
+  "description": "Dashboard of Fail network monitoring and presentation application",
+  "dependencies": {
+    "async": "^2.0.0-rc.2",
+    "config": "^1.19.0",
+    "express": "^4.13.4",
+    "httpreq": "^0.4.16",
+    "jade": "^1.11.0",
+    "md5": "^2.1.0",
+    "mv": "^2.1.1",
+    "sequelize": "^3.20.0",
+    "socket.io": "^1.4.5",
+    "xml2js": "^0.4.16"
+  }
+}
