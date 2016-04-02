@@ -18,6 +18,44 @@ function addImage(image) {
 }
 
 
+function hostVulnList(data) {
+	// Empty the table in preperation for the the new information
+	$('#top-vulnerable-hosts > tbody').empty();
+
+	// A simple function to get the percentage of the maximum number
+	// of severities that the current severity specified is.
+	function getPercent(value) {
+		return ((value / data['max'] * 100) - 0.1).toFixed(1);
+	}
+
+	// Lets actually draw the information on to the screen.
+	$.each(data['hosts'], function(i, val) {
+		$('#top-vulnerable-hosts > tbody').append( 
+			'<tr><td class="host-cell">' + val.host + '</td><td><div class="vuln-candy-bar">' +
+			'<div class="v-crit" style="width:' + getPercent(val.crit) + '%;"></div>' +
+			'<div class="v-high" style="width:' + getPercent(val.high) + '%;"></div>' +
+			'<div class="v-med" style="width:' + getPercent(val.med) + '%;"></div>' +
+			'<div class="v-low" style="width:' + getPercent(val.low) + '%;"></div>' +
+			'</div></td></tr>'
+		);
+	});
+}
+
+
+function topVulnsList(data) {
+	// Empty the list in preperation for the the new information
+	$('#top-vulnerabilities').empty();
+
+	var crits = ['info', 'low', 'med', 'high', 'crit'];
+
+	$.each(data, function(i, val) {
+		$('#top-vulnerabilities').append(
+			'<li class="list-group-item vulnerability">' + val.name + '<span class="vuln-badge badge">' + val.count + '</span></li>'
+		);
+	});
+}
+
+
 function addAccount(account) {
 	accounts.push(account);
 }
@@ -26,12 +64,32 @@ function addAccount(account) {
 function protoRefresh() {
 	// Get the top 5 protocols from the API and then generate the flot graph
 	// based on the data returned.
-	$.getJSON('/stats/proto/5', function(protos) {
+	$.getJSON('/stats/protocols/5', function(protos) {
 		$.plot('#proto-analysis', protos, 
 			{xaxis: { mode: "time", position: "right", timezone: "browser"},
 			legend: {position: "nw", backgroundColor: null, backgroundOpacity: 0}
-		);
+		});
 	})
+}
+
+
+function displayAccount(account) {
+	$('#accounts-list > tbody').append(
+		'<tr class="account-entry"><td>' +
+		S(account.username).escapeHTML() + '</td><td>' +
+		S(account.password).escapeHTML() + '</td><td>' +
+		S(account.protocol).escapeHTML() + '</td><td>' +
+		S(account.dns).escapeHTML() + '</td></tr>'
+	);
+}
+
+
+function renderAccountList() {
+	if (accounts.length > 5) {
+		for (var i in accounts.slice(0,5)) {displayAccount(accounts[i])}
+	} else {
+		for (var i in accounts) {displayAccount(accounts[i])}
+	}
 }
 
 
@@ -42,32 +100,21 @@ function accountCycle() {
 		if (account_id == null) {account_id = 5;}
 
 		// Increment the account_id counter.
-		account_id += 1;
+		account_id++;
 
 		// If the account_id counter exceeds the number of elements in the
 		// accounts array, then we will need to rotate the id to the 
 		// beginning of the array.
-		if (account_id > accounts.length) {
-			account_id = (account_id - 1) - accounts.length;
+		if (account_id > accounts.length - 1) {
+			account_id = account_id - accounts.length;
 		}
-
-		// If the account_id is 0, then we will want to denote that by adding
-		// a horizontal line.
-		if (account_id == 0) {
-			$('.account-entry:first').remove();
-			$('#accounts').append('<tr class="account-entry"><td colspan="5"><hr /></td></tr>');
-		}
+		console.log(account_id)
 
 		// Now to remove the first entry and add the last entry into the
 		// user view.
 		$('.account-entry:first').remove();
-		$('#accounts').append('<tr class="account-entry"><td>' 
-							  + account_id + '</td><td>' + 
-							  accounts[account_id].username + '</td><td>' +
-							  accounts[account_id].password + '</td><td>' +
-							  accounts[account_id].protocol + '</td><td>' +
-							  accounts[account_id].dns + '</td></tr>'
-		);
+		displayAccount(accounts[account_id]);
+		console.log(accounts[account_id]);
 	}
 }
 
@@ -92,5 +139,13 @@ $(document).ready(function () {
 		$.each(images, function(key, image) {
 			addImage(image);
 		})
-	})
+	});
+	$.getJSON('/accounts/list', function(account_list) {
+		accounts = account_list;
+		renderAccountList();
+	});
+	$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
+	$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
+	protoRefresh();
+	//setInterval(accountCycle, 1000);
 })

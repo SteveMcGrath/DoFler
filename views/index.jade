@@ -10,7 +10,9 @@ html(lang="en")
 		div(class=["navbar", "navbar-inverse", "navbar-fixed-top"])
 			div.container
 				div.navbar-header
-					a(href="#", class="navbar-brand") DoFler v#{version} | #{title}
+					a(href="#", class="navbar-brand")
+					img(src="/static/img/logo.png")
+					span#version v#{version} | #{title}
 					div(class=["pull-right", "navbar-brand"]) #{slogan}
 		div#wrapper.container
 			div#images-wrapper.container
@@ -22,16 +24,18 @@ html(lang="en")
 						h3.panel-title Accounts
 					div.panel-body
 						table#accounts-list.table
-							tr
-								td steve
-								td pas****
-								td HTTP
-								td google.com
-				div(id="vulns-wrapper", class=["panel", "panel-primary"])
+							tbody
+				div(id="host-vulns-wrapper", class=["panel", "panel-primary"])
 					div.panel-heading
-						h3.panel-title Vulnerabilities
+						h3.panel-title Top Vulnerable Hosts
 					div.panel-body
-						ul#vulns-list
+						table#top-vulnerable-hosts
+							tbody
+				div(id="top-vulns-wrapper", class=["panel", "panel-primary"])
+					div.panel-heading
+						h3.panel-title Top Vulnerabilities
+					div.panel-body
+						ul#top-vulnerabilities.list-group
 				div(id="stats-wrapper", class=["panel", "panel-primary"])
 					div.panel-heading
 						h3.panel-title Network Stats
@@ -42,4 +46,5 @@ html(lang="en")
 		script(src="/static/js/jquery.flot.time.min.js")
 		script(src="/static/js/bootstrap.min.js")
 		script(src="/static/js/bootswatch.js")
+		script(src="/static/js/string.js")
 		script(src="/static/js/dofler.js")
