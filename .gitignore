@@ -1,3 +1,4 @@
 node_modules/*
 .DS_Store
 devsync.sh
+config/development.json
