@@ -12,23 +12,23 @@ function tsharkParser() {
 	// routine checkpointing of the data and commiting that information to the
 	// database.  We will run the checkpoiting every 60 seconds.
 	setInterval(function() {
-		// The first thing we need to do is copy the transports array and then
-		// clear out the existing counters.
-		var items = transports;
-		transports = {};
-		console.log('TShark: Initiating Checkpoint.')
-
 		// As we are checkpointing every minute, we want to make sure that the
 		// data is represented on a minute-by-minute basis, and not with a
 		// higher fidelity than that.  So what we are doing here is creating the
 		// ts variable with a date fidelity equal to the current minute.
 		var d = new Date();
-		var ts = new Date(d.getYear(), d.getMonth(), d.getDay(), d.getHours(), d.getMinutes());
+		var ts = new Date(d.getFullYear(), d.getMonth(), d.getDay(), d.getHours(), d.getMinutes(), 0);
+
+		// The next thing we need to do is copy the transports array and then
+		// clear out the existing counters.
+		var items = transports;
+		transports = {};
+		console.log('TShark: Initiating Checkpoint for ' + ts);
 
 		// Now we need to iterate through all of the keys in the array and
 		// create a new database entry for each one.
 		for (var key in items){
-			console.log('TShark: Checkpointing ' + key + ' at ' + items[key])
+			// console.log('TShark: Checkpointing ' + key + ' at ' + items[key])
 			Stat.create({
 				transport: key,
 				count: items[key],
