@@ -24,7 +24,7 @@
     "dofler": "node ./server.js"
   },
   "directories": {
-    "lib": "./lib",
+    "lib": "./lib"
   },
   "description": "Dashboard of Fail network monitoring and presentation application",
   "dependencies": {
