@@ -26,6 +26,9 @@
 		"NGrep": {
 			"autostart": true
 		},
+		"Ettercap": {
+			"autostart": true
+		},
 		"PVS": {
 			"autostart": true,
 			"hostname": "PVS_HOSTNAME",

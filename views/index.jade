@@ -7,13 +7,32 @@ html(lang="en")
 		link(rel="stylesheet", href="/static/css/dofler.css")
 		script(src="/socket.io/socket.io.js")
 	body
-		div(class=["navbar", "navbar-inverse", "navbar-fixed-top"])
+		div.navbar.navbar-inverse.navbar-fixed-top
 			div.container
 				div.navbar-header
-					a(href="#", class="navbar-brand")
 					img(src="/static/img/logo.png")
-					span#version v#{version} | #{title}
-					div(class=["pull-right", "navbar-brand"]) #{slogan}
+					span#version v#{version} | dofler.net
+					button(class="navbar-toggle", type="button", data-toggle="collapse", data-target="#navbar-main")
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+				div#navbar-main.navbar-collapse.collapse.pull-right
+					a(href="#", class="navbar-brand" id="slogan") #{slogan}
+					ul.nav.navbar-nav
+						li.dropdown
+							a(class="dropdown-toggle", data-toggle="dropdown", href="#" id="sidebar-controller") Display
+								span.caret
+							ul(class="dropdown-menu", aria-labbelledby="sidebar-controller")
+								li
+									a(href="#" onclick="$('#slogan').toggle();") Slogan Title
+								li
+									a(href="#" onclick="$('#accounts-wrapper').toggle();") Accounts
+								li
+									a(href="#" onclick="$('#host-vulns-wrapper').toggle();") Top Hosts
+								li
+									a(href="#" onclick="$('#top-vulns-wrapper').toggle();") Top Vulns
+								li
+									a(href="#" onclick="$('#stats-wrapper').toggle();") Network Stats
 		div#wrapper.container
 			div#images-wrapper.container
 				div.container-fluid
@@ -22,6 +41,7 @@ html(lang="en")
 				div(id="accounts-wrapper", class=["panel", "panel-primary"])
 					div.panel-heading
 						h3.panel-title Accounts
+							span#account-total.pull-right 0
 					div.panel-body
 						table#accounts-list.table
 							tbody

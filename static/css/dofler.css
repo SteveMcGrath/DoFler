@@ -4,10 +4,14 @@ body {
 	line-height: none;
 }
 
+#nav-data-wrapper {
+	height: 100%;
+}
+
 #version {
 	vertical-align: bottom;
 	padding-left: 5px;
-	padding-right: 20px;
+	/* padding-right: 20px; */
 	line-height: 25px;
 }
 

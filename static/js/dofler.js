@@ -74,6 +74,7 @@ function protoRefresh() {
 
 
 function displayAccount(account) {
+	$('#account-total').html(accounts.length);
 	$('#accounts-list > tbody').append(
 		'<tr class="account-entry"><td>' +
 		S(account.username).escapeHTML() + '</td><td>' +
@@ -147,5 +148,5 @@ $(document).ready(function () {
 	$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
 	$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
 	protoRefresh();
-	//setInterval(accountCycle, 1000);
+	setInterval(accountCycle, 1000);
 })
