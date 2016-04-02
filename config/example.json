@@ -1,0 +1,9 @@
+{
+	"WebUI": {
+		"title": "DevelopmentCon",
+		"slogan": "This is what an example slogan looks like!"
+	},
+	"Database": {
+		"uri": "mysql://dofler:dofler@localhost/dofler"
+	}
+}

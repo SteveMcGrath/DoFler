@@ -30,7 +30,7 @@
 			"autostart": true
 		},
 		"PVS": {
-			"autostart": true,
+			"autostart": false,
 			"hostname": "PVS_HOSTNAME",
 			"username": "PVS_USERNAME",
 			"password": "PVS_PASSWORD"
