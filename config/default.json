@@ -9,13 +9,13 @@
 	},
 	"AppServer": {
 		"port": 3000,
-		"debug": true,
+		"debug": false,
 		"static": "static",
 		"templates": "templates",
 		"images": "images"
 	},
 	"Monitoring": {
-		"interface": "eno33554960",
+		"interface": "eth1",
 		"Driftnet": {
 			"autostart": false,
 			"tmp": "/tmp/driftnet"

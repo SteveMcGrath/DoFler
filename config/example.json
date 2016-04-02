@@ -5,5 +5,8 @@
 	},
 	"Database": {
 		"uri": "mysql://dofler:dofler@localhost/dofler"
+	},
+	"Monitoring": {
+		"interface": "eth1",
 	}
 }
