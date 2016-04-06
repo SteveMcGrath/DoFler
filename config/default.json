@@ -1,7 +1,7 @@
 {
 	"WebUI": {
-		"title": "ExampleCon",
-		"slogan": "Example Slogan"
+		"title": "Certis Event",
+		"slogan": "Sharing is Caring!"
 	},
 	"Database": {
 		"uri": "mysql://dofler:dofler@localhost/dofler",
@@ -9,13 +9,14 @@
 	},
 	"AppServer": {
 		"port": 3000,
+		"host": "127.0.0.1",
 		"debug": false,
 		"static": "static",
 		"templates": "templates",
 		"images": "images"
 	},
 	"Monitoring": {
-		"interface": "eth1",
+		"interface": "eth0",
 		"Driftnet": {
 			"autostart": false,
 			"tmp": "/tmp/driftnet"
