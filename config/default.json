@@ -1,7 +1,7 @@
 {
 	"WebUI": {
-		"title": "Certis Event",
-		"slogan": "Sharing is Caring!"
+		"title": "ExampleCon",
+		"slogan": "Example Slogan"
 	},
 	"Database": {
 		"uri": "mysql://dofler:dofler@localhost/dofler",
