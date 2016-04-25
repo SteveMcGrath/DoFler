@@ -12,7 +12,7 @@ function addImage(image) {
 
 	// As we only want to display the latest 200 images, we will want to
 	// remove the oldest images once this limit has been reached.
-	if ($('.dofler-img').length > 200){
+	if ($('.dofler-img').length > 100){
 		$('.dofler-img:last').remove()
 	}
 }
