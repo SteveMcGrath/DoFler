@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
 	head
 		title=title
-		link(rel="stylesheet", href="/static/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/static/css/display.min.css")
 		link(rel="stylesheet", href="/static/css/bootswatch.min.css")
 		link(rel="stylesheet", href="/static/css/dofler.css")
 		script(src="/socket.io/socket.io.js")
@@ -20,19 +20,22 @@ html(lang="en")
 					a(href="#", class="navbar-brand" id="slogan") #{slogan}
 					ul.nav.navbar-nav
 						li.dropdown
-							a(class="dropdown-toggle", data-toggle="dropdown", href="#" id="sidebar-controller") Display
+							a(class="dropdown-toggle", data-toggle="dropdown", href="#" id="sidebar-controller") Options
 								span.caret
 							ul(class="dropdown-menu", aria-labbelledby="sidebar-controller")
 								li
-									a(href="#" onclick="$('#slogan').toggle();") Slogan Title
+									a(href="#" onclick="$('#slogan').toggle();") Toggle Slogan
 								li
-									a(href="#" onclick="$('#accounts-wrapper').toggle();") Accounts
+									a(href="#" onclick="$('#accounts-wrapper').toggle();") Toggle Accounts
 								li
-									a(href="#" onclick="$('#host-vulns-wrapper').toggle();") Top Hosts
+									a(href="#" onclick="$('#host-vulns-wrapper').toggle();") Toggle Top Hosts
 								li
-									a(href="#" onclick="$('#top-vulns-wrapper').toggle();") Top Vulns
+									a(href="#" onclick="$('#top-vulns-wrapper').toggle();") Toggle Top Vulns
 								li
-									a(href="#" onclick="$('#stats-wrapper').toggle();") Network Stats
+									a(href="#" onclick="$('#stats-wrapper').toggle();") Toggle Network Stats
+								li.divider
+								li
+									a(href="#") Generate Report
 		div#wrapper.container
 			div#images-wrapper.container
 				div.container-fluid
