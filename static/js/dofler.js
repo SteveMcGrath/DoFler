@@ -135,6 +135,16 @@ socket.on('protocols', function(data){
 })
 
 
+socket.on('vulnHosts', function(data){
+	hostVulnList();
+})
+
+
+socket.on('topVulns', function(data){
+	topVulnsList();
+})
+
+
 $(document).ready(function () {
 	$.getJSON('/images/list', function(images) {
 		$.each(images, function(key, image) {
