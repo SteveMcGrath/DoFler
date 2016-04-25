@@ -29,6 +29,7 @@
   "description": "Dashboard of Fail network monitoring and presentation application",
   "dependencies": {
     "async": "^2.0.0-rc.2",
+    "base64-img": "^1.0.3",
     "config": "^1.19.0",
     "express": "^4.13.4",
     "httpreq": "^0.4.16",
