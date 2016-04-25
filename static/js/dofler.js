@@ -136,12 +136,12 @@ socket.on('protocols', function(data){
 
 
 socket.on('vulnHosts', function(data){
-	hostVulnList();
+	$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
 })
 
 
 socket.on('topVulns', function(data){
-	topVulnsList();
+	$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
 })
 
 
