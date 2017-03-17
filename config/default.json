@@ -18,7 +18,8 @@
 		"interface": "eth1",
 		"Driftnet": {
 			"autostart": false,
-			"tmp": "/tmp/driftnet"
+			"tmp": "/tmp/driftnet",
+			"nsfw_filter": true
 		},
 		"TShark": {
 			"autostart": true

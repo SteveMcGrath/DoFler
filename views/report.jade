@@ -1,0 +1,59 @@
+doctype html
+html(lang="en")
+	head
+		title=title
+		style
+			include ../static/css/paper.min.css
+			include ../static/css/report.css
+	body
+		div.navbar.navbar-inverse.navbar-fixed-top
+			div.container
+				div.navbar-header
+					img(src="/static/img/logo.png")
+					span#version v#{version} | dofler.net
+		div.container
+			div.row
+				div.col-md-6
+					div.panel.panel-primary
+						div.panel-heading
+							h3 Top Hosts
+						div.panel-body
+							table#top-vulnerable-hosts
+				div.col-md-6
+					div.panel.panel-primary
+						div.panel-heading
+							h3 Top Vulnerabilities
+						div.panel-body
+							ul#top-vulnerabilities.list-group
+			div.row
+				div.col-md-6
+					div.panel.panel-primary
+						div.panel-heading
+							h3 Accounts Discovered
+								span#account-total.pull-right 0
+						div.panel-body
+							table#accounts-list.table
+								tbody
+				div.col-md-6
+					div.panel.panel-primary
+						div.panel-heading
+							h3 Protocol Trending
+						div.panel-body
+							#proto-analaysis
+							ul#proto-list.list-group
+			div.row
+				div.panel.panel-primary
+					div.panel-heading
+						h3 Top 100 Images
+					div.panel-body
+						ul#images
+
+
+		script(src="/static/js/jQuery-1.10.2.min.js")
+		script(src="/static/js/jquery.flot.min.js")
+		script(src="/static/js/jquery.flot.time.min.js")
+		script(src="/static/js/bootstrap.min.js")
+		script(src="/static/js/bootswatch.js")
+		script(src="/static/js/string.js")
+		script(src="/static/js/dofler.js")
+		script report();

@@ -61,10 +61,12 @@ function addAccount(account) {
 }
 
 
-function protoRefresh() {
+function protoRefresh(reporting = false) {
 	// Get the top 5 protocols from the API and then generate the flot graph
 	// based on the data returned.
-	$.getJSON('/stats/protocols/5', function(protos) {
+	var url = '/stats/protocols/5'
+	if (reporting) {url = '/stats/protoreport/10'}
+	$.getJSON(url, function(protos) {
 		$.plot('#proto-analysis', protos, 
 			{xaxis: { mode: "time", position: "right", timezone: "browser"},
 			legend: {position: "nw", backgroundColor: null, backgroundOpacity: 0}
@@ -73,14 +75,24 @@ function protoRefresh() {
 }
 
 
-function displayAccount(account) {
+function protoList() {
+	$.getJSON('/stats/protolist', function(protos) {
+		$.each(protos, function(key, proto) {
+			$('#proto-list').append('<li class="list-group-item"><span class="badge">' + proto.count + '</span>' + proto.name + '</li>')
+		})
+	})
+}
+
+
+function displayAccount(account, clip=true) {
 	$('#account-total').html(accounts.length);
+
 	$('#accounts-list > tbody').append(
 		'<tr class="account-entry"><td>' +
-		S(account.username).escapeHTML() + '</td><td>' +
-		S(account.password).escapeHTML() + '</td><td>' +
-		S(account.protocol).escapeHTML() + '</td><td>' +
-		S(account.dns).escapeHTML() + '</td></tr>'
+		S(account.username || '').escapeHTML().substring(0,15) 	+ '</td><td>' +
+		S(account.password || '').escapeHTML().substring(0,15) 	+ '</td><td>' +
+		S(account.protocol || '').escapeHTML() 					+ '</td><td>' +
+		S(account.dns || '').escapeHTML().substring(0,15) 		+ '</td></tr>'
 	);
 }
 
@@ -120,43 +132,63 @@ function accountCycle() {
 }
 
 
-socket.on('images', function(image) {
-	addImage(image);
-})
+function report() {
+	$(document).ready(function () {
+		$.getJSON('/images/common', function(images) {
+			$.each(images, function(key, image) {
+				$('#image-table').append('<tr><td>' + image.count + '</td><td><img class="dofler-img" src="/images/file/' + image.filename + '"></td></tr>');
+			})
+		});
+		$.getJSON('/accounts/list', function(accounts) {
+			$.each(accounts, function(key, account) {
+				addAccount(account);
+				displayAccount(account);
+			})
+		});
+		protoRefresh(true);
+	})
+}
 
 
-socket.on('accounts', function(account) {
-	accounts.push(account);
-})
+function display() {
+	socket.on('images', function(image) {
+		addImage(image);
+	})
 
 
-socket.on('protocols', function(data){
-	protoRefresh();
-})
+	socket.on('accounts', function(account) {
+		accounts.push(account);
+	})
 
 
-socket.on('vulnHosts', function(data){
-	$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
-})
+	socket.on('protocols', function(data){
+		protoRefresh();
+	})
 
 
-socket.on('topVulns', function(data){
-	$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
-})
+	socket.on('vulnHosts', function(data){
+		$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
+	})
 
 
-$(document).ready(function () {
-	$.getJSON('/images/list', function(images) {
-		$.each(images, function(key, image) {
-			addImage(image);
-		})
-	});
-	$.getJSON('/accounts/list', function(account_list) {
-		accounts = account_list;
-		renderAccountList();
-	});
-	$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
-	$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
-	protoRefresh();
-	setInterval(accountCycle, 1000);
-})
+	socket.on('topVulns', function(data){
+		$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
+	})
+
+
+	$(document).ready(function () {
+		$.getJSON('/images/list', function(images) {
+			$.each(images, function(key, image) {
+				addImage(image);
+			})
+		});
+		$.getJSON('/accounts/list', function(account_list) {
+			accounts = account_list;
+			renderAccountList();
+		});
+		$.getJSON('/vulns/hosts', function(data) {hostVulnList(data)});
+		$.getJSON('/vulns/vulns', function(data) {topVulnsList(data)});
+		protoRefresh();
+		setInterval(accountCycle, 1000);
+	})
+}
