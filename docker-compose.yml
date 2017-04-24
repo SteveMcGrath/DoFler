@@ -1,0 +1,93 @@
+version: "3"
+services:
+  # TODO: Do we need expose?
+  # TODO: Do we need aliases?
+  #db:
+  #  image: mariadb:latest
+  #  volumes:
+  #    - ./data/mysql:/var/lib/mysql
+  #  networks:
+  #    - db
+
+    # TODO: Password etc
+
+  #web:
+  #  build: ./containers/web
+  #  context: ./containers/web
+    #ports:
+    #  - 5000:80
+  #  networks:
+  #    - db
+  #    - web
+  #  depends_on:
+  #    - db
+
+  #filter:
+  #  networks:
+  #    - filter
+  #    - web
+  #  depends_on:
+  #    - web
+
+  driftnet:
+    volumes:
+      - /data/driftnet:/driftnet
+    build:
+      context: ./containers/driftnet
+    networks:
+      - filter
+      - scanner
+    cap_add:
+      - NET_ADMIN
+    #depends_on:
+    #  - filter
+
+  #ngrep:
+  #  networks:
+  #    - filter
+  #  depends_on:
+  #    - filter
+#    cap_add:open_nsfw
+#      - NET_ADMIN
+
+  # dsniff:
+  #   networks:
+  #     - web
+  #   depends_on:
+  #     - web
+#    cap_add:
+#      - NET_ADMINvi
+
+  # ettercap:
+  #   networks:
+  #     - web
+  #   depends_on:
+  #     - web
+#    cap_add:
+#      - NET_ADMIN
+
+  # tshark:
+  #   networks:
+  #     - web
+  #   depends_on:
+  #     - web
+#    cap_add:
+#      - NET_ADMIN
+
+  # pvs:
+  #   networks:
+  #     - web
+  #   depends_on:
+  #     - web
+#    cap_add:
+#      - NET_ADMIN
+
+networks:
+  #database:
+  filter:
+  scanner:
+    driver: macvlan
+    driver_opts:
+      parent: br0
+
+  #web:
