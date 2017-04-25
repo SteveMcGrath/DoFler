@@ -22,41 +22,43 @@ services:
   #  depends_on:
   #    - db
 
-  #filter:
+  #images:
   #  networks:
-  #    - filter
+  #    - images
   #    - web
   #  depends_on:
   #    - web
 
+  # TODO: Ramdisk for the temporary image storage?
   driftnet:
-    volumes:
-      - /data/driftnet:/driftnet
     build:
       context: ./containers/driftnet
     networks:
-      - filter
+      - images
       - scanner
     cap_add:
       - NET_ADMIN
     #depends_on:
-    #  - filter
+    #  - images
 
   #ngrep:
   #  networks:
-  #    - filter
+  #    - images
   #  depends_on:
-  #    - filter
+  #    - images
 #    cap_add:open_nsfw
 #      - NET_ADMIN
 
-  # dsniff:
-  #   networks:
-  #     - web
-  #   depends_on:
-  #     - web
-#    cap_add:
-#      - NET_ADMINvi
+  dsniff:
+    build:
+      context: ./containers/dsniff
+    networks:
+      - web
+      - scanner
+    #depends_on:
+    #  - web
+    cap_add:
+      - NET_ADMIN
 
   # ettercap:
   #   networks:
@@ -84,10 +86,10 @@ services:
 
 networks:
   #database:
-  filter:
+  images:
   scanner:
     driver: macvlan
     driver_opts:
       parent: br0
 
-  #web:
+  web:
