@@ -36,18 +36,21 @@ services:
     networks:
       - images
       - scanner
+   #depends_on:
+   #   - images
     cap_add:
       - NET_ADMIN
-    #depends_on:
-    #  - images
 
-  #ngrep:
-  #  networks:
-  #    - images
-  #  depends_on:
-  #    - images
-#    cap_add:open_nsfw
-#      - NET_ADMIN
+  ngrep:
+    build:
+      context: ./containers/ngrep
+    networks:
+      - images
+      - scanner
+   #depends_on:
+   #  - images
+    cap_add:
+      - NET_ADMIN
 
   dsniff:
     build:
