@@ -74,13 +74,16 @@ services:
     cap_add:
       - NET_ADMIN
 
-  # tshark:
-  #   networks:
-  #     - web
-  #   depends_on:
-  #     - web
-#    cap_add:
-#      - NET_ADMIN
+  tshark:
+    build:
+      context: ./containers/tshark
+    networks:
+      - web
+      - scanner
+    #depends_on:
+    #  - web
+    cap_add:
+      - NET_ADMIN
 
   # pvs:
   #   networks:
