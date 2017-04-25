@@ -16,11 +16,12 @@ RUN apk add --update --no-cache \
   libpcap \
   libpcap-dev \
   glib-dev \
-#  libtirpc-dev \
   portablexdr \
   portablexdr-dev \
   bsd-compat-headers \
   linux-headers
+
+# TODO: Are these headers needed?
 
 ENV PROJECT_PATH /dsniff
 
@@ -33,7 +34,7 @@ COPY patches/* ./patches/
 RUN git apply debian/patches/*.patch
 RUN git apply --ignore-space-change --ignore-whitespace patches/*.patch
 
-RUN LDFLAGS="-lresolv -lglib-2.0 -lgthread-2.0 -lportablexdr $LDFLAGS" \
+RUN LDFLAGS="-lresolv -lglib-2.0 -lgthread-2.0 -lportablexdr" \
     ./configure  \
     --prefix="/usr" \
     --mandir=/usr/share
