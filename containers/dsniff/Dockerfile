@@ -21,7 +21,7 @@ RUN apk add --update --no-cache \
   bsd-compat-headers \
   linux-headers
 
-# TODO: Are these headers needed?
+# TODO: Are the linux/bsd-compat headers needed?
 
 ENV PROJECT_PATH /dsniff
 
@@ -34,7 +34,7 @@ COPY patches/* ./patches/
 RUN git apply debian/patches/*.patch
 RUN git apply --ignore-space-change --ignore-whitespace patches/*.patch
 
-RUN LDFLAGS="-lresolv -lglib-2.0 -lgthread-2.0 -lportablexdr" \
+RUN LIBS="$LIBS -lresolv -lglib-2.0 -lgthread-2.0 -lportablexdr" \
     ./configure  \
     --prefix="/usr" \
     --mandir=/usr/share
@@ -42,10 +42,6 @@ RUN LDFLAGS="-lresolv -lglib-2.0 -lgthread-2.0 -lportablexdr" \
 RUN make
 
 RUN make install
-
-RUN ls
-
-#RUN cp dsniff /usr/bin
 
 RUN apk del --no-cache \
   git \
@@ -59,4 +55,4 @@ RUN mkdir $PROJECT_PATH
 
 WORKDIR $PROJECT_PATH
 
-CMD ["/usr/bin/dsniff", "-i", "eth1"]
+CMD ["/usr/sbin/dsniff", "-i", "eth1"]
