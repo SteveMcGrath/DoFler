@@ -60,13 +60,16 @@ services:
     cap_add:
       - NET_ADMIN
 
-  # ettercap:
-  #   networks:
-  #     - web
-  #   depends_on:
-  #     - web
-#    cap_add:
-#      - NET_ADMIN
+  ettercap:
+    build:
+      context: ./containers/ettercap
+    networks:
+      - web
+      - scanner
+    #depends_on:
+    #  - web
+    cap_add:
+      - NET_ADMIN
 
   # tshark:
   #   networks:
