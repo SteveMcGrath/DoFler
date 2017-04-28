@@ -1,10 +1,11 @@
-FROM alpine:3.5
+FROM node:6.10-alpine
 
 RUN apk add --update --no-cache \
   git \
   build-base \
   libpcap \
-  libpcap-dev
+  libpcap-dev \
+  tcpdump
 
 ENV PROJECT_PATH /driftnet
 
@@ -32,4 +33,8 @@ RUN mkdir $PROJECT_PATH
 
 WORKDIR $PROJECT_PATH
 
-CMD ["/usr/bin/driftnet", "-v", "-a", "-i", "eth1", "-d", "."]
+COPY app .
+
+RUN npm install --production
+
+CMD ["node", "./index.js"]

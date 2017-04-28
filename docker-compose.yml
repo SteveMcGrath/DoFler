@@ -29,76 +29,106 @@ services:
   #  depends_on:
   #    - web
 
-  # TODO: Ramdisk for the temporary image storage?
+  # TODO: Pass in network interface as an option to all of them instead of it being hardcoded in the docker image
+
+  # This needs to spin up to be able to create the network hostnic, run outside on the host instead in systemd
+  #docker-plugin-hostnic:
+  #  image: qingcloud/docker-plugin-hostnic
+  #  network_mode: host
+  #  privileged: true
+  #  volumes:
+  #    - /run/docker/plugins:/run/docker/plugins
+  #    - /etc/docker/hostnic:/etc/docker/hostnic
+
+  # TODO: Restart on failure, etc.
+  # # TODO: Ramdisk for the temporary image storage?
   driftnet:
     build:
       context: ./containers/driftnet
-    networks:
-      - images
-      - scanner
-   #depends_on:
+    network_mode: host
+    ports:
+      - "4000:4000"
+    privileged: true
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      SPAN_INTERFACE: ${SPAN_INTERFACE}:br0
+   # networks:
    #   - images
+   #   - hostnic
+   # depends_on:
+   #   - images
+   #   - docker-plugin-hostnic
     cap_add:
       - NET_ADMIN
 
   ngrep:
     build:
       context: ./containers/ngrep
-    networks:
-      - images
-      - scanner
-   #depends_on:
-   #  - images
+    network_mode: host
+    # networks:
+    #   - images
+    #   - scanner
+    #depends_on:
+      #- images
     cap_add:
       - NET_ADMIN
 
   dsniff:
     build:
       context: ./containers/dsniff
-    networks:
-      - web
-      - scanner
+    network_mode: host
+    # networks:
+    #   - web
+    #   - scanner
     #depends_on:
-    #  - web
+      #- web
     cap_add:
       - NET_ADMIN
 
   ettercap:
     build:
       context: ./containers/ettercap
-    networks:
-      - web
-      - scanner
+    network_mode: host
+    # networks:
+    #   - web
+    #   - scanner
     #depends_on:
-    #  - web
+      #- web
     cap_add:
       - NET_ADMIN
 
   tshark:
     build:
       context: ./containers/tshark
-    networks:
-      - web
-      - scanner
+    network_mode: host
+    # networks:
+    #   - web
+    #   - scanner
     #depends_on:
-    #  - web
+      #- web
     cap_add:
       - NET_ADMIN
 
   # pvs:
   #   networks:
   #     - web
-  #   depends_on:
-  #     - web
+  #  depends_on:
+      #- web
 #    cap_add:
 #      - NET_ADMIN
 
-networks:
+#networks:
   #database:
-  images:
-  scanner:
-    driver: macvlan
-    driver_opts:
-      parent: br0
-
-  web:
+  #images:
+  #hostnic:
+  #  external:
+  #    name: hostnic
+    #driver: hostnic
+    #ipam:
+    #  config:
+    #    - subnet: 192.168.2.0/24
+        #- gateway: 192.168.2.1
+   # driver_opts:
+   #   parent: br0
+  #web:
