@@ -10,6 +10,17 @@
     "express": "^4.8.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "chai": "^3.5.0",
+    "glob": "^7.1.1",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-mocha": "^4.3.1",
+    "gulp-noop": "^1.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-standard": "^10.0.0",
+    "gulp-util": "^3.0.8",
+    "merge-stream": "^1.0.1",
+    "run-sequence": "^1.2.2",
+    "gulp-nodemon": "^2.2.1"
   }
 }

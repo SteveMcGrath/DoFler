@@ -1,27 +1,27 @@
-var express = require('express');
-var http = require('http');
+var parser = require('./lib/parser')
+var spawn = require('child_process').spawn
 
-var PORT = process.env.PORT || 4000;
+// TODO: Kill driftnet on exit..Set pid file to something we can delete? always clean it up before?
+var child = spawn('driftnet', ['-a', '-i', process.env.SPAN_INTERFACE, '-d', process.env.IMAGE_PATH])
+console.log('Driftnet: Started child thread')
 
-var LINES = [
-    "LOL"
-];
+// When driftnet outputs data to standard output, we want to capture that
+// data, interpret it, and hand it off to the database.
+child.stdout.on('data', function (data) {
+  parser(data)
+})
 
-var lineIndex = 0;
+child.stderr.on('data', function (data) {
+  console.log('Driftnet: (stderr)' + data.toString().replace(/(\r\n|\n|\r)/gm, ''))
+})
 
-var app = express();
-app.get('/', function(req, res) {
-    var message = LINES[lineIndex];
+// If driftnet exists for some reason, log the event to the console
+// and then initiate a new instance to work from.
+child.on('close', function (code) {
+  console.log('Driftnet child terminated with code ' + code)
+  // TODO: Restart
+})
 
-    lineIndex += 1;
-    if (lineIndex > LINES.length) {
-        lineIndex = 0;
-        message = LINES[lineIndex];
-    }
-
-    res.send({message: message});
-});
-
-http.Server(app).listen(PORT, function() {
-    console.log("HTTP server listening on port %s", PORT);
-});
+child.on('error', function () {
+  console.log('Driftnet: Failed to start process')
+})

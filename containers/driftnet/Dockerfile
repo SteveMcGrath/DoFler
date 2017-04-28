@@ -4,8 +4,7 @@ RUN apk add --update --no-cache \
   git \
   build-base \
   libpcap \
-  libpcap-dev \
-  tcpdump
+  libpcap-dev
 
 ENV PROJECT_PATH /driftnet
 
@@ -35,6 +34,12 @@ WORKDIR $PROJECT_PATH
 
 COPY app .
 
-RUN npm install --production
+RUN npm install # Install dev dependencies so that we can run gulp
+
+RUN ./node_modules/.bin/gulp build # Run tests and linting
+
+RUN rm -rf node_modules # Clear out node_modules
+
+RUN npm install --production # Only install the production dependencies
 
 CMD ["node", "./index.js"]
