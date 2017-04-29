@@ -6,8 +6,9 @@ services:
     network_mode: bridge # Since Docker on Mac doesn't forward ports with host networking, we set the network mode to bridge
     volumes:
       - ./containers/driftnet/app:/driftnet
+      - ./data:/data
     ports:
       - "4001:4001"
     environment:
-      NODE_ENV: 'development'
-      SPAN_INTERFACE: 'eth0' # As we don't have host networking, we listen to the local interface. We use a container with --net=container:dofler_driftnet_1 to push traffic for testing.
+      NODE_ENV: "development"
+      SPAN_INTERFACE: "eth0" # As we don't have host networking, we listen to the local interface. We use a container with --net=container:dofler_driftnet_1 to push traffic for testing.

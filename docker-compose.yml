@@ -1,6 +1,5 @@
 version: "3"
 services:
-  # TODO: Do we need expose?
   # TODO: Do we need aliases?
   #db:
   #  image: mariadb:latest
@@ -9,7 +8,7 @@ services:
   #  networks:
   #    - db
 
-    # TODO: Password etc
+  # TODO: Password etc
 
   #web:
   #  build: ./containers/web
@@ -29,89 +28,81 @@ services:
   #  depends_on:
   #    - web
 
-  # TODO: Pass in network interface as an option to all of them instead of it being hardcoded in the docker image
-
-  # This needs to spin up to be able to create the network hostnic, run outside on the host instead in systemd
-  #docker-plugin-hostnic:
-  #  image: qingcloud/docker-plugin-hostnic
-  #  network_mode: host
-  #  privileged: true
-  #  volumes:
-  #    - /run/docker/plugins:/run/docker/plugins
-  #    - /etc/docker/hostnic:/etc/docker/hostnic
+  span:
+    build:
+      context: ./containers/span
+    container_name: span
+    privileged: true
+    networks:
+      - images
+      - web
 
   # TODO: Restart on failure, etc.
   # # TODO: Ramdisk for the temporary image storage?
   driftnet:
     build:
       context: ./containers/driftnet
-    network_mode: host
-    ports:
-      - "4000:4000"
     volumes:
-      - ./data:/data
-    privileged: true
+      - /data:/data
     environment:
-      PORT: 4000
       NODE_ENV: production
-      SPAN_INTERFACE: ${SPAN_INTERFACE}:br0
+      SPAN_INTERFACE: "${SPAN_INTERFACE:-eno2}"
       IMAGE_PATH: /data
-   # networks:
-   #   - images
-   #   - hostnic
-   # depends_on:
-   #   - images
-   #   - docker-plugin-hostnic
+    network_mode: service:span # We share the network stack of the span container to be able to access the physical interface
+    depends_on:
+      - span
+    #  - images
     cap_add:
-      - NET_ADMIN
+      - NET_ADMIN # TODO: Is this needed?
+    restart: always # TODO: Only on failure, make sure app exits abnormally on error?
 
-  ngrep:
-    build:
-      context: ./containers/ngrep
-    network_mode: host
-    # networks:
-    #   - images
-    #   - scanner
-    #depends_on:
-      #- images
-    cap_add:
-      - NET_ADMIN
+  # ngrep:
+  #   build:
+  #     context: ./containers/ngrep
+  #   network_mode: host
+  #   # networks:
+  #   #   - images
+  #   #   - scanner
+  #   #depends_on:
+  #     #- images
+  #   cap_add:
+  #     - NET_ADMIN
 
-  dsniff:
-    build:
-      context: ./containers/dsniff
-    network_mode: host
-    # networks:
-    #   - web
-    #   - scanner
-    #depends_on:
-      #- web
-    cap_add:
-      - NET_ADMIN
+  # dsniff:
+  #   build:
+  #     context: ./containers/dsniff
+  #   network_mode: host
+  #   # networks:
+  #   #   - web
+  #   #   - scanner
+  #   #depends_on:
+  #     #- web
+  #   cap_add:
+  #     - NET_ADMIN
 
-  ettercap:
-    build:
-      context: ./containers/ettercap
-    network_mode: host
-    # networks:
-    #   - web
-    #   - scanner
-    #depends_on:
-      #- web
-    cap_add:
-      - NET_ADMIN
+  # ettercap:
+  #   build:
+  #     context: ./containers/ettercap
+  #   network_mode: host
+  #   # networks:
+  #   #   - web
+  #   #   - scanner
+  #   #depends_on:
+  #     #- web
+  #   cap_add:
+  #     - NET_ADMIN
 
-  tshark:
-    build:
-      context: ./containers/tshark
-    network_mode: host
-    # networks:
-    #   - web
-    #   - scanner
-    #depends_on:
-      #- web
-    cap_add:
-      - NET_ADMIN
+  # tshark:
+  #   build:
+  #     context: ./containers/tshark
+  #   network_mode: host
+  #   # networks:
+  #   #   - web
+  #   #   - scanner
+  #   #depends_on:
+  #     #- web
+  #   cap_add:
+  #     - NET_ADMIN
 
   # pvs:
   #   networks:
@@ -121,17 +112,7 @@ services:
 #    cap_add:
 #      - NET_ADMIN
 
-#networks:
+networks:
   #database:
-  #images:
-  #hostnic:
-  #  external:
-  #    name: hostnic
-    #driver: hostnic
-    #ipam:
-    #  config:
-    #    - subnet: 192.168.2.0/24
-        #- gateway: 192.168.2.1
-   # driver_opts:
-   #   parent: br0
-  #web:
+  images:
+  web:
