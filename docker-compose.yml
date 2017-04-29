@@ -28,17 +28,27 @@ services:
   #  depends_on:
   #    - web
 
-  span:
+  # TODO: Restart on failure, etc.
+  # # TODO: Ramdisk for the temporary image storage?
+
+  network_manager: # Listens to docker events and attaches the network interface to the span container when it starts
+    container_name: network_manager
     build:
-      context: ./containers/span
+      context: ./containers/network_manager
+    privileged: true # TODO: Can we use cap_add instead?
+    network_mode: host
+    pid: host
+
+  span: # Allows all the containers containing packet analyzers to access the span network interface
     container_name: span
-    privileged: true
+    image: alpine:3.5
+    command: tail -f /dev/null # Command to keep the container alive
     networks:
       - images
       - web
+    depends_on:
+      - network_manager
 
-  # TODO: Restart on failure, etc.
-  # # TODO: Ramdisk for the temporary image storage?
   driftnet:
     build:
       context: ./containers/driftnet

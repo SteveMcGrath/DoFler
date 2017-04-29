@@ -4,8 +4,7 @@ RUN apk add --update --no-cache \
   git \
   build-base \
   libpcap \
-  libpcap-dev \
-  tcpdump
+  libpcap-dev
 
 ENV PROJECT_PATH /driftnet
 
