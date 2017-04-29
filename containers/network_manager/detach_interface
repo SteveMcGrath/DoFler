@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Attempt to detach the network interface from the container. This sometimes fails as the namespace is already removed.
+
+INTERFACE=$1
+SPAN_NETNS=`docker inspect --format '{{ .State.Pid }}' $2`
+
+ip netns exec $SPAN_NETNS ip link set $INTERFACE down
+ip netns exec $SPAN_NETNS ip link set $INTERFACE netns 1
+
+rm -rf /var/run/netns/$SPAN_NETNS

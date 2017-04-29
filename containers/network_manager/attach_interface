@@ -1,7 +1,9 @@
 #!/bin/sh
 
+# Attach the network interface to the container
+
 INTERFACE=$1
-SPAN_NETNS=$2
+SPAN_NETNS=`docker inspect --format '{{ .State.Pid }}' $2`
 
 mkdir -p /var/run/netns
 ln -s /proc/$SPAN_NETNS/ns/net /var/run/netns/$SPAN_NETNS

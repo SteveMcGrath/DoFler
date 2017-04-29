@@ -1,10 +1,11 @@
-FROM alpine:3.5
+FROM fish/docker-spotter
 
 RUN apk add --update --no-cache \
-  iproute2
+  iproute2 \
+  docker
 
 WORKDIR /
 
-COPY *.sh ./
+COPY . .
 
-CMD ["./span.sh"]
+ENTRYPOINT ["./network_manager"]

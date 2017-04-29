@@ -38,6 +38,10 @@ services:
     privileged: true # TODO: Can we use cap_add instead?
     network_mode: host
     pid: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      SPAN_INTERFACE: "${SPAN_INTERFACE:-eno2}"
 
   span: # Allows all the containers containing packet analyzers to access the span network interface
     container_name: span

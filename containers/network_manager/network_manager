@@ -1,0 +1,5 @@
+#!/bin/sh
+/bin/docker-spotter \
+  -e "span:start,restart:./attach_interface:${SPAN_INTERFACE}:{{.ID}}" \
+  -e "span:stop,kill:./detach_interface:${SPAN_INTERFACE}:{{.ID}}" \
+  2> /dev/null
