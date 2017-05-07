@@ -45,7 +45,7 @@ services:
 
   span: # Allows all the containers containing packet analyzers to access the span network interface
     container_name: span
-    image: alpine:3.5
+    image: alpine:3.4
     command: tail -f /dev/null # Command to keep the container alive
     networks:
       - images
