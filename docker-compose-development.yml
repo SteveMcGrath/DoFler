@@ -1,6 +1,5 @@
 version: "3"
 services:
-  # TODO: Gulp/linting?
   driftnet:
     command: sh -c "npm install && ./node_modules/.bin/gulp"
     network_mode: bridge # Since Docker on Mac doesn't forward ports with host networking, we set the network mode to bridge
@@ -12,3 +11,11 @@ services:
     environment:
       NODE_ENV: "development"
       SPAN_INTERFACE: "eth0" # As we don't have host networking, we listen to the local interface. We use a container with --net=container:dofler_driftnet_1 to push traffic for testing.
+
+  testing:
+    container_name: testing
+    build:
+      context: ./containers/testing
+    network_mode: "service:${TEST_SERVICE:-driftnet}" # We attach directly to the container we want to inject traffic to
+    stdin_open: true
+    tty: true
