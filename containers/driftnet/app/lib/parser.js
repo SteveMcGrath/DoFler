@@ -1,4 +1,4 @@
-module.exports = function parse (input) {
+module.exports = function parse (input, callback) {
   console.log(input.toString())
 
   /* // First thing we went to do is strip out the line endings
