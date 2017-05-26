@@ -14,6 +14,9 @@
 		"templates": "templates",
 		"images": "images"
 	},
+	"NSFW": {
+		"address": "http://localhost:4000"
+	},
 	"Monitoring": {
 		"interface": "eth1",
 		"Driftnet": {
@@ -25,7 +28,8 @@
 			"autostart": true
 		},
 		"NGrep": {
-			"autostart": true
+			"autostart": true,
+			"nsfw_filter": true
 		},
 		"Ettercap": {
 			"autostart": true
