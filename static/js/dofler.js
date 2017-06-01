@@ -6,7 +6,7 @@ var socket = io();
 function addImage(image) {
 	// Check to see if the image that was just sent to us is already being
 	// displayed.  If it isn't, then we will add it to the view.
-	var nsfw_ceiling = parseInt($('input:nsfw-ceiling').val())
+	var nsfw_ceiling = parseInt($('#nsfw-ceiling').val())
 	if ($('img[src="/images/file/' + image.filename + '"]').length < 1
 		&& ((nsfw_ceiling && image.nsfw <  nsfw_ceiling) || !nsfw_ceiling)
 	){
