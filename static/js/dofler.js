@@ -11,12 +11,12 @@ function addImage(image) {
 		&& ((nsfw_ceiling && image.nsfw <  nsfw_ceiling) || !nsfw_ceiling)
 	){
 		if ($('#debug').is(':checked')){
-			console.log(image.filename + ' + with nsfw score ' + image.nsfw ' + drawn')
+			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' drawn')
 		}
 		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '">');
 	}else{
 		if ($('#debug').is(':checked')){
-			console.log(image.filename + ' + with nsfw score ' + image.nsfw ' + NOTdrawn')
+			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' NOTdrawn')
 		}
 	}
 
