@@ -34,6 +34,12 @@ html(lang="en")
 								li
 									a(href="#" onclick="$('#stats-wrapper').toggle();") Toggle Network Stats
 								li.divider
+								li a(href="#" onclick="$('#images').empty()") Clear Existing Images
+								li NSFW Ceiling
+									input(id="nsfw-ceiling" type="text", name="nsfw-ceiling", value="0")
+								li Debugging
+									input(id="debug", type="checkbox")
+								li.divider
 								li
 									a(href="#") Generate Report
 		div#wrapper.container

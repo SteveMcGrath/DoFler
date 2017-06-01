@@ -6,8 +6,18 @@ var socket = io();
 function addImage(image) {
 	// Check to see if the image that was just sent to us is already being
 	// displayed.  If it isn't, then we will add it to the view.
-	if ($('img[src="/images/file/' + image.filename + '"]').length < 1){
+	var nsfw_ceiling = parseInt($('input:nsfw-ceiling').val())
+	if ($('img[src="/images/file/' + image.filename + '"]').length < 1
+		&& ((nsfw_ceiling && image.nsfw <  nsfw_ceiling) || !nsfw_ceiling)
+	){
+		if ($('#debug').is(':checked')){
+			console.log(image.filename ' + with nsfw score ' + image.nsfw ' + drawn')
+		}
 		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '">');
+	}else{
+		if ($('#debug').is(':checked')){
+			console.log(image.filename ' + with nsfw score ' + image.nsfw ' + NOT drawn')
+		}
 	}
 
 	// As we only want to display the latest 200 images, we will want to
