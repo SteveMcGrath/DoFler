@@ -16,7 +16,7 @@ function addImage(image) {
 		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '">');
 	}else{
 		if ($('#debug').is(':checked')){
-			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' NOTdrawn')
+			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' NOT drawn')
 		}
 	}
 
