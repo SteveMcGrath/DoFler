@@ -79,6 +79,8 @@ def compute_nsfw_score(image_data):
 
 @app.route('/score', methods=['POST'])
 def get_score():
+	image = None
+
 	if 'image' in request.files:
 		image = Image.open(request.files['image'])
 	elif 'path' in request.form:
@@ -86,9 +88,16 @@ def get_score():
 		if resp.status_code == 200:
 			resp.raw.decode_content = True
 			image = Image.open(resp.raw)
+
+	if image:
+		try:
+			score = compute_nsfw_score(image)
+		except:
+			return jsonify({'score': None, 'error': True})
+		else:
+			return jsonify({'score': score, 'error': False})
 	else:
-		return jsonify({'score': 0, 'error': True})
-	return jsonify({'score': compute_nsfw_score(image), 'error': False})
+		return jsonify({'score': None, 'error': True})
 
 
 if __name__ == '__main__':
