@@ -15,7 +15,7 @@ function addImage(image) {
 		if ($('#debug').is(':checked')){
 			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' drawn')
 		}
-		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '" onclick="removeImage(' + image.filename + ')">');
+		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '" onclick="removeImage(\'' + image.filename + '\'')">');
 	}else{
 		if ($('#debug').is(':checked')){
 			console.log(image.filename + ' with nsfw score ' + image.nsfw + ' NOT drawn')
