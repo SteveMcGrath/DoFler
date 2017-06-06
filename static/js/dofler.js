@@ -10,7 +10,7 @@ function addImage(image) {
 	var nsfw_ceiling = parseInt($('#nsfw-ceiling').val())
 	if ($('img[src="/images/file/' + image.filename + '"]').length < 1
 		&& ((nsfw_ceiling && image.nsfw <  nsfw_ceiling) || !nsfw_ceiling)
-		&& flagged_images.indexOf(image.filename) > -1
+		&& flagged_images.indexOf(image.filename) < 0
 	){
 		if ($('#debug').is(':checked')){
 			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' drawn')
@@ -18,7 +18,7 @@ function addImage(image) {
 		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '" onclick="removeImage(' + image.filename + ')">');
 	}else{
 		if ($('#debug').is(':checked')){
-			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' NOT drawn')
+			console.log(image.filename + ' with nsfw score ' + image.nsfw + ' NOT drawn')
 		}
 	}
 
