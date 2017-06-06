@@ -1,6 +1,7 @@
 var accounts = [];
 var account_id = null;
 var socket = io();
+var flagged_images = [];
 
 
 function addImage(image) {
@@ -9,11 +10,12 @@ function addImage(image) {
 	var nsfw_ceiling = parseInt($('#nsfw-ceiling').val())
 	if ($('img[src="/images/file/' + image.filename + '"]').length < 1
 		&& ((nsfw_ceiling && image.nsfw <  nsfw_ceiling) || !nsfw_ceiling)
+		&& flagged_images.indexOf(image.filename) > -1
 	){
 		if ($('#debug').is(':checked')){
 			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' drawn')
 		}
-		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '">');
+		$('#images').prepend('<img class="dofler-img" src="/images/file/' + image.filename + '" onclick="removeImage(' + image.filename + ')">');
 	}else{
 		if ($('#debug').is(':checked')){
 			console.log(image.filename + ' + with nsfw score ' + image.nsfw + ' NOT drawn')
@@ -24,6 +26,14 @@ function addImage(image) {
 	// remove the oldest images once this limit has been reached.
 	if ($('.dofler-img').length > 100){
 		$('.dofler-img:last').remove()
+	}
+}
+
+
+function removeImage(filename) {
+	if ($('#removable-images').is(':checked')) {
+		$('img[src="/images/file/' + filename + '"]').remove()
+		flagged_images.push(filename)
 	}
 }
 
