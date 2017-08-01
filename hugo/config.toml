@@ -1,8 +1,8 @@
-baseurl = "https://dofler.net/"
+baseurl = "http://dofler.net/"
 languageCode = "en-us"
 title = "Dofler"
 theme = "creative"
-googleAnalytics = ""
+googleAnalytics = "UA-79231696-2"
 
 [params]
 
@@ -23,8 +23,8 @@ googleAnalytics = ""
   name = "Steven McGrath"
   description = "Dofler Network Sniffing Project"
 
-  # The path must be relative to the static folder
   favicon = "favicon.ico"
+  publishDir = "../docs"
 
 
   # Navigation
@@ -49,7 +49,31 @@ googleAnalytics = ""
   # About section
   [params.about]
     headline    = "What is dofler?"
-    description = "[Lorem](//google.com) ipsum dolor sit amet, consectetur adipisicing elit. Praesentium similique eos eligendi error veritatis harum, sed aliquid totam, quam minus neque enim est architecto, ad. Maiores, aliquid, vitae!"
+    description = """
+Dofler is an automated wall of shame designed for general entertainment at conferences.  It has been 
+slowly developed over the last several years to include things such as account carving (via ettercap), 
+image carving (via driftnet), network stats (via some badly hacked up tshark command), and vulnerability 
+sniffing (via [Tenable Security's very awesome PVS](http://tenable.com)).  All of this data is then 
+aggregated down and presented through an HTML interface.
+
+Dofler got started a few years ago at BSides Chicago (I think it was 2012).  It started as a simple ncurses
+front-end to ettercap in a transparent window with the driftnet window sitting behind it.  To say that
+it was a hit was an understatement.  People were trolling the system so heavily, I decided to try to make
+something a little more scalable.
+
+I originally was going to start by leveraging some of the existing code that people had written for this
+exact purpose.  However after looking around, I noticed that most of the code that was in existance was
+unmaintained PHP code, and overly complicated hacked together systems.  I wanted something that could be
+easy to deploy, scalable, and entertaining to look at.
+
+The continuing effort of that result is what you see today as Dofler.  It's a Python framework that can
+be easily extended, supports the ability to have multiple sensors that report back to a single console,
+and can support a veriety of the database backends.  Dofler is very much in active development as well
+and has undergone several rewrites to help make the code portable and easy to use.
+
+I always welcome any thoughts, suggestions, ideas, code, etc.  Please feel free to contact me through any
+of the mechanisms mentioned on my blog [SteveMcGrath.io](http://stevemcgrath.io).
+    """
     #buttonText  = "Get started!"
 
 
@@ -90,11 +114,11 @@ googleAnalytics = ""
       link = "//github.com/stevemcgrath/dofler/"
 
   # Contact section
-  [params.contact]
-    headline = "Let's Get In Touch!"
-    description = "Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!"
-    phone = "123-456-6789"
-    email = "feedback@startbootstrap.com"
+  #[params.contact]
+  #  headline = "Let's Get In Touch!"
+  #  description = ""
+  #  phone = "123-456-6789"
+  #  email = "feedback@startbootstrap.com"
 
   # Google Maps section
   # [params.location]

@@ -3,17 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://dofler.net/categories/</loc>
+    <loc>http://dofler.net/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dofler.net/</loc>
+    <loc>http://dofler.net/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dofler.net/tags/</loc>
+    <loc>http://dofler.net/tags/</loc>
     <priority>0</priority>
   </url>
   

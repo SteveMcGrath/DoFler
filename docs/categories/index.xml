@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Dofler</title>
-    <link>https://dofler.net/categories/</link>
+    <link>http://dofler.net/categories/</link>
     <description>Recent content in Categories on Dofler</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://dofler.net/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://dofler.net/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
