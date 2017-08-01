@@ -34,19 +34,15 @@ googleAnalytics = "UA-79231696-2"
     [params.navigation.links]
       about     = "About"
       services  = "Technology"
-      portfolio = "NaN"
-      contact   = "NaN"
+      #portfolio = "NaN"
+      #contact   = "NaN"
 
 
-  # Hero section
   [params.hero]
-    # To change the background of the hero section, replace the 'header.jpg' at './static/img' with your own.
     slogan     = "<img src=\"img/dofler-logo.png\" width=\"100%\" />"
-    #subtitle   = "[Lorem](//google.com) ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis nesciunt consequatur ut nihil voluptatem fugiat eos eveniet alias in veniam?"
-    buttonText = "Install Today!"
+    buttonText = "Learn More"
 
 
-  # About section
   [params.about]
     headline    = "What is dofler?"
     description = """
@@ -74,10 +70,8 @@ and has undergone several rewrites to help make the code portable and easy to us
 I always welcome any thoughts, suggestions, ideas, code, etc.  Please feel free to contact me through any
 of the mechanisms mentioned on my blog [SteveMcGrath.io](http://stevemcgrath.io).
     """
-    #buttonText  = "Get started!"
 
 
-  # Service section
   [params.services]
     headline = "Built with things"
 
@@ -98,30 +92,15 @@ of the mechanisms mentioned on my blog [SteveMcGrath.io](http://stevemcgrath.io)
             title = "Quick to deploy"
 
 
-    # Portfolio modals
   [params.portfolio.modal]
         client = "Client"
         date = "Date"
         category = "Category"
         buttonText = "Close"
 
-    # Aside section
   [params.aside]
     headline = "Install Dofler Today!"
 
     [params.aside.button]
       text = "Download now"
       link = "//github.com/stevemcgrath/dofler/"
-
-  # Contact section
-  #[params.contact]
-  #  headline = "Let's Get In Touch!"
-  #  description = ""
-  #  phone = "123-456-6789"
-  #  email = "feedback@startbootstrap.com"
-
-  # Google Maps section
-  # [params.location]
-  #   latitude  = "34.007850"
-  #   longitude = "-118.499305"
-  #   maps_api_key = ""
