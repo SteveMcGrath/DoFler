@@ -49,7 +49,7 @@ googleAnalytics = "UA-79231696-2"
 Dofler is an automated wall of shame designed for general entertainment at conferences.  It has been 
 slowly developed over the last several years to include things such as account carving (via ettercap), 
 image carving (via driftnet), network stats (via some badly hacked up tshark command), and vulnerability 
-sniffing (via [Tenable Security's very awesome PVS](http://tenable.com)).  All of this data is then 
+sniffing (via [Tenable's very awesome Nessus Network Monitor](http://tenable.com)).  All of this data is then 
 aggregated down and presented through an HTML interface.
 
 Dofler got started a few years ago at BSides Chicago (I think it was 2012).  It started as a simple ncurses
@@ -99,8 +99,8 @@ of the mechanisms mentioned on my blog [SteveMcGrath.io](http://stevemcgrath.io)
         buttonText = "Close"
 
   [params.aside]
-    headline = "Install Dofler Today!"
+    headline = "Dofler is Open Source!"
 
     [params.aside.button]
-      text = "Download now"
+      text = "Github Repository"
       link = "//github.com/stevemcgrath/dofler/"
