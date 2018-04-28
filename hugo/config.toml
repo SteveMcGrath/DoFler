@@ -3,6 +3,7 @@ languageCode = "en-us"
 title = "Dofler"
 theme = "creative"
 googleAnalytics = "UA-79231696-2"
+publishDir = "../docs"
 
 [params]
 
@@ -24,7 +25,6 @@ googleAnalytics = "UA-79231696-2"
   description = "Dofler Network Sniffing Project"
 
   favicon = "favicon.ico"
-  publishDir = "../docs"
 
 
   # Navigation
@@ -46,10 +46,10 @@ googleAnalytics = "UA-79231696-2"
   [params.about]
     headline    = "What is dofler?"
     description = """
-Dofler is an automated wall of shame designed for general entertainment at conferences.  It has been 
-slowly developed over the last several years to include things such as account carving (via ettercap), 
-image carving (via driftnet), network stats (via some badly hacked up tshark command), and vulnerability 
-sniffing (via [Tenable's very awesome Nessus Network Monitor](http://tenable.com)).  All of this data is then 
+Dofler is an automated wall of shame designed for general entertainment at conferences.  It has been
+slowly developed over the last several years to include things such as account carving (via ettercap),
+image carving (via driftnet), network stats (via some badly hacked up tshark command), and vulnerability
+sniffing (via [Tenable's very awesome Nessus Network Monitor](http://tenable.com)).  All of this data is then
 aggregated down and presented through an HTML interface.
 
 Dofler got started a few years ago at BSides Chicago (I think it was 2012).  It started as a simple ncurses
