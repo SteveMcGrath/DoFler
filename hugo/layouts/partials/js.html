@@ -1,0 +1,15 @@
+{{ "<!-- jQuery -->" | safeHTML }}
+<script src="{{ "js/jquery.js" | relURL }}"></script>
+{{ "<!-- Bootstrap Core JavaScript -->" | safeHTML }}
+<script src="{{ "js/bootstrap.min.js" | relURL }}"></script>
+{{ "<!-- Plugin JavaScript -->" | safeHTML }}
+<script src="{{ "js/jquery.easing.min.js" | relURL }}"></script>
+<script src="{{ "js/jquery.fittext.js" | relURL }}"></script>
+<script src="{{ "js/wow.min.js" | relURL }}"></script>
+{{ if .Site.Params.location }}
+<script src="//maps.googleapis.com/maps/api/js?key={{ .Site.Params.location.maps_api_key }}&v=3.exp"></script>
+<script src="{{ "js/hpneo.gmaps.js" | relURL }}"></script>
+<script src="{{ "js/gmaps.init.js" | relURL }}"></script>
+{{ end }}
+{{ "<!-- Custom Theme JavaScript -->" | safeHTML }}
+<script src="{{ "js/creative.js" | relURL }}"></script>
