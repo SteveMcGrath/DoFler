@@ -7,6 +7,6 @@
 		"uri": "mysql://dofler:dofler@localhost/dofler"
 	},
 	"Monitoring": {
-		"interface": "eth1",
+		"interface": "eth1"
 	}
 }
