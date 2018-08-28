@@ -69,7 +69,14 @@ As we are using MySQL/MariaDB, we do have to install the appropriate Node.JS dat
 npm install mysql 
 ````
 
-Lastly, copy the example.json config file in the config folder and call the copy "production.json".  Change the Database.uri parameter to match what you have configured.  From here, your ready to start up the binary! 
+Lastly, copy the example.json config file in the config folder and call the copy "production.json".  Change the Database.uri parameter to match what you have configured. 
+
+Create the directory that will hold images:
+````
+mkdir images
+````
+
+From here, your ready to start up the binary! 
 
 ````
 export NODE_ENV=production
