@@ -43,10 +43,10 @@ sudo apt-get install mariadb-client mariadb-server
 mysql_secure_installation
 
 # Create the database 
-mysqladmin -uroot -p create dofler 
+mysqladmin -u root -p create dofler 
 
 # Create the dofler user 
-mysql -uroot -p
+mysql -u root -p
 > GRANT ALL PRIVILEGES ON dofler.* TO 'dofler'@'localhost' IDENTIFIED BY 'NEW_PASSWORD';
 > exit 
 ````
@@ -59,7 +59,7 @@ Once you have Node.JS installed and the pre-requisites, you simply need to downl
 ````
 cd /opt 
 git clone https://github.com/SteveMcGrath/DoFler.git
-cd dofler 
+cd DoFler 
 npm install ./
 ````
 
@@ -69,7 +69,7 @@ As we are using MySQL/MariaDB, we do have to install the appropriate Node.JS dat
 npm install mysql 
 ````
 
-Lastly, copy the example.json config file in the config folder and call the copy "production.json".  Change the Database.uri parameter to match what you have configured.  From here, your ready to start up the binary! 
+Lastly, copy the default.json config file in the config folder and call the copy "production.json".  Change the Database.uri parameter to match what you have configured.  From here, your ready to start up the binary! 
 
 ````
 export NODE_ENV=production
@@ -88,10 +88,11 @@ sudo /usr/src
 git clone https://github.com/bldewolf/driftnet.git 
 cd driftnet 
 vi Makefile 
-# You will want to look for the "-DNO_DISPLAY_WINDOW"
-# cflag.  Uncomment this flag in the make file.
+# You will want to look for the "-DNO_DISPLAY_WINDOW" cflag.
+# Uncomment this flag in the make file.
 make 
-cp driftnet /usr/local/bin;cp driftnet.1 /usr/local/share/man/man1
+ln -s driftnet /usr/local/bin/driftnet
+cp driftnet.1 /usr/share/man/man1/
 ````
 
 ### Installing the Systemd service file
