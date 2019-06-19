@@ -12,7 +12,7 @@
 		"debug": false,
 		"static": "static",
 		"templates": "templates",
-		"images": "images"
+		"images": "/tmp/driftnet"
 	},
 	"NSFW": {
 		"address": "http://localhost:4000"
